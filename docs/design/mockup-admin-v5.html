@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pratinjau form admin v5 — Tumpukan Materi</title>
+  <style>
+    @font-face {
+      font-family: "DM Sans Variable";
+      src: url("../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 1000;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Fraunces Variable";
+      src: url("../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --frame: #e4e9dc;
+      --paper: #fbf6e9;
+      --field: #fffdf7;
+      --forest: #3f5b3a;
+      --leaf: #6e8b4e;
+      --wood: #8a6a43;
+      --ink: #2b2a24;
+      --muted: #514d42;
+      --line: #c8b99c;
+      --soft-line: #e3dbc9;
+      --mustard: #d9a441;
+      --danger: #812f27;
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+      --float: 0 1px 3px rgb(40 28 12 / .18), 0 7px 10px -4px rgb(40 28 12 / .12);
+      font-family: "DM Sans Variable", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--frame);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    button, input, select, textarea { font: inherit; }
+    button, select { cursor: pointer; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid var(--mustard);
+      outline-offset: 3px;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: "Fraunces Variable", Georgia, serif; }
+    .app-frame { min-height: 100vh; padding: 0 0 12px 12px; background: var(--frame); }
+    .app-topbar {
+      display: flex;
+      min-height: 56px;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 26px 8px 14px;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 14px; color: var(--ink); text-decoration: none; }
+    .brand img { display: block; width: 145px; height: auto; }
+    .brand span { padding-left: 14px; border-left: 1px solid #b8c2ad; font-size: 14px; }
+    .sign-out { min-height: 36px; margin-left: auto; padding: 7px 12px; border: 1px solid #aeb8a4; border-radius: 6px; background: transparent; color: var(--ink); font-size: 14px; }
+    .app-body { display: grid; min-height: calc(100vh - 68px); grid-template-columns: 220px minmax(0, 1fr); gap: 12px; }
+    .sidebar { display: flex; flex-direction: column; gap: 5px; padding: 20px 10px 24px 12px; }
+    .sidebar p { margin: 0 0 8px 8px; color: var(--muted); font-size: 14px; }
+    .sidebar a { display: flex; min-height: 42px; align-items: center; padding: 8px; color: var(--muted); font-size: 14px; text-decoration: none; }
+    .sidebar a.active { color: var(--forest); font-weight: 750; }
+    .workspace {
+      min-width: 0;
+      min-height: calc(100vh - 80px);
+      padding: 34px clamp(24px, 4vw, 58px);
+      border: 1px solid #d5dacd;
+      border-right: 0;
+      border-bottom: 0;
+      border-radius: 16px 0 0 0;
+      background: #f7f6f0;
+    }
+    .screen-scrim {
+      position: fixed;
+      z-index: 4;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgb(25 24 19 / .68);
+    }
+    .editor {
+      display: flex;
+      width: min(1000px, 100%);
+      max-height: min(860px, calc(100svh - 48px));
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid #e8dfcb;
+      border-radius: 13px;
+      background-color: var(--paper);
+      background-image: var(--noise);
+      box-shadow: var(--float);
+    }
+    .editor-head {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 23px 30px 19px;
+      border-bottom: 1px solid var(--soft-line);
+    }
+    .editor-head h1 { margin: 0 0 5px; font-size: 27px; line-height: 1.12; }
+    .editor-head p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .close {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 0;
+      border-radius: 5px;
+      background: #eee7d8;
+      color: var(--ink);
+      font-size: 23px;
+      line-height: 1;
+    }
+    .editor-main {
+      display: grid;
+      min-height: 0;
+      flex: 1 1 auto;
+      grid-template-columns: minmax(220px, .76fr) minmax(0, 1.24fr);
+      overflow: auto;
+      overscroll-behavior: contain;
+    }
+    .context {
+      padding: 28px 25px 32px 30px;
+      border-right: 1px solid var(--soft-line);
+    }
+    .context h3 { margin-bottom: 8px; font-size: 22px; line-height: 1.18; }
+    .context-copy { margin-bottom: 22px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .preview-label { margin-bottom: 9px; color: var(--muted); font-size: 13px; font-weight: 700; }
+    .task-preview {
+      min-height: 166px;
+      padding: 18px;
+      border: 1px solid #d5c9ad;
+      border-radius: 7px;
+      background: #f4eddd;
+    }
+    .task-preview strong { display: block; margin-bottom: 10px; font-size: 16px; line-height: 1.35; }
+    .preview-course { display: block; margin-bottom: 14px; color: var(--muted); font-size: 13px; }
+    .preview-meta { display: flex; flex-wrap: wrap; gap: 7px; color: var(--ink); font-size: 12px; }
+    .preview-meta span { padding: 5px 8px; border-radius: 4px; background: #e4e9dc; }
+    .context-note { margin: 14px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .form-area { min-width: 0; padding: 20px 30px 28px; }
+    .mode-label { display: block; margin-bottom: 7px; color: var(--muted); font-size: 13px; font-weight: 650; }
+    .mode-tabs {
+      display: flex;
+      gap: 3px;
+      margin: 0 0 22px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--soft-line);
+      scrollbar-width: thin;
+    }
+    .mode-tabs button {
+      min-height: 40px;
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .mode-tabs button[aria-selected="true"] { border-bottom-color: var(--forest); color: var(--forest); }
+    .form-page[hidden], .field[hidden], .field-pair[hidden] { display: none; }
+    .form-page { display: grid; gap: 17px; }
+    .form-section-title { margin: 0 0 -3px; font-family: inherit; font-size: 15px; font-weight: 750; }
+    .field { display: grid; min-width: 0; gap: 7px; }
+    .field label { color: var(--ink); font-size: 14px; font-weight: 650; }
+    .optional { color: var(--muted); font-size: 13px; font-weight: 450; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      min-height: 43px;
+      padding: 9px 11px;
+      border: 1px solid #a99d85;
+      border-radius: 5px;
+      background: var(--field);
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .field textarea { min-height: 88px; resize: vertical; line-height: 1.5; }
+    .field small, .form-help { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .field-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .fold { padding-top: 14px; border-top: 1px solid var(--soft-line); }
+    .fold summary { min-height: 34px; color: var(--forest); font-size: 14px; font-weight: 700; cursor: pointer; }
+    .fold-body { display: grid; gap: 17px; padding-top: 12px; }
+    .file-well {
+      display: grid;
+      min-height: 104px;
+      place-items: center;
+      padding: 16px;
+      border: 1px dashed #9b927f;
+      border-radius: 5px;
+      background: #f6f1e5;
+      text-align: center;
+    }
+    .file-well input { max-width: 100%; color: var(--ink); font-size: 13px; }
+    .file-well p { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+    .error-state { margin: 0; padding: 10px 12px; border-left: 3px solid var(--danger); background: #f4e3dc; color: #61231e; font-size: 13px; }
+    .editor-actions {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 9px;
+      padding: 14px 30px;
+      border-top: 1px solid var(--soft-line);
+      background: var(--paper);
+    }
+    .mockup-note { margin: 0; color: var(--muted); font-size: 13px; }
+    .action-buttons { display: flex; justify-content: flex-end; gap: 9px; }
+    .button {
+      min-height: 40px;
+      padding: 8px 15px;
+      border: 1px solid #a99d85;
+      border-radius: 5px;
+      background: transparent;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .button.primary { border-color: var(--forest); background: var(--forest); color: #fffdf6; }
+    .button.primary:disabled { border-color: #66745f; background: #66745f; color: #fffdf6; cursor: not-allowed; }
+    @media (min-width: 761px) and (max-width: 900px) {
+      .screen-scrim { padding: 16px; }
+      .editor { max-height: calc(100svh - 32px); }
+      .editor-main { display: flex; flex-direction: column; }
+      .form-area { order: 0; }
+      .context { order: 1; padding: 18px 30px 21px; border-top: 1px solid var(--soft-line); border-right: 0; }
+    }
+    @media (max-width: 760px) {
+      .app-frame { padding: 0; }
+      .app-topbar { min-height: 52px; gap: 10px; padding: 7px 15px; }
+      .brand { gap: 10px; }
+      .brand img { width: 132px; }
+      .brand span { display: none; }
+      .sign-out { min-height: 36px; }
+      .app-body { display: block; min-height: calc(100vh - 52px); }
+      .sidebar { display: none; }
+      .workspace { min-height: calc(100vh - 52px); padding: 0; border-radius: 0; }
+      .screen-scrim { align-items: end; padding: 0; }
+      .editor {
+        width: 100%;
+        max-height: 92svh;
+        border-right: 0;
+        border-bottom: 0;
+        border-left: 0;
+        border-radius: 14px 14px 0 0;
+      }
+      .editor-head { padding: 18px 19px 14px; }
+      .editor-head h1 { font-size: 23px; }
+      .editor-head p { max-width: 290px; font-size: 13px; }
+      .close { width: 40px; height: 40px; }
+      .editor-main { display: flex; flex-direction: column; overflow: auto; }
+      .form-area { order: 0; padding: 15px 19px 24px; }
+      .mode-tabs { margin-bottom: 19px; }
+      .mode-tabs button { min-height: 44px; padding-inline: 9px; }
+      .form-page { gap: 16px; }
+      .field input, .field select, .field textarea { min-height: 46px; }
+      .context { order: 1; padding: 18px 19px 21px; border-top: 1px solid var(--soft-line); border-right: 0; }
+      .context h3 { font-size: 19px; }
+      .context-copy { margin-bottom: 13px; }
+      .task-preview { min-height: 125px; }
+      .editor-actions { align-items: stretch; flex-direction: column; padding: 10px 18px max(12px, env(safe-area-inset-bottom)); }
+      .mockup-note { font-size: 12px; }
+      .action-buttons { justify-content: stretch; }
+      .action-buttons .button { min-height: 46px; flex: 1; }
+    }
+    @media (max-width: 420px) {
+      .field-pair { grid-template-columns: 1fr; }
+      .mode-tabs { margin-right: -19px; padding-right: 19px; }
+      .mode-tabs button { font-size: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-frame">
+    <header class="app-topbar">
+      <a class="brand" href="#" aria-label="Kembali ke beranda">
+        <img src="../../src/assets/logo/logo.svg" alt="Tumpukan Materi">
+        <span>Panel admin</span>
+      </a>
+      <button class="sign-out" type="button">Keluar</button>
+    </header>
+    <div class="app-body">
+      <nav class="sidebar" aria-label="Menu admin">
+        <p>Pengelolaan kelas</p>
+        <a href="#">Ringkasan</a>
+        <a href="#">Kiriman masuk</a>
+        <a href="#">Materi</a>
+        <a href="#">Mata kuliah</a>
+        <a class="active" href="#">Mading (tugas)</a>
+        <a href="#">Jadwal</a>
+      </nav>
+      <main class="workspace" aria-hidden="true"></main>
+    </div>
+  </div>
+
+  <div class="screen-scrim">
+    <section class="editor" role="dialog" aria-modal="true" aria-labelledby="editor-title">
+      <header class="editor-head">
+        <div>
+          <h1 id="editor-title">Tambah tugas</h1>
+          <p>Isi yang wajib dulu. Rincian tambahan bisa dilengkapi nanti.</p>
+        </div>
+        <button class="close" type="button" aria-label="Tutup form">×</button>
+      </header>
+      <div class="editor-main">
+        <aside class="context" aria-live="polite">
+          <h3 id="context-title">Tugas di papan kelas</h3>
+          <p class="context-copy" id="context-copy">Ringkasan di samping memperlihatkan bagaimana informasi tugas akan tampil bagi mahasiswa.</p>
+          <p class="preview-label" id="preview-label">Pratinjau catatan tugas</p>
+          <div class="task-preview" id="task-preview">
+            <strong id="preview-title">Judul tugas akan tampil di sini</strong>
+            <span class="preview-course" id="preview-course">Pilih mata kuliah</span>
+            <div class="preview-meta"><span id="preview-deadline">Tanpa tenggat</span><span id="preview-method">Cara pengumpulan belum diisi</span></div>
+          </div>
+          <p class="context-note" id="context-note">Pratinjau hanya membantu merapikan isi; penyimpanan tetap dilakukan lewat tombol di bawah.</p>
+        </aside>
+        <div class="form-area">
+          <span class="mode-label">Pratinjau jenis form</span>
+          <div class="mode-tabs" role="tablist" aria-label="Jenis form admin">
+            <button type="button" role="tab" aria-selected="true" aria-controls="form-task" data-mode="task">Tugas</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="form-course" data-mode="course">Mata kuliah</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="form-material" data-mode="material">Materi</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="form-schedule" data-mode="schedule">Jadwal</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="form-change" data-mode="change">Perubahan</button>
+          </div>
+
+          <form id="form-task" class="form-page" role="tabpanel" data-form="task">
+            <h3 class="form-section-title">Informasi tugas</h3>
+            <div class="field">
+              <label for="task-title">Judul tugas</label>
+              <input id="task-title" type="text" maxlength="150" placeholder="Contoh: Ringkasan materi pertemuan" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="task-course">Mata kuliah <span class="optional">(opsional)</span></label>
+              <select id="task-course">
+                <option value="">Tanpa mata kuliah</option>
+                <option>Interaksi Manusia dan Komputer</option>
+                <option>Struktur Data dan Algoritma</option>
+                <option>Islamic Peradaban Melayu</option>
+                <option>Pemrograman Web 2</option>
+                <option>Jaringan dan Komunikasi Data</option>
+                <option>Islamic Enterpreneurship</option>
+                <option>Perencanaan dan Strategi Sistem Informasi</option>
+                <option>Bahasa Inggris</option>
+              </select>
+            </div>
+            <details class="fold">
+              <summary>Deadline dan cara pengumpulan <span class="optional">· opsional</span></summary>
+              <div class="fold-body">
+                <div class="field">
+                  <label for="task-deadline">Deadline <span class="optional">(WIB)</span></label>
+                  <input id="task-deadline" type="datetime-local">
+                </div>
+                <div class="field">
+                  <label for="task-method">Cara pengumpulan</label>
+                  <input id="task-method" type="text" maxlength="180" placeholder="Contoh: Unggah ke LMS">
+                </div>
+                <div class="field">
+                  <label for="task-description">Keterangan <span class="optional">(opsional)</span></label>
+                  <textarea id="task-description" rows="3" maxlength="4000" placeholder="Tambahkan instruksi yang perlu diketahui mahasiswa"></textarea>
+                </div>
+              </div>
+            </details>
+          </form>
+
+          <form id="form-course" class="form-page" role="tabpanel" data-form="course" hidden>
+            <h3 class="form-section-title">Identitas mata kuliah</h3>
+            <div class="field"><label for="course-name">Nama mata kuliah</label><input id="course-name" type="text" maxlength="120" placeholder="Nama mata kuliah"></div>
+            <div class="field"><label for="course-lecturer">Dosen</label><input id="course-lecturer" type="text" maxlength="120" placeholder="Nama dosen"></div>
+            <div class="field-pair">
+              <div class="field"><label for="course-credits">SKS</label><input id="course-credits" type="number" min="1" max="6" placeholder="Pilih jumlah"></div>
+              <div class="field"><label for="course-order">Urutan tampil</label><input id="course-order" type="number" placeholder="Contoh: 1"></div>
+            </div>
+            <div class="field"><label for="course-color">Warna kartu</label><select id="course-color"><option>Pilih warna</option><option>Sage</option><option>Mustard</option><option>Terracotta</option><option>Dusty blue</option></select></div>
+          </form>
+
+          <form id="form-material" class="form-page" role="tabpanel" data-form="material" hidden>
+            <h3 class="form-section-title">Materi yang diunggah</h3>
+            <div class="field"><label for="material-course">Mata kuliah</label><select id="material-course"><option>Pilih mata kuliah</option><option>Interaksi Manusia dan Komputer</option><option>Struktur Data dan Algoritma</option><option>Islamic Peradaban Melayu</option><option>Pemrograman Web 2</option><option>Jaringan dan Komunikasi Data</option><option>Islamic Enterpreneurship</option><option>Perencanaan dan Strategi Sistem Informasi</option><option>Bahasa Inggris</option></select></div>
+            <div class="field"><label for="material-title">Judul materi</label><input id="material-title" type="text" maxlength="150" placeholder="Judul yang mudah dicari"></div>
+            <div class="field">
+              <label for="material-file">File materi</label>
+              <div class="file-well"><div><input id="material-file" type="file" accept=".pdf,.docx,.pptx,.xlsx,.jpg,.jpeg,.png,.webp,.zip"><p>PDF, DOCX, PPTX, XLSX, gambar, atau ZIP · maksimal 20 MB</p></div></div>
+            </div>
+            <p class="form-help">Materi yang diunggah admin langsung tersedia untuk mahasiswa.</p>
+          </form>
+
+          <form id="form-schedule" class="form-page" role="tabpanel" data-form="schedule" hidden>
+            <h3 class="form-section-title">Jadwal mingguan</h3>
+            <div class="field"><label for="schedule-course">Mata kuliah</label><select id="schedule-course"><option>Pilih mata kuliah</option><option>Interaksi Manusia dan Komputer</option><option>Struktur Data dan Algoritma</option><option>Islamic Peradaban Melayu</option><option>Pemrograman Web 2</option><option>Jaringan dan Komunikasi Data</option><option>Islamic Enterpreneurship</option><option>Perencanaan dan Strategi Sistem Informasi</option><option>Bahasa Inggris</option></select></div>
+            <div class="field-pair">
+              <div class="field"><label for="schedule-day">Hari</label><select id="schedule-day"><option>Pilih hari</option><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option></select></div>
+              <div class="field"><label for="schedule-room">Ruangan</label><input id="schedule-room" type="text" maxlength="60" placeholder="Contoh: A-602"></div>
+            </div>
+            <div class="field-pair">
+              <div class="field"><label for="schedule-start">Jam mulai</label><input id="schedule-start" type="time"></div>
+              <div class="field"><label for="schedule-end">Jam selesai</label><input id="schedule-end" type="time"></div>
+            </div>
+            <div class="field-pair">
+              <div class="field"><label for="schedule-from">Berlaku mulai <span class="optional">(opsional)</span></label><input id="schedule-from" type="date"></div>
+              <div class="field"><label for="schedule-until">Berlaku sampai <span class="optional">(opsional)</span></label><input id="schedule-until" type="date"></div>
+            </div>
+          </form>
+
+          <form id="form-change" class="form-page" role="tabpanel" data-form="change" hidden>
+            <h3 class="form-section-title">Perubahan satu tanggal</h3>
+            <div class="field"><label for="change-kind">Jenis perubahan</label><select id="change-kind"><option value="cancelled">Batalkan kuliah</option><option value="rescheduled">Pindahkan kuliah</option><option value="extra">Tambah kuliah</option></select></div>
+            <div class="field" data-change-scheduled><label for="change-schedule">Jadwal</label><select id="change-schedule"><option>Pilih jadwal</option><option>Interaksi Manusia dan Komputer · Senin · 07.30–09.10</option><option>Struktur Data dan Algoritma · Senin · 09.20–12.40</option><option>Islamic Peradaban Melayu · Selasa · 07.30–09.10</option><option>Pemrograman Web 2 · Selasa · 09.20–12.40</option><option>Jaringan dan Komunikasi Data · Rabu · 07.30–10.00</option><option>Islamic Enterpreneurship · Rabu · 10.10–11.50</option><option>Perencanaan dan Strategi Sistem Informasi · Kamis · 10.10–11.50</option><option>Bahasa Inggris · Kamis · 13.00–14.40</option></select></div>
+            <div class="field" data-change-course hidden><label for="change-course">Mata kuliah</label><select id="change-course"><option>Pilih mata kuliah</option><option>Interaksi Manusia dan Komputer</option><option>Struktur Data dan Algoritma</option></select></div>
+            <div class="field-pair">
+              <div class="field" data-change-original><label for="change-original">Tanggal kuliah asal</label><input id="change-original" type="date"></div>
+              <div class="field" data-change-new hidden><label for="change-new">Tanggal baru</label><input id="change-new" type="date"></div>
+            </div>
+            <div class="field-pair" data-change-time hidden>
+              <div class="field"><label for="change-start">Jam mulai baru</label><input id="change-start" type="time"></div>
+              <div class="field"><label for="change-end">Jam selesai baru</label><input id="change-end" type="time"></div>
+            </div>
+            <div class="field" data-change-room hidden><label for="change-room">Ruangan baru <span class="optional">(opsional)</span></label><input id="change-room" type="text" placeholder="Kosongkan untuk memakai ruangan lama"></div>
+            <div class="field"><label for="change-note">Catatan <span class="optional">(opsional)</span></label><textarea id="change-note" rows="2" maxlength="180" placeholder="Contoh: dosen berhalangan"></textarea></div>
+          </form>
+        </div>
+      </div>
+      <footer class="editor-actions">
+        <p class="mockup-note" id="mockup-save-note">Pratinjau visual · tidak menyimpan data</p>
+        <div class="action-buttons">
+          <button class="button" type="button">Batal</button>
+          <button class="button primary" id="save-button" type="button" aria-describedby="mockup-save-note" disabled>Simpan tugas</button>
+        </div>
+      </footer>
+    </section>
+  </div>
+  <script>
+    const tabs = [...document.querySelectorAll("[data-mode]")];
+    const forms = [...document.querySelectorAll("[data-form]")];
+    const titles = {
+      task: ["Tambah tugas", "Tugas di papan kelas", "Ringkasan di samping memperlihatkan bagaimana informasi tugas akan tampil bagi mahasiswa.", "Pratinjau catatan tugas", "Simpan tugas"],
+      course: ["Tambah mata kuliah", "Folder mata kuliah", "Atur identitas yang akan dikenali mahasiswa di deck mata kuliah.", "Rangkuman folder", "Simpan mata kuliah"],
+      material: ["Unggah materi", "Materi untuk mahasiswa", "Pilih folder tujuan dan unggah file yang dapat diakses mahasiswa.", "Ringkasan materi", "Unggah materi"],
+      schedule: ["Tambah jadwal", "Jadwal mingguan", "Atur waktu dan ruang kuliah yang berulang setiap minggu.", "Rangkuman jadwal", "Simpan jadwal"],
+      change: ["Perubahan jadwal", "Perubahan satu tanggal", "Batalkan, pindahkan, atau tambahkan kuliah tanpa mengubah jadwal mingguan.", "Rangkuman perubahan", "Simpan perubahan"],
+    };
+    const fields = {
+      task: ["task-title", "task-course", "task-deadline", "task-method"],
+      course: ["course-name", "course-lecturer"],
+      material: ["material-title", "material-course", "material-file"],
+      schedule: ["schedule-course", "schedule-day", "schedule-start", "schedule-end", "schedule-room"],
+      change: ["change-kind", "change-schedule", "change-course", "change-original", "change-new", "change-start", "change-end", "change-room"],
+    };
+    const getValue = (id) => document.getElementById(id)?.value?.trim() ?? "";
+    const fieldLabels = {
+      task: "Judul tugas akan tampil di sini",
+      course: "Nama mata kuliah akan tampil di sini",
+      material: "Judul materi akan tampil di sini",
+      schedule: "Pilih mata kuliah untuk jadwal",
+      change: "Pilih jenis perubahan jadwal",
+    };
+    function updatePreview(mode) {
+      const [heading, contextTitle, description, previewLabel, saveLabel] = titles[mode];
+      document.getElementById("editor-title").textContent = heading;
+      document.getElementById("context-title").textContent = contextTitle;
+      document.getElementById("context-copy").textContent = description;
+      document.getElementById("preview-label").textContent = previewLabel;
+      document.getElementById("save-button").textContent = saveLabel;
+      const taskPreview = mode === "task";
+      document.getElementById("task-preview").hidden = !taskPreview;
+      document.getElementById("context-note").textContent = taskPreview
+        ? "Pratinjau hanya membantu merapikan isi; penyimpanan tetap dilakukan lewat tombol di bawah."
+        : "Pratinjau jenis form ini hanya untuk meninjau susunan visual.";
+      if (taskPreview) {
+        document.getElementById("preview-title").textContent = getValue("task-title") || fieldLabels.task;
+        document.getElementById("preview-course").textContent = getValue("task-course") || "Pilih mata kuliah";
+        const due = getValue("task-deadline");
+        document.getElementById("preview-deadline").textContent = due ? `Deadline · ${due.replace("T", " ")}` : "Tanpa tenggat";
+        document.getElementById("preview-method").textContent = getValue("task-method") || "Cara pengumpulan belum diisi";
+      } else {
+        const firstValue = fields[mode].map(getValue).find(Boolean);
+        document.getElementById("preview-title").textContent = firstValue || fieldLabels[mode];
+        document.getElementById("preview-course").textContent = contextTitle;
+        document.getElementById("preview-deadline").textContent = "Form belum disimpan";
+        document.getElementById("preview-method").textContent = "Pratinjau visual";
+      }
+    }
+    tabs.forEach((tab) => tab.addEventListener("click", () => {
+      const mode = tab.dataset.mode;
+      tabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+      forms.forEach((form) => { form.hidden = form.dataset.form !== mode; });
+      updatePreview(mode);
+    }));
+    ["task-title", "task-course", "task-deadline", "task-method"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", () => updatePreview("task"));
+      document.getElementById(id).addEventListener("change", () => updatePreview("task"));
+    });
+    document.getElementById("change-kind").addEventListener("change", (event) => {
+      const kind = event.target.value;
+      const extra = kind === "extra";
+      const rescheduled = kind === "rescheduled";
+      document.querySelector("[data-change-scheduled]").hidden = extra;
+      document.querySelector("[data-change-course]").hidden = !extra;
+      document.querySelector("[data-change-original]").hidden = extra;
+      document.querySelector("[data-change-new]").hidden = !extra && !rescheduled;
+      document.querySelector("[data-change-time]").hidden = !extra && !rescheduled;
+      document.querySelector("[data-change-room]").hidden = !extra && !rescheduled;
+      updatePreview("change");
+    });
+    document.querySelectorAll(".form-page input, .form-page select").forEach((control) => {
+      control.addEventListener("input", () => {
+        const mode = document.querySelector('[aria-selected="true"]')?.dataset.mode;
+        if (mode && mode !== "task") updatePreview(mode);
+      });
+      control.addEventListener("change", () => {
+        const mode = document.querySelector('[aria-selected="true"]')?.dataset.mode;
+        if (mode && mode !== "task") updatePreview(mode);
+      });
+    });
+  </script>
+</body>
+</html>

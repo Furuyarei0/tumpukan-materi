@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pratinjau login admin — Tumpukan Materi</title>
+  <style>
+    @font-face {
+      font-family: "DM Sans Variable";
+      src: url("../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 1000;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Fraunces Variable";
+      src: url("../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --paper: #fbf6e9;
+      --field: #fffdf7;
+      --cream: #f3ebd8;
+      --forest: #3f5b3a;
+      --ink: #2b2a24;
+      --muted: #514d42;
+      --wood: #8a6a43;
+      --line: #c8b99c;
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+      font-family: "DM Sans Variable", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    button, input { font: inherit; }
+    button, a { cursor: pointer; }
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 3px solid #d9a441;
+      outline-offset: 3px;
+    }
+    h1, p { margin-top: 0; }
+    h1 { font-family: "Fraunces Variable", Georgia, serif; }
+    .scene {
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      padding: 28px;
+      background-color: #41483d;
+      background-image: var(--noise);
+    }
+    .login-panel {
+      position: relative;
+      width: min(460px, 100%);
+      padding: 31px 34px 25px;
+      border: 1px solid rgb(255 255 255 / .7);
+      border-radius: 10px;
+      background-color: var(--paper);
+      background-image: var(--noise);
+      color: var(--ink);
+    }
+    .panel-head {
+      display: flex;
+      min-height: 44px;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+    .brand img { display: block; width: 158px; height: auto; }
+    .close {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 0;
+      border-radius: 5px;
+      background: #eee7d8;
+      color: var(--ink);
+      font-size: 23px;
+      line-height: 1;
+    }
+    .login-heading { margin-bottom: 23px; }
+    .login-heading h1 { margin: 0 0 7px; font-size: 29px; line-height: 1.12; }
+    .login-heading p { max-width: 340px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .login-form { display: grid; gap: 17px; }
+    .field { display: grid; min-width: 0; gap: 7px; }
+    .field label, .password-label { color: var(--ink); font-size: 14px; font-weight: 700; }
+    .field input {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid #a99d85;
+      border-radius: 5px;
+      background: var(--field);
+      color: var(--ink);
+      font-size: 15px;
+    }
+    .password-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .forgot {
+      padding: 2px 0;
+      border: 0;
+      background: transparent;
+      color: var(--forest);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .submit {
+      min-height: 46px;
+      margin-top: 3px;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 5px;
+      background: var(--forest);
+      color: #fffdf6;
+      font-size: 15px;
+      font-weight: 750;
+    }
+    .back {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      margin-top: 16px;
+      color: var(--forest);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .preview-note {
+      margin: 8px 0 0;
+      padding-top: 13px;
+      border-top: 1px solid rgb(138 106 67 / .3);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .message { margin: 0; padding: 10px 12px; border-radius: 4px; font-size: 14px; line-height: 1.45; }
+    .message.error { background: #f4e3dc; color: #61231e; }
+    .message.notice { background: #e4e9dc; color: #273d25; }
+    @media (max-width: 520px) {
+      .scene { padding: 16px; }
+      .login-panel { padding: 25px 22px 19px; }
+      .panel-head { margin-bottom: 22px; }
+      .brand img { width: 145px; }
+      .login-heading h1 { font-size: 27px; }
+      .login-heading { margin-bottom: 21px; }
+      .login-form { gap: 16px; }
+      .field input, .submit { min-height: 48px; }
+      .back { margin-top: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene">
+    <section class="login-panel" role="dialog" aria-modal="true" aria-labelledby="login-title">
+      <header class="panel-head">
+        <a class="brand" href="#" aria-label="Kembali ke beranda">
+          <img src="../../src/assets/logo/logo.svg" alt="Tumpukan Materi">
+        </a>
+        <button class="close" type="button" aria-label="Tutup">×</button>
+      </header>
+      <div class="login-heading">
+        <h1 id="login-title">Masuk admin</h1>
+        <p>Gunakan akun admin untuk mengelola materi kelas.</p>
+      </div>
+      <form class="login-form">
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <div class="password-row">
+            <label class="password-label" for="password">Kata sandi</label>
+            <button class="forgot" type="button">Lupa kata sandi?</button>
+          </div>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="submit" type="button" disabled aria-describedby="preview-note">Masuk</button>
+      </form>
+      <a class="back" href="#">Kembali ke beranda</a>
+      <p class="preview-note" id="preview-note">Pratinjau visual saja · login dan reset kata sandi tidak dijalankan.</p>
+    </section>
+  </main>
+</body>
+</html>

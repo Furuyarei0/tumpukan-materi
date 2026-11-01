@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup v3 — Tumpukan Materi</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #f3ebd8;
+      --paper: #fbf6e9;
+      --forest: #3f5b3a;
+      --leaf: #6e8b4e;
+      --wood: #8a6a43;
+      --ink: #2b2a24;
+      --muted: #514d42;
+      --line: #c8b99c;
+      --mustard: #d9a441;
+      --terracotta: #c4674a;
+      --dusty-blue: #7a9bb5;
+      --sage: #a9bfa0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+    body { margin: 0; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, .serif { font-family: Georgia, "Times New Roman", serif; }
+    button, a { font: inherit; }
+    button { cursor: pointer; }
+
+    .preview-tools {
+      position: fixed;
+      z-index: 30;
+      top: 8px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      max-width: calc(100vw - 24px);
+      padding: 6px;
+      border: 1px solid #554731;
+      border-radius: 12px;
+      background: #fbf6e9;
+      box-shadow: 2px 3px 0 #2b2a2440;
+      color: #2b2a24;
+      font-size: 10px;
+    }
+    .preview-tools strong { padding: 0 5px; font-size: 10px; }
+    .preview-tools button {
+      min-height: 28px;
+      padding: 5px 8px;
+      border: 1px solid #89795f;
+      border-radius: 7px;
+      background: #f3ebd8;
+      color: #2b2a24;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .preview-tools button[aria-pressed="true"] { border-color: #263d24; background: #3f5b3a; color: #fffdf6; }
+    .tool-divider { width: 1px; height: 20px; margin: 0 2px; background: #b7a98f; }
+
+    .scene {
+      position: relative;
+      display: grid;
+      min-height: 100vh;
+      min-height: 100svh;
+      align-items: center;
+      padding: 116px 28px 50px;
+      scroll-margin-top: 0;
+      scroll-snap-align: start;
+    }
+    .scene-inner { width: min(1200px, 100%); margin: 0 auto; }
+    .site-nav {
+      position: absolute;
+      top: 64px;
+      left: 50%;
+      display: flex;
+      width: min(1200px, calc(100% - 56px));
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      transform: translateX(-50%);
+    }
+    .logo { display: block; width: 164px; height: auto; }
+    .site-nav .logo { box-sizing: content-box; padding: 8px; border: 1px solid #6b5b42; border-radius: 6px; background: #fbf6e9; box-shadow: 2px 3px 0 #30291f38; }
+    .nav-links { display: flex; align-items: center; gap: 22px; color: var(--ink); font-size: 12px; font-weight: 750; }
+    .nav-links a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+    .nav-links .send-link { padding: 9px 13px; border: 1px solid #59462f; border-radius: 8px; background: #fbf6e9; box-shadow: 2px 2px 0 #2b2a2433; text-decoration: none; }
+
+    .hero-scene {
+      background-color: #b78a5b;
+      background-image:
+        repeating-linear-gradient(0deg, #55391c0d 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(90deg, transparent 0 184px, #68472627 185px 187px, transparent 188px 374px),
+        repeating-linear-gradient(90deg, #f8e1b00a 0 2px, transparent 2px 39px),
+        linear-gradient(125deg, #c59a6b, #b48452 50%, #c49a6d);
+    }
+    .hero-scene::before, .hero-scene::after {
+      position: absolute;
+      z-index: 0;
+      width: 88px;
+      height: 17px;
+      border: 1px solid #775c36;
+      background: #d9a441;
+      box-shadow: 2px 3px 0 #2b2a2430;
+      content: "";
+      opacity: .9;
+    }
+    .hero-scene::before { top: 25%; left: 5%; transform: rotate(12deg); }
+    .hero-scene::after { right: 7%; bottom: 17%; width: 61px; transform: rotate(-17deg); }
+    .hero-scene .scene-inner { position: relative; z-index: 1; }
+    .hero-layout { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 40px; }
+    .hero-copy {
+      position: relative;
+      padding: clamp(26px, 4vw, 48px);
+      border: 1px solid #786344;
+      background-color: var(--paper);
+      background-image: linear-gradient(#806e4b13 1px, transparent 1px), linear-gradient(90deg, #806e4b13 1px, transparent 1px);
+      background-size: 18px 18px;
+      box-shadow: 5px 6px 0 #30291f48;
+      transform: rotate(-1deg);
+    }
+    .hero-copy::before {
+      position: absolute;
+      top: -11px;
+      left: 42%;
+      width: 86px;
+      height: 24px;
+      border: 1px solid #846d47;
+      background: #d9a441;
+      content: "";
+      opacity: .93;
+      transform: rotate(2deg);
+    }
+    .eyebrow { margin-bottom: 14px; color: #344a31; font-size: 11px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+    .hero h1 { max-width: 630px; margin-bottom: 15px; font-size: clamp(36px, 5.2vw, 64px); line-height: .99; }
+    .hero-copy p { max-width: 480px; margin-bottom: 22px; color: #39372f; font-size: 15px; line-height: 1.65; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 15px;
+      border: 1px solid #273c25;
+      border-radius: 9px;
+      background: var(--forest);
+      box-shadow: 2px 3px 0 #2b2a2440;
+      color: #fffdf6;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .button.secondary { border-color: #665033; background: #e8d8b8; color: #2b2a24; }
+    .button.light { border-color: #5d4b34; background: #fbf6e9; color: #2b2a24; }
+    .hero-art { position: relative; width: min(100%, 470px); height: 410px; justify-self: center; }
+    .hero-sheet {
+      position: absolute;
+      width: 290px;
+      height: 232px;
+      border: 1px solid #69583e;
+      border-radius: 5px 10px 7px 8px;
+      background-color: #fbf6e9;
+      background-image: linear-gradient(#77694f25 1px, transparent 1px), linear-gradient(90deg, #77694f25 1px, transparent 1px);
+      background-size: 20px 20px;
+      box-shadow: 4px 5px 0 #30291f45;
+    }
+    .hero-sheet.back { top: 99px; left: 71px; background-color: #dce5d2; transform: rotate(9deg); }
+    .hero-sheet.mid { top: 80px; left: 95px; background-color: #e6ca82; transform: rotate(-8deg); }
+    .hero-sheet.front { top: 92px; left: 72px; padding: 47px 26px 20px 39px; transform: rotate(1deg); }
+    .hero-sheet.front::before { position: absolute; top: 22px; bottom: 15px; left: 22px; width: 1px; background: #c4674a70; content: ""; }
+    .hero-sheet.front strong { display: block; max-width: 205px; color: #344a31; font-family: Georgia, serif; font-size: 32px; line-height: 1.04; }
+    .hero-sheet.front small { display: block; margin-top: 13px; color: #39372f; font-size: 11px; }
+    .tape { position: absolute; z-index: 3; top: 67px; left: 206px; width: 77px; height: 21px; border: 1px solid #765b34; background: #d9a441; box-shadow: 2px 2px 0 #30291f30; transform: rotate(-7deg); }
+    .pencil { position: absolute; top: 301px; right: 1px; width: 199px; height: 13px; border: 1px solid #60472d; border-radius: 6px 2px 2px 6px; background: #c4674a; box-shadow: 3px 4px 0 #30291f38; transform: rotate(-28deg); }
+    .pencil::before { position: absolute; top: -1px; left: -13px; width: 0; height: 0; border-top: 6px solid transparent; border-right: 13px solid #d5bd8d; border-bottom: 6px solid transparent; content: ""; }
+    .pencil::after { position: absolute; top: 0; right: 14px; bottom: 0; width: 2px; background: #6b432c; content: ""; }
+    .paperclip-art { position: absolute; top: 25px; right: 47px; width: 17px; height: 43px; border: 3px solid #59472f; border-radius: 10px; transform: rotate(11deg); }
+    .paperclip-art::after { position: absolute; top: 7px; left: 3px; width: 6px; height: 26px; border: 2px solid #59472f; border-radius: 7px; content: ""; }
+    .motion-note { position: absolute; right: 0; bottom: 23px; max-width: 210px; color: #2b2a24; font-family: cursive; font-size: 13px; text-align: right; transform: rotate(-3deg); }
+    .hand-scribble { position: absolute; bottom: 42px; left: 9px; color: #1f1b15; font-family: cursive; font-size: 15px; transform: rotate(-8deg); }
+
+    .board-scene {
+      background-color: #3f5b3a;
+      background-image: linear-gradient(#dce7d51a 1px, transparent 1px), linear-gradient(90deg, #dce7d51a 1px, transparent 1px), linear-gradient(#dce7d50b 1px, transparent 1px), linear-gradient(90deg, #dce7d50b 1px, transparent 1px);
+      background-size: 32px 32px, 32px 32px, 8px 8px, 8px 8px;
+      color: #fbf6e9;
+    }
+    .board-scene .scene-inner { padding: 24px 0; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 23px; }
+    .section-heading h2 { margin: 0; color: inherit; font-size: clamp(29px, 3vw, 42px); line-height: 1; }
+    .section-heading p { margin: 8px 0 0; color: #f5efdF; font-size: 12px; }
+    .board-layout { display: grid; grid-template-columns: minmax(0, 1.85fr) minmax(300px, 1fr); align-items: stretch; gap: 25px; }
+    .task-column { min-width: 0; }
+    .column-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 15px; }
+    .column-heading h3 { margin: 0; font-family: Georgia, serif; font-size: 21px; }
+    .column-heading .count { color: #f5efdF; font-size: 11px; }
+    .task-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 19px; }
+    .task-note {
+      position: relative;
+      min-height: 189px;
+      padding: 32px 17px 17px;
+      border: 1px solid #63583f;
+      border-radius: 7px 9px 6px 8px;
+      background-color: var(--paper);
+      background-image: linear-gradient(#7564491c 1px, transparent 1px), linear-gradient(90deg, #7564491c 1px, transparent 1px);
+      background-size: 16px 16px;
+      box-shadow: 3px 4px 0 #17201770;
+      color: #2b2a24;
+    }
+    .task-note:nth-child(odd) { transform: rotate(-1.3deg); }
+    .task-note:nth-child(even) { transform: rotate(1.2deg); }
+    .task-note.mustard { background-color: #e9cf8c; }
+    .task-note.sage { background-color: #c7d4be; }
+    .task-note.blue { background-color: #b6cbd9; }
+    .task-note h4 { margin: 0 0 8px; font-size: 14px; line-height: 1.25; }
+    .task-note p { margin: 0 0 11px; color: #37352e; font-size: 11px; line-height: 1.45; }
+    .pin { position: absolute; top: -8px; left: 18px; width: 14px; height: 28px; border: 2px solid #6c5638; border-radius: 9px; background: transparent; transform: rotate(-6deg); }
+    .pin::after { position: absolute; top: 5px; left: 2px; width: 6px; height: 15px; border: 1px solid #6c5638; border-radius: 6px; content: ""; }
+    .deadline { display: inline-flex; min-height: 25px; align-items: center; padding: 3px 9px; border: 1px solid #726044; border-radius: 999px; background: #fbf6e9; color: #2b2a24; font-size: 10px; font-weight: 850; }
+    .deadline.due { border-color: #763c29; color: #622e20; }
+    .mini-admin {
+      display: none;
+      min-height: 31px;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 9px;
+      border: 1px solid #263d24;
+      border-radius: 7px;
+      background: #fbf6e9;
+      box-shadow: 1px 2px 0 #1720174d;
+      color: #263d24;
+      font-size: 10px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    body[data-role="admin"] .mini-admin { display: inline-flex; }
+    .schedule-sheet {
+      min-height: 100%;
+      padding: 21px;
+      border: 1px solid #6b5c43;
+      border-radius: 12px;
+      background-color: var(--paper);
+      background-image: linear-gradient(#74634713 1px, transparent 1px), linear-gradient(90deg, #74634713 1px, transparent 1px);
+      background-size: 18px 18px;
+      box-shadow: 4px 5px 0 #17201770;
+      color: #2b2a24;
+      transform: rotate(.6deg);
+    }
+    .schedule-sheet[data-schedule-view="today"] [data-schedule-panel="week"],
+    .schedule-sheet[data-schedule-view="week"] [data-schedule-panel="today"] { display: none; }
+    .schedule-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+    .schedule-header h3 { margin: 0; font-family: Georgia, serif; font-size: 21px; }
+    .schedule-header p { margin: 5px 0 0; color: #514d42; font-size: 10px; }
+    .tabs { display: flex; gap: 4px; padding: 4px; border: 1px solid #b5a68c; border-radius: 9px; background: #eee5d3; }
+    .tabs button { min-height: 28px; padding: 5px 8px; border: 0; border-radius: 6px; background: transparent; color: #37352e; font-size: 10px; font-weight: 750; }
+    .tabs button[aria-selected="true"] { background: #3f5b3a; color: #fffdf6; }
+    .schedule-list { display: grid; gap: 8px; margin-top: 12px; }
+    .schedule-item { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 8px; padding: 10px 8px; border: 1px solid #c9bda5; border-radius: 8px; background: #fffaf0; }
+    .schedule-time { color: #3f5b3a; font-size: 10px; font-weight: 850; }
+    .schedule-item strong, .schedule-item small { display: block; }
+    .schedule-item strong { font-size: 11px; }
+    .schedule-item small { margin-top: 3px; color: #514d42; font-size: 9px; }
+    .course-tag { padding: 4px 6px; border: 1px solid #526348; border-radius: 5px; background: #d5dfc9; color: #293d25; font-size: 9px; font-weight: 850; }
+    .course-tag.mustard { border-color: #80621f; background: #e6ca82; color: #33250c; }
+    .course-tag.blue { border-color: #465e70; background: #b6cbd9; color: #1c2a34; }
+    .course-tag.terra { border-color: #723b2a; background: #e0ad98; color: #3e1e14; }
+    .week-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 13px; }
+    .week-list { display: none; }
+    .day { min-height: 178px; padding: 7px 5px; border: 1px solid #d0c4ae; border-radius: 7px; background: #fffaf0; }
+    .day h4 { margin: 0 0 8px; color: #2b2a24; font-family: Georgia, serif; font-size: 10px; text-align: center; }
+    .day h4 small { display: block; margin-top: 2px; color: #514d42; font-family: "Segoe UI", Arial, sans-serif; font-size: 8px; font-weight: 600; }
+    .day-block { margin-top: 5px; padding: 6px 4px; border: 1px solid #526348; border-radius: 6px; background: #d5dfc9; color: #293d25; font-size: 8px; font-weight: 800; line-height: 1.35; }
+    .day-block.mustard { border-color: #80621f; background: #e6ca82; color: #33250c; }
+    .day-block.blue { border-color: #465e70; background: #b6cbd9; color: #1c2a34; }
+    .day-block.terra { border-color: #723b2a; background: #e0ad98; color: #3e1e14; }
+    .mobile-board-tabs { display: none; }
+
+    .empty-state {
+      display: none;
+      min-height: 186px;
+      width: min(100%, 520px);
+      align-content: center;
+      justify-items: center;
+      gap: 10px;
+      padding: 20px;
+      border: 1px dashed #726044;
+      border-radius: 8px;
+      background-color: #fbf6e9;
+      background-image: linear-gradient(#7564491c 1px, transparent 1px), linear-gradient(90deg, #7564491c 1px, transparent 1px);
+      background-size: 16px 16px;
+      box-shadow: 3px 4px 0 #17201770;
+      color: #2b2a24;
+      text-align: center;
+    }
+    .empty-state strong { font-family: Georgia, serif; font-size: 20px; }
+    .empty-state p { max-width: 320px; margin: 0; color: #514d42; font-size: 12px; line-height: 1.55; }
+    .empty-state .mini-admin { color: #263d24; }
+    .schedule-empty {
+      display: none;
+      min-height: 245px;
+      align-content: center;
+      justify-items: center;
+      gap: 11px;
+      padding: 22px;
+      border: 1px dashed #887858;
+      border-radius: 9px;
+      background: #fffaf0;
+      color: #2b2a24;
+      text-align: center;
+    }
+    .schedule-empty strong { font-family: Georgia, serif; font-size: 20px; }
+    .schedule-empty p { margin: 0; color: #514d42; font-size: 12px; }
+
+    .deck-scene {
+      background-color: #f3ebd8;
+      background-image: linear-gradient(#8a6a4310 1px, transparent 1px), linear-gradient(90deg, #8a6a4310 1px, transparent 1px), radial-gradient(#8a6a430b 1px, transparent 1px);
+      background-size: 38px 38px, 38px 38px, 9px 9px;
+    }
+    .deck-scene .scene-inner { padding: 18px 0 28px; }
+    .deck-heading { display: flex; align-items: end; justify-content: space-between; gap: 14px; margin-bottom: 17px; }
+    .deck-heading h2 { margin: 0; font-size: clamp(29px, 3vw, 42px); }
+    .deck-heading p { margin: 8px 0 0; color: #514d42; font-size: 12px; }
+    .deck-layout { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(330px, .92fr); align-items: center; gap: 24px; }
+    .course-side { min-width: 0; }
+    .search {
+      display: flex;
+      min-height: 46px;
+      align-items: center;
+      gap: 11px;
+      margin: 0 0 13px;
+      padding: 10px 14px;
+      border: 1px solid #746347;
+      border-radius: 9px;
+      background: #fbf6e9;
+      box-shadow: 2px 3px 0 #30291f30;
+      color: #514d42;
+      font-size: 12px;
+    }
+    .search-icon { position: relative; width: 13px; height: 13px; border: 2px solid #3f5b3a; border-radius: 50%; }
+    .search-icon::after { position: absolute; right: -6px; bottom: -4px; width: 7px; height: 2px; background: #3f5b3a; content: ""; transform: rotate(45deg); }
+    .deck-stack { position: relative; min-height: 340px; }
+    .course-card {
+      position: absolute;
+      top: 24px;
+      left: 5px;
+      width: min(66%, 410px);
+      min-height: 275px;
+      padding: 28px 25px 31px;
+      border: 1px solid #6b5b42;
+      border-radius: 9px 12px 7px 8px;
+      background-color: #d5dfc9;
+      background-image: linear-gradient(#71654c19 1px, transparent 1px), linear-gradient(90deg, #71654c19 1px, transparent 1px);
+      background-size: 17px 17px;
+      box-shadow: 4px 5px 0 #30291f48;
+      transform: rotate(-1.2deg);
+    }
+    .course-card::before {
+      position: absolute;
+      top: -12px;
+      left: 39px;
+      width: 48px;
+      height: 25px;
+      border: 1px solid #5b5144;
+      border-radius: 5px 5px 12px 12px;
+      background: #d2d0c2;
+      box-shadow: 1px 2px 0 #30291f40;
+      content: "";
+    }
+    .course-card::after {
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 10px;
+      border-top: 1px dashed #75684e;
+      background: inherit;
+      clip-path: polygon(0 0, 6% 45%, 12% 9%, 18% 63%, 24% 14%, 30% 55%, 36% 10%, 42% 60%, 48% 12%, 54% 54%, 60% 8%, 66% 56%, 72% 15%, 78% 59%, 84% 10%, 90% 52%, 96% 12%, 100% 35%, 100% 100%, 0 100%);
+      content: "";
+    }
+    .course-card.mustard { background-color: #e6ca82; transform: rotate(1.1deg) scale(.93); }
+    .course-card.blue { background-color: #b6cbd9; transform: rotate(-1.6deg) scale(.87); }
+    .course-card.peek-one { left: 17%; }
+    .course-card.peek-two { left: 33%; }
+    .course-code { display: inline-block; padding: 6px 8px; border: 1px solid #5b654d; border-radius: 5px; background: #fbf6e9; color: #273924; font-size: 11px; font-weight: 850; letter-spacing: .1em; }
+    .course-card h3 { max-width: 300px; margin: 45px 0 12px; font-family: Georgia, serif; font-size: clamp(27px, 3vw, 38px); line-height: 1.03; }
+    .course-meta { display: flex; flex-wrap: wrap; gap: 7px 14px; color: #2b2a24; font-size: 10px; font-weight: 750; }
+    .swipe-hint { margin: 0; color: #514d42; font-size: 11px; text-align: center; }
+    .search-empty {
+      display: none;
+      margin: 12px 0;
+      padding: 15px;
+      border: 1px dashed #8a6a43;
+      border-radius: 9px;
+      background: #fbf6e9;
+      color: #2b2a24;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .search-empty p { margin: 0 0 10px; }
+    .search-empty a { color: #31492e; font-weight: 800; }
+    .deck-empty {
+      display: none;
+      min-height: 292px;
+      align-content: center;
+      justify-items: start;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding: 25px;
+      border: 1px dashed #726044;
+      border-radius: 10px;
+      background: #fbf6e9;
+      box-shadow: 3px 4px 0 #30291f30;
+      color: #2b2a24;
+    }
+    .deck-empty strong { font-family: Georgia, serif; font-size: 23px; }
+    .deck-empty p { max-width: 320px; margin: 0; color: #514d42; font-size: 12px; line-height: 1.5; }
+    .folder-stage {
+      position: relative;
+      display: grid;
+      min-height: 365px;
+      align-content: center;
+      justify-items: center;
+      padding: 23px;
+      border: 1px solid #705f45;
+      border-radius: 13px;
+      background-color: #594c38;
+      background-image: linear-gradient(#eee5d111 1px, transparent 1px), linear-gradient(90deg, #eee5d111 1px, transparent 1px);
+      background-size: 22px 22px;
+      box-shadow: 4px 5px 0 #30291f40;
+    }
+    .folder-caption { position: absolute; top: 12px; left: 14px; color: #fff8e9; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .folder-paper {
+      width: min(100%, 420px);
+      min-height: 278px;
+      padding: 22px;
+      border: 1px solid #6f6048;
+      border-radius: 12px;
+      background-color: #fbf6e9;
+      background-image: linear-gradient(#77694f17 1px, transparent 1px), linear-gradient(90deg, #77694f17 1px, transparent 1px);
+      background-size: 18px 18px;
+      box-shadow: 4px 5px 0 #211d1870;
+      color: #2b2a24;
+      transform: rotate(-.6deg);
+    }
+    .folder-paper header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid #c8b99c; }
+    .folder-add { margin-top: 9px; }
+    .folder-paper h3 { margin: 8px 0 4px; font-family: Georgia, serif; font-size: 23px; }
+    .folder-paper header p { margin: 0; color: #514d42; font-size: 10px; }
+    .close-button { width: 31px; height: 31px; border: 1px solid #65553c; border-radius: 50%; background: #f3ebd8; color: #2b2a24; font-size: 18px; }
+    .material-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 1px; border-bottom: 1px dashed #a99c83; font-size: 11px; }
+    .material-row small { display: block; margin-top: 4px; color: #514d42; font-size: 9px; }
+    .file-badge { flex: 0 0 auto; padding: 5px 7px; border: 1px solid #526348; border-radius: 5px; background: #d5dfc9; color: #293d25; font-size: 9px; font-weight: 850; }
+    .folder-empty {
+      display: none;
+      min-height: 175px;
+      align-content: center;
+      justify-items: center;
+      gap: 10px;
+      padding: 15px;
+      color: #2b2a24;
+      text-align: center;
+    }
+    .folder-empty strong { font-family: Georgia, serif; font-size: 20px; }
+    .folder-empty p { max-width: 270px; margin: 0; color: #514d42; font-size: 11px; line-height: 1.5; }
+
+    .empty-only { display: none; }
+    body[data-state="empty"] .sample-only { display: none !important; }
+    body[data-state="empty"] .empty-only { display: grid; }
+    body[data-state="empty"] .task-note.empty-only { display: grid; }
+    body[data-state="empty"] .schedule-list.empty-only { display: grid; }
+    body[data-state="empty"] .week-grid.empty-only { display: grid; }
+    body[data-state="empty"] .deck-empty { display: grid; }
+    body[data-state="empty"] .search-empty { display: block; }
+    body[data-state="empty"] .folder-empty { display: grid; }
+    body[data-state="empty"] .folder-paper .sample-materials { display: none; }
+    body[data-state="empty"] .folder-paper .folder-empty { display: grid; }
+    body[data-state="empty"] .schedule-sheet .sample-only { display: none; }
+    body[data-role="admin"] .visitor-only { display: none; }
+
+    @media (max-width: 820px) {
+      .scene { padding: 128px 20px 42px; }
+      .site-nav { top: 79px; width: calc(100% - 40px); }
+      .logo { width: 145px; }
+      .nav-links { gap: 12px; font-size: 10px; }
+      .nav-links .send-link { padding: 7px 9px; }
+      .hero-layout { grid-template-columns: minmax(0, 1fr) minmax(260px, .85fr); gap: 22px; }
+      .hero-art { transform: scale(.85); transform-origin: center; }
+      .board-layout { grid-template-columns: minmax(0, 1.5fr) minmax(265px, 1fr); gap: 18px; }
+      .task-grid { gap: 14px; }
+      .task-note { padding-right: 12px; padding-left: 12px; }
+      .schedule-sheet { padding: 15px; }
+      .deck-layout { grid-template-columns: minmax(0, 1fr) minmax(280px, .85fr); gap: 16px; }
+    }
+
+    @media (max-width: 680px) {
+      html { scroll-snap-type: y proximity; }
+      .preview-tools { right: 8px; left: 8px; justify-content: center; max-width: none; gap: 4px; padding: 5px; }
+      .preview-tools strong { padding: 0 3px; font-size: 9px; }
+      .preview-tools button { min-height: 26px; padding: 4px 6px; font-size: 9px; }
+      .tool-divider { margin: 0 1px; }
+      .scene { min-height: 100vh; min-height: 100svh; padding: 143px 16px 34px; }
+      .site-nav { top: 68px; width: calc(100% - 32px); }
+      .logo { width: 132px; }
+      .nav-links { gap: 8px; font-size: 9px; }
+      .nav-links .send-link { padding: 7px; }
+      .hero-layout { grid-template-columns: 1fr; gap: 4px; }
+      .hero-copy { padding: 26px 19px; }
+      .hero h1 { font-size: clamp(34px, 10vw, 43px); }
+      .hero-copy p { font-size: 13px; }
+      .hero-art { width: min(100%, 330px); height: 315px; transform: scale(.82); transform-origin: top center; }
+      .hero-sheet { width: 245px; height: 205px; }
+      .hero-sheet.back { top: 70px; left: 30px; }
+      .hero-sheet.mid { top: 55px; left: 47px; }
+      .hero-sheet.front { top: 65px; left: 30px; }
+      .tape { top: 42px; left: 138px; }
+      .pencil { top: 250px; right: -4px; }
+      .paperclip-art { top: 7px; right: 24px; }
+      .motion-note { right: -4px; bottom: 27px; max-width: 180px; }
+      .hand-scribble { bottom: 44px; left: 0; }
+      .hero-scene::before { top: 32%; left: 2%; }
+      .hero-scene::after { right: 3%; bottom: 8%; }
+      .board-scene .scene-inner, .deck-scene .scene-inner { padding: 12px 0; }
+      .section-heading, .deck-heading { align-items: flex-start; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+      .section-heading h2, .deck-heading h2 { font-size: 31px; }
+      .section-heading p, .deck-heading p { font-size: 11px; }
+      .mobile-board-tabs { display: flex; margin-bottom: 14px; }
+      .mobile-board-tabs button { flex: 1; min-height: 39px; border: 1px solid #e6dcc7; background: #fbf6e9; color: #2b2a24; font-size: 12px; font-weight: 800; }
+      .mobile-board-tabs button:first-child { border-radius: 9px 0 0 9px; }
+      .mobile-board-tabs button:last-child { border-radius: 0 9px 9px 0; }
+      .mobile-board-tabs button[aria-selected="true"] { border-color: #d9a441; background: #d9a441; color: #2b2a24; }
+      .board-layout { grid-template-columns: 1fr; gap: 16px; }
+      .board-layout[data-mobile-view="tasks"] .schedule-column { display: none; }
+      .board-layout[data-mobile-view="schedule"] .task-column { display: none; }
+      .column-heading h3 { font-size: 19px; }
+      .task-grid { grid-template-columns: 1fr; gap: 13px; }
+      .task-note { min-height: 143px; padding: 28px 15px 15px; }
+      .task-note h4 { font-size: 14px; }
+      .task-note p { font-size: 11px; }
+      .schedule-sheet { min-height: 380px; padding: 15px; transform: none; }
+      .schedule-header { flex-direction: column; }
+      .schedule-header h3 { font-size: 21px; }
+      .schedule-list { gap: 7px; }
+      .schedule-item { grid-template-columns: 54px 1fr auto; }
+      .week-grid { display: none !important; }
+      .week-list { display: grid; gap: 7px; margin-top: 11px; }
+      .week-day { display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 8px; padding: 8px; border: 1px solid #c9bda5; border-radius: 7px; background: #fffaf0; }
+      .week-day strong { color: #2b2a24; font-family: Georgia, serif; font-size: 11px; }
+      .week-day small { display: block; margin-top: 3px; color: #514d42; font-family: "Segoe UI", Arial, sans-serif; font-size: 9px; }
+      .week-day .day-block { margin: 0; }
+      .deck-layout { grid-template-columns: 1fr; gap: 23px; }
+      .deck-stack { min-height: 330px; }
+      .course-card { top: 25px; left: 2px; width: 78%; min-height: 263px; padding: 24px 18px 28px; }
+      .course-card.peek-one { left: 11%; }
+      .course-card.peek-two { left: 22%; }
+      .course-card h3 { margin-top: 43px; font-size: 29px; }
+      .course-meta { font-size: 9px; }
+      .folder-stage { min-height: 355px; padding: 30px 12px 17px; }
+      .folder-paper { min-height: 276px; padding: 16px; }
+      .folder-paper h3 { font-size: 21px; }
+      .folder-caption { top: 10px; left: 12px; }
+      .deck-empty { min-height: 242px; }
+      .empty-state { min-height: 157px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body data-state="sample" data-role="visitor">
+  <aside class="preview-tools" aria-label="Kontrol mockup">
+    <strong>Pratinjau</strong>
+    <button type="button" data-state-button="sample" aria-pressed="true">Data contoh</button>
+    <button type="button" data-state-button="empty" aria-pressed="false">Kosong</button>
+    <span class="tool-divider" aria-hidden="true"></span>
+    <button type="button" data-role-button="visitor" aria-pressed="true">Pengunjung</button>
+    <button type="button" data-role-button="admin" aria-pressed="false">Admin</button>
+  </aside>
+
+  <main>
+    <section class="scene hero-scene hero" id="home" aria-labelledby="hero-title">
+      <nav class="site-nav" aria-label="Navigasi utama">
+        <img class="logo" src="logo/logo.svg" alt="Tumpukan Materi">
+        <div class="nav-links">
+          <a href="#board">Papan kelas</a>
+          <a href="#deck">Materi</a>
+          <a class="send-link" href="#deck">Kirim materi</a>
+        </div>
+      </nav>
+      <div class="scene-inner">
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <p class="eyebrow">Ruang belajar satu kelas</p>
+            <h1 class="serif" id="hero-title">Materi kelas, rapi di satu tempat.</h1>
+            <p>Temukan bahan kuliah, cek tenggat tugas, dan lihat jadwal minggu ini tanpa perlu bertanya ke grup kelas.</p>
+            <div class="hero-actions">
+              <a class="button" href="#board">Lihat papan tugas</a>
+              <a class="button secondary" href="#deck">Cari materi</a>
+            </div>
+          </div>
+          <div class="hero-art" aria-label="Ilustrasi kertas dan alat tulis di atas meja">
+            <span class="hero-sheet back"></span>
+            <span class="hero-sheet mid"></span>
+            <span class="hero-sheet front"><strong>Catat.<br>Susun.<br>Belajar.</strong><small>ruang kelas kita</small></span>
+            <span class="tape"></span>
+            <span class="paperclip-art" aria-hidden="true"></span>
+            <span class="pencil" aria-hidden="true"></span>
+            <span class="hand-scribble">minggu baru, semangat baru</span>
+            <span class="motion-note">Kertas bergeser pelan mengikuti kursor / scroll</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene board-scene" id="board" aria-labelledby="board-title">
+      <div class="scene-inner">
+        <div class="section-heading">
+          <div><h2 id="board-title">Papan kelas</h2><p>Tugas dan jadwal minggu ini, tersusun di satu tempat.</p></div>
+          <a class="button light" href="#deck">Lanjut ke materi ↓</a>
+        </div>
+
+        <div class="mobile-board-tabs tabs" role="tablist" aria-label="Pilih isi papan kelas">
+          <button type="button" role="tab" data-mobile-tab="tasks" aria-selected="true">Tugas</button>
+          <button type="button" role="tab" data-mobile-tab="schedule" aria-selected="false">Jadwal</button>
+        </div>
+
+        <div class="board-layout" data-mobile-view="tasks">
+          <section class="task-column" aria-label="Daftar tugas">
+            <div class="column-heading">
+              <h3>Catatan tugas</h3>
+              <div><span class="count sample-only">4 tenggat</span><button class="mini-admin" type="button">+ Tambah tugas</button></div>
+            </div>
+            <div class="task-grid sample-only">
+              <article class="task-note">
+                <span class="pin" aria-hidden="true"></span>
+                <h4>Rangkuman struktur data</h4>
+                <p>Struktur Data · Kumpulkan di kelas</p>
+                <span class="deadline due">Hari ini</span>
+              </article>
+              <article class="task-note mustard">
+                <span class="pin" aria-hidden="true"></span>
+                <h4>Latihan normalisasi</h4>
+                <p>Basis Data · Unggah ke LMS</p>
+                <span class="deadline">2 hari lagi</span>
+              </article>
+              <article class="task-note sage">
+                <span class="pin" aria-hidden="true"></span>
+                <h4>Baca materi routing</h4>
+                <p>Jaringan Komputer · Diskusi di kelas</p>
+                <span class="deadline">5 hari lagi</span>
+              </article>
+              <article class="task-note blue">
+                <span class="pin" aria-hidden="true"></span>
+                <h4>Rancangan antarmuka</h4>
+                <p>Interaksi Manusia Komputer · Presentasi</p>
+                <span class="deadline">1 minggu lagi</span>
+              </article>
+            </div>
+            <div class="empty-state empty-only">
+              <span class="pin" aria-hidden="true"></span>
+              <strong>Belum ada tugas.</strong>
+              <p>Papan kelas masih kosong. Kalau ada tugas baru, catat di sini supaya semua bisa bersiap.</p>
+              <button class="mini-admin" type="button">+ Tambah tugas</button>
+            </div>
+          </section>
+
+          <section class="schedule-column" aria-label="Jadwal kuliah">
+            <div class="schedule-sheet" data-schedule-view="today">
+              <div class="schedule-header">
+                <div><h3>Jadwal kuliah</h3><p>Zona waktu WIB · Asia/Jakarta</p></div>
+                <button class="mini-admin" type="button">+ Tambah jadwal</button>
+              </div>
+              <div class="tabs" role="tablist" aria-label="Pilih jadwal">
+                <button type="button" role="tab" data-schedule-tab="today" aria-selected="true">Hari ini</button>
+                <button type="button" role="tab" data-schedule-tab="week" aria-selected="false">Minggu ini</button>
+              </div>
+              <div class="schedule-list sample-only" data-schedule-panel="today">
+                <div class="schedule-item"><span class="schedule-time">09.00</span><div><strong>Struktur Data</strong><small>Ruang 204 · 09.00–10.40</small></div><span class="course-tag">SD-201</span></div>
+                <div class="schedule-item"><span class="schedule-time">13.00</span><div><strong>Basis Data</strong><small>Lab 2 · 13.00–14.40</small></div><span class="course-tag mustard">BD-204</span></div>
+                <div class="schedule-item"><span class="schedule-time">15.00</span><div><strong>Etika Profesi</strong><small>Ruang 301 · 15.00–16.40</small></div><span class="course-tag terra">EP-202</span></div>
+              </div>
+              <div class="week-grid sample-only" data-schedule-panel="week">
+                <div class="day"><h4>Senin<small>02 Nov</small></h4><div class="day-block">Struktur Data<br>09.00 · R. 204</div><div class="day-block mustard">Basis Data<br>13.00 · Lab 2</div></div>
+                <div class="day"><h4>Selasa<small>03 Nov</small></h4><div class="day-block blue">Jaringan<br>09.00 · R. 105</div></div>
+                <div class="day"><h4>Rabu<small>04 Nov</small></h4><div class="day-block terra">Etika Profesi<br>13.00 · R. 301</div></div>
+                <div class="day"><h4>Kamis<small>05 Nov</small></h4><div class="day-block mustard">Basis Data<br>09.00 · Lab 2</div><div class="day-block blue">Jaringan<br>13.00 · R. 105</div></div>
+                <div class="day"><h4>Jumat<small>06 Nov</small></h4><div class="day-block">Struktur Data<br>10.00 · R. 204</div></div>
+              </div>
+              <div class="week-list sample-only" data-schedule-panel="week">
+                <div class="week-day"><strong>Senin<small>02 Nov</small></strong><div class="day-block">Struktur Data · 09.00 · R. 204<br>Basis Data · 13.00 · Lab 2</div></div>
+                <div class="week-day"><strong>Selasa<small>03 Nov</small></strong><div class="day-block blue">Jaringan · 09.00 · R. 105</div></div>
+                <div class="week-day"><strong>Rabu<small>04 Nov</small></strong><div class="day-block terra">Etika Profesi · 13.00 · R. 301</div></div>
+                <div class="week-day"><strong>Kamis<small>05 Nov</small></strong><div class="day-block mustard">Basis Data · 09.00 · Lab 2<br>Jaringan · 13.00 · R. 105</div></div>
+                <div class="week-day"><strong>Jumat<small>06 Nov</small></strong><div class="day-block">Struktur Data · 10.00 · R. 204</div></div>
+              </div>
+              <div class="schedule-empty empty-only">
+                <strong>Jadwal belum diisi.</strong>
+                <p>Jam kuliah akan muncul di lembar ini setelah ditambahkan.</p>
+                <button class="mini-admin" type="button">+ Tambah jadwal</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene deck-scene" id="deck" aria-labelledby="deck-title">
+      <div class="scene-inner">
+        <div class="deck-heading">
+          <div><h2 id="deck-title">Cari bahan kuliah</h2><p>Geser tumpukan atau cari judul materi dari semua mata kuliah.</p></div>
+          <button class="mini-admin" type="button">+ Tambah mata kuliah</button>
+        </div>
+        <div class="deck-layout">
+          <section class="course-side" aria-label="Deck mata kuliah dan pencarian">
+            <div class="search sample-only"><span class="search-icon" aria-hidden="true"></span>Cari mata kuliah atau judul materi…</div>
+            <div class="search empty-only"><span class="search-icon" aria-hidden="true"></span><span>Kalkulus lanjutan</span></div>
+            <div class="search-empty empty-only">
+              <p>Tidak ada hasil untuk <strong>“Kalkulus lanjutan”</strong>.</p>
+              <a href="https://wa.me/qr/R7PIDTBT7PT2P1" target="_blank" rel="noopener noreferrer">Minta materi lewat WhatsApp ↗</a>
+            </div>
+            <div class="deck-stack sample-only">
+              <article class="course-card blue peek-two"><span class="course-code">JK-203</span><h3>Jaringan Komputer</h3><div class="course-meta"><span>9 materi</span><span>Diperbarui 4 hari lalu</span></div></article>
+              <article class="course-card mustard peek-one"><span class="course-code">BD-204</span><h3>Basis Data</h3><div class="course-meta"><span>12 materi</span><span>Diperbarui 2 hari lalu</span></div></article>
+              <article class="course-card"><span class="course-code">SD-201</span><h3>Struktur Data</h3><div class="course-meta"><span>8 materi</span><span>Diperbarui hari ini</span></div></article>
+            </div>
+            <div class="deck-empty empty-only">
+              <strong>Belum ada mata kuliah.</strong>
+              <p>Folder mata kuliah yang tersedia akan muncul di tumpukan ini.</p>
+              <button class="mini-admin" type="button">+ Tambah mata kuliah</button>
+            </div>
+            <p class="swipe-hint sample-only">← Geser / drag · gunakan tombol panah untuk menjelajah →</p>
+          </section>
+
+          <section aria-label="Contoh tampilan folder terbuka">
+            <div class="folder-stage">
+              <span class="folder-caption">Folder terbuka · kartu membesar</span>
+              <article class="folder-paper">
+                <header>
+                  <div><span class="course-code">SD-201</span><h3>Struktur Data</h3><p>8 materi tersedia</p></div>
+                  <button class="close-button" type="button" aria-label="Tutup folder">×</button>
+                </header>
+                <button class="mini-admin folder-add sample-only" type="button">+ Tambah materi</button>
+                <div class="sample-materials">
+                  <div class="material-row"><div>Modul 01 — Pengantar<small>PDF · 2,4 MB</small></div><span class="file-badge">Buka PDF</span></div>
+                  <div class="material-row"><div>Catatan pertemuan 3<small>PDF · 860 KB</small></div><span class="file-badge">Buka PDF</span></div>
+                  <div class="material-row"><div>Latihan linked list<small>DOCX · 320 KB</small></div><span class="file-badge">Unduh</span></div>
+                </div>
+                <div class="folder-empty empty-only">
+                  <strong>Belum ada materi di sini.</strong>
+                  <p>Kirim materi untuk membantu teman sekelas menemukan bahan belajar.</p>
+                  <a class="button light visitor-only" href="#deck">Kirim materi</a>
+                  <button class="mini-admin" type="button">+ Tambah materi</button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const body = document.body;
+
+    document.querySelectorAll("[data-state-button]").forEach((button) => {
+      button.addEventListener("click", () => {
+        body.dataset.state = button.dataset.stateButton;
+        document.querySelectorAll("[data-state-button]").forEach((item) => {
+          item.setAttribute("aria-pressed", String(item === button));
+        });
+      });
+    });
+
+    document.querySelectorAll("[data-role-button]").forEach((button) => {
+      button.addEventListener("click", () => {
+        body.dataset.role = button.dataset.roleButton;
+        document.querySelectorAll("[data-role-button]").forEach((item) => {
+          item.setAttribute("aria-pressed", String(item === button));
+        });
+      });
+    });
+
+    document.querySelectorAll("[data-mobile-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const board = document.querySelector(".board-layout");
+        board.dataset.mobileView = button.dataset.mobileTab;
+        document.querySelectorAll("[data-mobile-tab]").forEach((item) => {
+          item.setAttribute("aria-selected", String(item === button));
+        });
+      });
+    });
+
+    document.querySelectorAll("[data-schedule-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const panel = button.dataset.scheduleTab;
+        const scheduleSheet = button.closest(".schedule-sheet");
+        scheduleSheet.dataset.scheduleView = panel;
+        document.querySelectorAll("[data-schedule-tab]").forEach((item) => {
+          item.setAttribute("aria-selected", String(item === button));
+        });
+      });
+    });
+  </script>
+</body>
+</html>

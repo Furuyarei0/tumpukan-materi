@@ -1,0 +1,1487 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup v14 — Tumpukan Materi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #f3ebd8;
+      --paper: #fbf6e9;
+      --forest: #3f5b3a;
+      --leaf: #6e8b4e;
+      --wood: #8a6a43;
+      --ink: #2b2a24;
+      --muted: #514d42;
+      --line: #c8b99c;
+      --mustard: #d9a441;
+      --terracotta: #c4674a;
+      --dusty-blue: #7a9bb5;
+      --sage: #a9bfa0;
+      --elev-1: 0 1px 1px rgb(40 28 12 / .28), 0 3px 6px -1px rgb(40 28 12 / .22), 0 8px 16px -6px rgb(40 28 12 / .18);
+      --elev-2: 0 1px 2px rgb(40 28 12 / .30), 0 6px 10px -2px rgb(40 28 12 / .24), 0 16px 28px -10px rgb(40 28 12 / .28);
+      --elev-3: 0 2px 3px rgb(40 28 12 / .32), 0 12px 18px -4px rgb(40 28 12 / .26), 0 28px 44px -14px rgb(40 28 12 / .34);
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      --wood-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 80'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.01 .6' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)' opacity='.22'/%3E%3C/svg%3E");
+      font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+    body { margin: 0; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3, .serif { font-family: "Fraunces", Georgia, "Times New Roman", serif; }
+    button, a { font: inherit; }
+    button { cursor: pointer; }
+
+    .preview-tools {
+      position: fixed;
+      z-index: 60;
+      top: 82px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      max-width: calc(100vw - 24px);
+      padding: 6px;
+      border: 1px solid rgb(255 255 255 / .8);
+      border-radius: 8px;
+      background: #fbf6e9;
+      color: #2b2a24;
+      font-size: 10px;
+    }
+    .preview-tools strong { padding: 0 5px; font-size: 10px; }
+    .preview-tools button {
+      min-height: 28px;
+      padding: 5px 8px;
+      border: 1px solid rgb(255 255 255 / .8);
+      border-radius: 5px;
+      background: #f3ebd8;
+      box-shadow: var(--elev-1), inset 1px 1px 0 rgb(255 255 255 / .8);
+      color: #2b2a24;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .preview-tools button[aria-pressed="true"] { border-color: rgb(255 255 255 / .8); background: #3f5b3a; color: #fffdf6; }
+    .tool-divider { width: 1px; height: 20px; margin: 0 2px; background: #b7a98f; }
+
+    .svg-definitions { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .scene { 
+      position: relative;
+      display: grid;
+      min-height: 100vh;
+      min-height: 100svh;
+      align-items: center;
+      padding: 116px 28px 50px;
+      scroll-margin-top: 76px;
+      scroll-snap-align: start;
+    }
+    .scene-inner { position: relative; z-index: 5; width: min(1200px, 100%); margin: 0 auto; }
+    body.has-motion [data-reveal] { opacity: 0; translate: 0 20px; transition: opacity 460ms ease-out, translate 460ms cubic-bezier(.2,.8,.2,1); }
+    body.has-motion [data-reveal].is-revealed { opacity: 1; translate: 0 0; }
+    .scene::after {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(20 12 4 / .28));
+      content: "";
+      pointer-events: none;
+    }
+    .site-nav {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0;
+      padding: 15px max(28px, calc((100% - 1200px) / 2));
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), var(--noise);
+      background-size: auto, 160px 160px;
+      box-shadow: var(--elev-1);
+    }
+    .logo { display: block; width: 164px; height: auto; }
+    .logo-link { display: block; padding: 5px 10px 5px 0; }
+    .nav-links { display: flex; align-items: center; gap: clamp(12px, 1.8vw, 24px); margin-left: auto; }
+    .nav-links a { color: var(--ink); font-size: 13px; font-weight: 750; text-decoration: none; }
+    .nav-links a[aria-current="page"] { color: var(--forest); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 7px; }
+    body[data-section="home"] .nav-links { display: none; }
+    body[data-section="home"] .send-link { margin-left: auto; }
+    body:not([data-section="home"]) .nav-links { display: flex; }
+    .nav-links a:focus-visible, .send-link:focus-visible, .logo-link:focus-visible { outline: 3px solid var(--mustard); outline-offset: 4px; }
+    .send-link { margin-left: clamp(12px, 1.2vw, 18px); padding: 10px 15px; border: 1px solid rgb(255 255 255 / .75); border-radius: 5px; background: var(--forest); color: #fffdf6; font-size: 12px; font-weight: 800; cursor: pointer; transition: transform 160ms ease-out; }
+    .send-link:hover { transform: translateY(-2px); }
+
+    .hero-scene {
+      background-color: #b78a5b;
+      background-image:
+        repeating-linear-gradient(0deg, #55391c19 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(90deg, transparent 0 184px, #68472634 185px 187px, transparent 188px 374px),
+        repeating-linear-gradient(90deg, #f8e1b016 0 2px, transparent 2px 39px),
+        var(--wood-grain),
+        radial-gradient(120% 90% at 50% 40%, transparent 58%, rgb(20 12 4 / .28)),
+        linear-gradient(135deg, #c59a6b, #b48452 50%, #c49a6d);
+      background-size: auto, auto, auto, 180px 80px, auto, auto;
+    }
+    .hero-scene .scene-inner { padding-top: 40px; }
+    .hero-layout { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 40px; }
+    .hero-copy {
+      position: relative;
+      padding: clamp(26px, 4vw, 48px);
+      border: 1px solid rgb(255 255 255 / .7);
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .10), transparent 35%), var(--noise), linear-gradient(#806e4b18 1px, transparent 1px), linear-gradient(90deg, #806e4b18 1px, transparent 1px);
+      background-size: auto, auto, 160px 160px, 18px 18px, 18px 18px;
+      box-shadow: var(--elev-2), inset 1px 1px 0 rgb(255 255 255 / .75);
+    }
+    .hero-copy { transition: transform 180ms ease-out; }
+    .hero-copy:hover { box-shadow: var(--elev-3), inset 1px 1px 0 rgb(255 255 255 / .75); transform: translateY(-4px); }
+    .hero h1 { max-width: 630px; margin-bottom: 15px; font-size: clamp(36px, 5.2vw, 64px); line-height: .99; letter-spacing: -.035em; text-wrap: balance; }
+    .hero-copy p { max-width: 480px; margin-bottom: 22px; color: #39372f; font-size: 15px; line-height: 1.65; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 15px;
+      border: 1px solid rgb(255 255 255 / .75);
+      border-radius: 5px;
+      background: var(--forest);
+      color: #fffdf6;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .button.secondary { border-color: rgb(255 255 255 / .8); background: #e8d8b8; color: #2b2a24; }
+    .button.light { border-color: rgb(255 255 255 / .85); background: #fbf6e9; color: #2b2a24; }
+    .hero-art { position: relative; width: min(100%, 520px); height: 460px; justify-self: center; }
+    .hero-sheet {
+      position: absolute;
+      width: 345px;
+      height: 275px;
+      border: 1px solid rgb(255 255 255 / .72);
+      border-radius: 5px 10px 7px 8px;
+      background-color: #fbf6e9;
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .10), transparent 35%), var(--noise), linear-gradient(#77694f25 1px, transparent 1px), linear-gradient(90deg, #77694f25 1px, transparent 1px);
+      background-size: auto, auto, 160px 160px, 20px 20px, 20px 20px;
+      box-shadow: var(--elev-1), inset 1px 1px 0 rgb(255 255 255 / .75);
+    }
+    .hero-sheet.back { top: 108px; left: 92px; width: 320px; height: 254px; background-color: #dce5d2; }
+    .hero-sheet.mid { top: 78px; left: 130px; width: 300px; height: 270px; background-color: #e6ca82; }
+    .hero-sheet.front { top: 95px; left: 94px; }
+    .hero-sheet.front::before { position: absolute; top: 22px; bottom: 15px; left: 22px; width: 1px; background: #c4674a70; content: ""; }
+    .hero-sheet.front::after {
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      width: 37px;
+      height: 37px;
+      background: linear-gradient(225deg, #d6c6a9 0 49%, #fbf6e9 51%);
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+      content: "";
+    }
+    .hero-note {
+      position: absolute;
+      inset: 56px 30px 22px 42px;
+      display: grid;
+      align-content: start;
+      gap: 9px;
+      color: #2b2a24;
+    }
+    .hero-note-title {
+      margin-bottom: 2px;
+      color: #3f5b3a;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .hero-note-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgb(91 78 55 / .22);
+      font-size: 11px;
+      font-weight: 750;
+    }
+    .hero-note-row small { color: #514d42; font-size: 9px; font-weight: 650; white-space: nowrap; }
+    .hero-note-empty { max-width: 220px; text-align: center; }
+    .hero-note-empty strong { color: #3f5b3a; font-family: "Fraunces", Georgia, serif; font-size: 16px; }
+    .hero-note-empty p { margin: 7px 0 0; color: #514d42; font-size: 11px; line-height: 1.5; }
+    .prop { position: absolute; display: block; height: auto; object-fit: contain; }
+    .tape-art { z-index: 3; top: 48px; left: 226px; width: 148px; }
+    .pencil-art { z-index: 3; top: 350px; right: 0; width: 292px; }
+    .paperclip-art { z-index: 4; top: 5px; right: 64px; width: 180px; }
+
+    .board-scene {
+      background-color: #3f5b3a;
+      background-image: var(--noise), linear-gradient(#dce7d536 1px, transparent 1px), linear-gradient(90deg, #dce7d536 1px, transparent 1px), linear-gradient(#dce7d516 1px, transparent 1px), linear-gradient(90deg, #dce7d516 1px, transparent 1px);
+      background-size: 32px 32px, 32px 32px, 8px 8px, 8px 8px;
+      color: #fbf6e9;
+    }
+    .board-scene { background-size: 160px 160px, 32px 32px, 32px 32px, 8px 8px, 8px 8px; }
+    .board-scene::before {
+      position: absolute;
+      z-index: 3;
+      top: -27px;
+      right: 0;
+      left: 0;
+      height: 54px;
+      background: url("assets/torn-edge-top-1.webp") center bottom / 100% 100% no-repeat;
+      content: "";
+      pointer-events: none;
+      transform: rotate(180deg);
+    }
+    .board-scene .scene-inner { padding: 24px 0; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 23px; }
+    .section-heading h2 { margin: 0; color: inherit; font-size: clamp(29px, 3vw, 42px); line-height: 1; }
+    .section-heading p { margin: 8px 0 0; color: #f5efdF; font-size: 12px; }
+    .board-layout { display: grid; grid-template-columns: minmax(0, 1.85fr) minmax(300px, 1fr); align-items: stretch; gap: 25px; }
+    .task-column { min-width: 0; }
+    .column-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 15px; }
+    .column-heading h3 { margin: 0; font-family: "Fraunces", Georgia, serif; font-size: 21px; }
+    .column-heading .count { color: #f5efdF; font-size: 11px; }
+    .task-heading-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 16px; }
+    .task-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 19px; row-gap: 5px; }
+    .task-note {
+      position: relative;
+      isolation: isolate;
+      display: block;
+      width: 100%;
+      min-height: 189px;
+      padding: 25px 17px 17px;
+      border: 1px solid rgb(255 255 255 / .75);
+      border-radius: 9px;
+      background-color: var(--task-paper, var(--paper));
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .52), transparent 40%), var(--noise), linear-gradient(#75644924 1px, transparent 1px), linear-gradient(90deg, #75644924 1px, transparent 1px);
+      background-size: auto, 160px 160px, 16px 16px, 16px 16px;
+      box-shadow: var(--elev-1), inset 1px 1px 0 rgb(255 255 255 / .78);
+      color: #2b2a24;
+      font: inherit;
+      text-align: left;
+      transition: transform 180ms ease-out;
+    }
+    .task-note.mustard { --task-paper: #e9cf8c; }
+    .task-note.sage { --task-paper: #c7d4be; }
+    .task-note.blue { --task-paper: #b6cbd9; }
+    .task-note h4 { position: relative; z-index: 1; margin: 0 0 8px; font-size: 15px; line-height: 1.25; }
+    .task-note p { position: relative; z-index: 1; margin: 0 0 11px; color: #37352e; font-size: 12px; line-height: 1.45; }
+    .task-note .deadline { position: relative; z-index: 1; }
+    .task-note:hover, .task-note:focus-visible { z-index: 4; box-shadow: var(--elev-3); transform: translateY(-4px); }
+    .paperclip-icon, .pin-icon { position: absolute; z-index: 2; top: -24px; left: 14px; width: 70px; height: auto; }
+    .paperclip-icon.paperclip-gold { width: 86px; transform: rotate(90deg); }
+    .pin-icon { top: -25px; left: 9px; width: 68px; }
+    .empty-pin { width: 44px; height: auto; }
+    .task-description { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+    .deadline { display: inline-flex; min-height: 25px; align-items: center; padding: 3px 9px; border: 1px solid rgb(255 255 255 / .8); border-radius: 999px; background: #fbf6e9; box-shadow: var(--elev-1); color: #2b2a24; font-size: 10px; font-weight: 850; }
+    .deadline.due { border-color: #763c29; color: #622e20; }
+    .mini-admin {
+      display: none;
+      min-height: 31px;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 9px;
+      border: 1px solid rgb(255 255 255 / .8);
+      border-radius: 7px;
+      background: #fbf6e9;
+      color: #263d24;
+      font-size: 10px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    body[data-role="admin"] .mini-admin { display: inline-flex; }
+    .schedule-sheet {
+      position: relative;
+      min-height: 100%;
+      padding: 21px;
+      border: 1px solid rgb(255 255 255 / .75);
+      border-radius: 12px;
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .10), transparent 35%), var(--noise), linear-gradient(#74634720 1px, transparent 1px), linear-gradient(90deg, #74634720 1px, transparent 1px);
+      background-size: auto, auto, 160px 160px, 18px 18px, 18px 18px;
+      box-shadow: var(--elev-2), inset 1px 1px 0 rgb(255 255 255 / .8);
+      color: #2b2a24;
+      transition: transform 180ms ease-out;
+    }
+    .schedule-sheet:hover, .schedule-sheet:focus-within { box-shadow: var(--elev-3), inset 1px 1px 0 rgb(255 255 255 / .8); transform: translateY(-4px); }
+    .schedule-sheet::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 26px;
+      height: 26px;
+      background: linear-gradient(225deg, #c9b99c 0 49%, #fbf6e9 51%);
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+      content: "";
+    }
+    .schedule-sheet[data-schedule-view="today"] [data-schedule-panel="week"],
+    .schedule-sheet[data-schedule-view="week"] [data-schedule-panel="today"] { display: none; }
+    .schedule-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+    .schedule-header h3 { margin: 0; font-family: "Fraunces", Georgia, serif; font-size: 21px; }
+    .schedule-header p { margin: 5px 0 0; color: #514d42; font-size: 10px; }
+    .tabs { display: flex; gap: 4px; padding: 4px; border: 1px solid #b5a68c; border-radius: 9px; background: #eee5d3; }
+    .tabs button { min-height: 28px; padding: 5px 8px; border: 0; border-radius: 6px; background: transparent; color: #37352e; font-size: 10px; font-weight: 750; }
+    .tabs button[aria-selected="true"] { background: #3f5b3a; color: #fffdf6; }
+    .schedule-list { display: grid; gap: 8px; margin-top: 12px; }
+    .schedule-item { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 8px; padding: 10px 8px; border: 1px solid rgb(255 255 255 / .8); border-radius: 8px; background: linear-gradient(135deg, #fff 0%, transparent 36%), #fffaf0; box-shadow: var(--elev-1), inset 1px 1px 0 rgb(255 255 255 / .72); }
+    .schedule-time { color: #3f5b3a; font-size: 10px; font-weight: 850; }
+    .schedule-item strong, .schedule-item small { display: block; }
+    .schedule-item strong { font-size: 11px; }
+    .schedule-item small { margin-top: 3px; color: #514d42; font-size: 9px; }
+    .course-tag { padding: 4px 6px; border: 1px solid rgb(255 255 255 / .8); border-radius: 5px; background: #d5dfc9; box-shadow: var(--elev-1); color: #293d25; font-size: 9px; font-weight: 850; }
+    .course-tag.mustard { background: #e6ca82; color: #33250c; }
+    .course-tag.blue { background: #b6cbd9; color: #1c2a34; }
+    .course-tag.terra { background: #e0ad98; color: #3e1e14; }
+    .week-agenda { display: grid; gap: 8px; margin-top: 13px; }
+    .week-day { display: grid; grid-template-columns: 78px minmax(0, 1fr); align-items: start; gap: 12px; padding: 10px 11px; border-radius: 7px; background: #fffaf0; box-shadow: var(--elev-1); color: var(--ink); }
+    .week-day h4 { margin: 0; font-family: "Fraunces", Georgia, serif; font-size: 14px; line-height: 1.2; }
+    .week-day h4 small { display: block; margin-top: 3px; color: var(--muted); font: 12px/1.3 "DM Sans", Arial, sans-serif; }
+    .week-classes { display: grid; gap: 7px; }
+    .week-class { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 3px 8px; }
+    .week-class strong { font-size: 13px; }
+    .week-class span { color: var(--muted); font-size: 12px; }
+    .mobile-board-tabs { display: none; }
+
+    .empty-state {
+      display: none;
+      min-height: 186px;
+      width: min(100%, 520px);
+      align-content: center;
+      justify-items: center;
+      gap: 10px;
+      padding: 20px;
+      border: 1px dashed rgb(255 255 255 / .9);
+      border-radius: 8px;
+      background-color: #fbf6e9;
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .10), transparent 35%), var(--noise), linear-gradient(#75644924 1px, transparent 1px), linear-gradient(90deg, #75644924 1px, transparent 1px);
+      background-size: auto, auto, 160px 160px, 16px 16px, 16px 16px;
+      box-shadow: var(--elev-1), inset 1px 1px 0 rgb(255 255 255 / .8);
+      color: #2b2a24;
+      text-align: center;
+    }
+    .empty-state strong { font-family: "Fraunces", Georgia, serif; font-size: 20px; }
+    .empty-state p { max-width: 320px; margin: 0; color: #514d42; font-size: 12px; line-height: 1.55; }
+    .empty-state .mini-admin { color: #263d24; }
+    .schedule-empty {
+      display: none;
+      min-height: 245px;
+      align-content: center;
+      justify-items: center;
+      gap: 11px;
+      padding: 22px;
+      border: 1px dashed #ae9b78;
+      border-radius: 9px;
+      background: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), var(--noise), #fffaf0;
+      background-size: auto, 160px 160px, auto;
+      box-shadow: var(--elev-1), inset 1px 1px 0 rgb(255 255 255 / .75);
+      color: #2b2a24;
+      text-align: center;
+    }
+    .schedule-empty strong { font-family: "Fraunces", Georgia, serif; font-size: 20px; }
+    .schedule-empty p { margin: 0; color: #514d42; font-size: 12px; }
+
+    .deck-scene {
+      background-color: #f3ebd8;
+      background-image: var(--noise), linear-gradient(#8a6a4318 1px, transparent 1px), linear-gradient(90deg, #8a6a4318 1px, transparent 1px), radial-gradient(#8a6a4314 1px, transparent 1px);
+      background-size: 160px 160px, 38px 38px, 38px 38px, 9px 9px;
+    }
+    .deck-scene .scene-inner { width: min(940px, 100%); padding: 28px 0 36px; text-align: center; }
+    .deck-heading { display: block; margin-bottom: 15px; }
+    .deck-heading h2 { margin: 0; font-size: clamp(29px, 3vw, 42px); }
+    .deck-heading p { margin: 8px 0 0; color: #514d42; font-size: 12px; }
+    .deck-layout { display: block; width: min(100%, 850px); min-height: 100svh; margin: 0 auto; }
+    .course-side { position: sticky; top: 96px; min-width: 0; }
+    .search {
+      display: flex;
+      width: min(100%, 620px);
+      min-height: 52px;
+      align-items: center;
+      gap: 11px;
+      margin: 0 auto 15px;
+      padding: 10px 16px;
+      border: 1px solid rgb(255 255 255 / .85);
+      border-radius: 9px;
+      background: linear-gradient(135deg, rgb(255 255 255 / .58), transparent 40%), var(--noise), #fbf6e9;
+      background-size: auto, 160px 160px, auto;
+      box-shadow: var(--elev-1), inset 1px 1px 0 rgb(255 255 255 / .75);
+      color: #514d42;
+      font-size: 12px;
+      transition: transform 180ms ease-out;
+    }
+    .search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font: inherit; }
+    .search input::placeholder { color: #514d42; opacity: 1; }
+    .search:hover, .search:focus-within { box-shadow: var(--elev-3), inset 1px 1px 0 rgb(255 255 255 / .75); transform: translateY(-4px); }
+    .search-icon { position: relative; width: 13px; height: 13px; border: 2px solid #3f5b3a; border-radius: 50%; }
+    .search-icon::after { position: absolute; right: -6px; bottom: -4px; width: 7px; height: 2px; background: #3f5b3a; content: ""; transform: rotate(45deg); }
+    .deck-stack { position: relative; z-index: 6; width: min(100%, 760px); height: clamp(310px, 39vh, 390px); margin: 0 auto; overflow-x: clip; overflow-y: visible; perspective: 1200px; touch-action: pan-y; }
+    .course-card {
+      position: absolute;
+      isolation: isolate;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: min(360px, calc(100% - 64px));
+      min-height: 285px;
+      padding: 30px 28px 34px;
+      border: 0;
+      border-radius: 9px 12px 7px 8px;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      cursor: grab;
+      transform: translate(calc(-50% + var(--offset-x, 0px) + var(--drag-x, 0px)), -50%) rotate(var(--angle, 0deg)) scale(var(--scale, 1));
+      transition: transform 260ms cubic-bezier(.2,.8,.2,1), opacity 200ms ease-out;
+      touch-action: pan-y;
+      user-select: none;
+    }
+    .course-card:active { cursor: grabbing; }
+    .course-card { background-color: var(--course-paper, #d5dfc9); background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), var(--noise), linear-gradient(#71654c26 1px, transparent 1px), linear-gradient(90deg, #71654c26 1px, transparent 1px); background-size: auto, 160px 160px, 17px 17px, 17px 17px; box-shadow: var(--elev-3), inset 1px 1px 0 rgb(255 255 255 / .82); }
+    .course-card[data-offset="0"] { z-index: 5; --offset-x: 0px; --scale: 1; --angle: 0deg; }
+    .course-card[data-offset="-1"] { z-index: 4; --offset-x: -228px; --scale: .88; --angle: 0deg; }
+    .course-card[data-offset="1"] { z-index: 4; --offset-x: 228px; --scale: .88; --angle: 0deg; }
+    .course-card[data-offset="-2"] { z-index: 3; --offset-x: -390px; --scale: .76; --angle: 0deg; }
+    .course-card[data-offset="2"] { z-index: 3; --offset-x: 390px; --scale: .76; --angle: 0deg; }
+    .course-card[data-offset="hidden"] { z-index: 0; opacity: 0; pointer-events: none; --scale: .65; }
+    .course-card[data-offset="0"]:hover, .course-card[data-offset="0"]:focus-visible { --scale: 1.02; --angle: 0deg; }
+    .course-card:not([data-offset="0"]) { cursor: default; pointer-events: none; }
+    .course-card:focus-visible { outline: 3px solid var(--forest); outline-offset: 6px; }
+    .course-card .card-content { position: relative; z-index: 1; display: flex; height: 100%; min-height: 220px; flex-direction: column; justify-content: flex-end; }
+    .course-card.mustard { --course-paper: #e6ca82; }
+    .course-card.blue { --course-paper: #b6cbd9; }
+    .course-card.sage { --course-paper: #c7d4be; }
+    .course-card.terra { --course-paper: #e0ad98; }
+    .binder-clip { position: absolute; z-index: 2; top: -34px; left: 26px; width: 100px; height: auto; transform: rotate(-90deg); }
+    .course-code { display: inline-block; align-self: flex-start; margin-bottom: 10px; padding: 6px 8px; border: 1px solid rgb(255 255 255 / .85); border-radius: 5px; background: #fbf6e9; box-shadow: var(--elev-1); color: #273924; font-size: 11px; font-weight: 850; letter-spacing: .1em; }
+    .course-card h3 { max-width: 300px; margin: 0 0 12px; font-family: "Fraunces", Georgia, serif; font-size: clamp(27px, 3vw, 38px); line-height: 1.03; }
+    .course-card[data-course-id="imk"] h3 { font-size: clamp(25px, 2.2vw, 30px); }
+    .course-meta { display: flex; flex-wrap: wrap; gap: 7px 14px; color: #2b2a24; font-size: 10px; font-weight: 750; }
+    .deck-controls { display: flex; width: min(100%, 360px); align-items: center; justify-content: space-between; margin: -4px auto 10px; }
+    .deck-arrow { display: inline-flex; width: 42px; height: 42px; align-items: center; justify-content: center; border: 1px solid rgb(255 255 255 / .85); border-radius: 50%; background: var(--paper); color: var(--forest); font-size: 23px; }
+    .deck-arrow:disabled { opacity: .42; cursor: default; }
+    .deck-position { min-width: 78px; color: var(--ink); font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .swipe-hint { margin: 0; color: #514d42; font-size: 12px; text-align: center; }
+    .search-empty {
+      display: none;
+      margin: 12px 0;
+      padding: 15px;
+      border: 1px dashed #8a6a43;
+      border-radius: 9px;
+      background: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), var(--noise), #fbf6e9;
+      background-size: auto, 160px 160px, auto;
+      color: #2b2a24;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .search-empty p { margin: 0 0 10px; }
+    .search-empty a { color: #31492e; font-weight: 800; }
+    .deck-empty {
+      display: none;
+      min-height: 292px;
+      align-content: center;
+      justify-items: center;
+      gap: 10px;
+      width: min(100%, 620px);
+      margin: 0 auto 12px;
+      padding: 25px;
+      border: 1px dashed rgb(255 255 255 / .8);
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .10), transparent 35%), var(--noise), #fbf6e9;
+      background-size: auto, auto, 160px 160px, auto;
+      box-shadow: var(--elev-2), inset 1px 1px 0 rgb(255 255 255 / .78);
+      color: #2b2a24;
+      text-align: center;
+    }
+    .deck-empty strong { font-family: "Fraunces", Georgia, serif; font-size: 23px; }
+    .deck-empty p { max-width: 320px; margin: 0; color: #514d42; font-size: 12px; line-height: 1.5; }
+    .folder-stage {
+      position: relative;
+      display: grid;
+      min-height: 365px;
+      align-content: center;
+      justify-items: center;
+      padding: 23px;
+      border: 1px solid rgb(255 255 255 / .35);
+      border-radius: 13px;
+      background-color: #594c38;
+      background-image: var(--noise), linear-gradient(#eee5d126 1px, transparent 1px), linear-gradient(90deg, #eee5d126 1px, transparent 1px), radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(20 12 4 / .28));
+      background-size: 160px 160px, 22px 22px, 22px 22px, auto;
+      box-shadow: var(--elev-2);
+    }
+    .folder-caption { position: absolute; z-index: 1; top: 12px; left: 14px; color: #fff8e9; font-family: "Caveat", "Segoe Print", sans-serif; font-size: 20px; font-weight: 600; }
+    .folder-paper {
+      position: relative;
+      width: min(100%, 420px);
+      min-height: 278px;
+      padding: 22px;
+      border: 1px solid rgb(255 255 255 / .8);
+      border-radius: 12px;
+      background-color: #fbf6e9;
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .10), transparent 35%), var(--noise), linear-gradient(#77694f20 1px, transparent 1px), linear-gradient(90deg, #77694f20 1px, transparent 1px);
+      background-size: auto, auto, 160px 160px, 18px 18px, 18px 18px;
+      box-shadow: var(--elev-3), inset 1px 1px 0 rgb(255 255 255 / .82);
+      color: #2b2a24;
+      transition: transform 180ms ease-out;
+    }
+    .folder-paper:hover, .folder-paper:focus-within { box-shadow: var(--elev-3), inset 1px 1px 0 rgb(255 255 255 / .82); transform: translateY(-4px); }
+    .folder-paper::after { position: absolute; top: 0; right: 0; width: 28px; height: 28px; background: linear-gradient(225deg, #c9b99c 0 49%, #fbf6e9 51%); clip-path: polygon(0 0, 100% 0, 100% 100%); content: ""; }
+    .folder-paper header { position: relative; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid #c8b99c; }
+    .folder-add { margin-top: 9px; }
+    .folder-paper h3 { margin: 8px 0 4px; font-family: "Fraunces", Georgia, serif; font-size: 23px; }
+    .folder-paper header p { margin: 0; color: #514d42; font-size: 10px; }
+    .close-button { width: 31px; height: 31px; border: 1px solid rgb(255 255 255 / .8); border-radius: 50%; background: #f3ebd8; box-shadow: var(--elev-1); color: #2b2a24; font-size: 18px; }
+    .material-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 1px; border-bottom: 1px dashed #a99c83; font-size: 11px; }
+    .material-row small { display: block; margin-top: 4px; color: #514d42; font-size: 9px; }
+    .file-badge { flex: 0 0 auto; padding: 5px 7px; border: 1px solid rgb(255 255 255 / .8); border-radius: 5px; background: #d5dfc9; box-shadow: var(--elev-1); color: #293d25; font-size: 9px; font-weight: 850; }
+    .folder-empty {
+      display: none;
+      min-height: 175px;
+      align-content: center;
+      justify-items: center;
+      gap: 10px;
+      padding: 15px;
+      color: #2b2a24;
+      text-align: center;
+    }
+    .folder-empty strong { font-family: "Fraunces", Georgia, serif; font-size: 20px; }
+    .folder-empty p { max-width: 270px; margin: 0; color: #514d42; font-size: 11px; line-height: 1.5; }
+    .demo-overlay {
+      position: fixed;
+      z-index: 70;
+      inset: 0;
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      padding: 24px;
+      background: #191813;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease-out;
+    }
+    .demo-overlay.is-open { opacity: 1; pointer-events: auto; }
+    .overlay-panel {
+      position: relative;
+      isolation: isolate;
+      width: min(660px, 100%);
+      max-height: min(820px, calc(100svh - 48px));
+      overflow: auto;
+      padding: clamp(22px, 4vw, 40px);
+      background: linear-gradient(135deg, rgb(255 255 255 / .58), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .10), transparent 35%), var(--noise), var(--paper);
+      background-size: auto, auto, 160px 160px, auto;
+      box-shadow: var(--elev-3), inset 1px 1px 0 rgb(255 255 255 / .82);
+      color: var(--ink);
+      transform: scale(.76);
+      transition: transform 240ms cubic-bezier(.2,.8,.2,1);
+      border: 1px solid rgb(255 255 255 / .82);
+      border-radius: 12px;
+      overscroll-behavior: contain;
+    }
+    .demo-overlay.is-open .overlay-panel { transform: scale(1); }
+    .task-panel[data-empty="true"] .task-detail-content { display: none; }
+    .task-panel[data-empty="true"] .task-detail-empty { display: block; }
+    .overlay-panel h2 { margin: 0 42px 12px 0; font-size: clamp(27px, 4vw, 39px); line-height: 1.08; }
+    .overlay-panel p { color: #37352e; font-size: 15px; line-height: 1.65; }
+    .overlay-close { position: absolute; z-index: 2; top: 16px; right: 16px; }
+    .task-detail-course { display: inline-flex; min-height: 36px; align-items: center; margin-bottom: 16px; padding: 7px 11px; border: 0; background: #d5dfc9; box-shadow: var(--elev-1); color: #293d25; font-size: 12px; font-weight: 800; }
+    .task-detail-empty { display: none; }
+    .task-detail-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .task-detail-meta p { margin: 0; font-weight: 700; }
+    .detail-label { margin: 20px 0 6px; color: var(--forest); font-size: 12px; font-weight: 850; }
+    .task-detail-description { white-space: pre-line; }
+    .task-detail-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; padding-top: 14px; border-top: 1px solid #c8b99c; color: #514d42; font-size: 11px; }
+    .admin-task-actions { display: none; gap: 9px; margin-top: 24px; }
+    body[data-role="admin"] .admin-task-actions { display: flex; }
+    .button.danger { background: #8b3f2a; }
+    .submit-panel { width: min(620px, 100%); }
+    .submit-intro { max-width: 430px; margin-bottom: 20px; }
+    .submit-form { display: grid; gap: 14px; }
+    .form-field { display: grid; gap: 6px; color: #2b2a24; font-size: 12px; font-weight: 800; }
+    .form-field input, .form-field select { width: 100%; min-height: 43px; padding: 10px 12px; border: 1px solid #aa9b80; border-radius: 6px; background: #fffdf7; color: #2b2a24; font: inherit; font-weight: 500; }
+    .form-field input:focus-visible, .form-field select:focus-visible { outline: 3px solid #d9a441; outline-offset: 2px; }
+    .form-field small { color: #514d42; font-size: 11px; font-weight: 500; line-height: 1.5; }
+    .submit-status { min-height: 24px; margin: 0; color: #514d42; font-size: 12px !important; }
+    .submit-status[data-submitted="true"] { color: #3f5b3a; font-weight: 800; }
+    .folder-panel { width: min(740px, 100%); }
+    .folder-panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; padding-right: 36px; }
+    .folder-panel-header p { margin: 0; font-size: 12px; }
+    .folder-panel-header .course-code { margin-bottom: 5px; }
+    .folder-panel-header h2 { margin: 0 0 5px; }
+    .folder-panel .sample-materials { margin-top: 10px; }
+    .folder-panel .folder-empty { min-height: 270px; }
+    .overlay-state-empty { display: none; text-align: center; }
+    body[data-state="empty"] .sample-only { display: none !important; }
+    body[data-state="empty"] .empty-only { display: grid; }
+    body[data-state="empty"] .column-heading .mini-admin,
+    body[data-state="empty"] .schedule-header .mini-admin,
+    body[data-state="empty"] .deck-heading .mini-admin { display: none; }
+    body[data-state="empty"] .task-grid { display: none; }
+    body[data-state="empty"] .schedule-list.empty-only { display: grid; }
+    body[data-state="empty"] .deck-empty { display: grid; }
+    body[data-state="empty"] .deck-layout { min-height: 0; }
+    body[data-state="empty"] .course-side { position: static; }
+    body[data-state="empty"] .deck-controls { display: none; }
+    body[data-state="empty"] .course-card { pointer-events: none; }
+    body[data-state="empty"] .folder-panel .sample-materials { display: none; }
+    body[data-state="empty"] .folder-panel .folder-empty { display: grid; }
+    body[data-state="empty"] .schedule-sheet .sample-only { display: none; }
+    body[data-role="admin"] .visitor-only { display: none; }
+    body.modal-open { overflow: hidden; }
+    .nav-links a[aria-current="page"] { font-weight: 850; }
+
+    .empty-only { display: none; }
+    body[data-state="empty"] .search-empty { display: block; }
+    body[data-state="empty"] .hero-note { align-content: center; justify-items: center; }
+
+    @media (max-width: 820px) {
+      .scene { padding: 128px 20px 42px; }
+      .site-nav { padding: 12px 20px; }
+      .logo { width: 145px; }
+      .send-link { padding: 8px 11px; font-size: 11px; }
+      .nav-links { gap: 12px; }
+      .nav-links a { font-size: 11px; }
+      .hero-layout { grid-template-columns: minmax(0, 1fr) minmax(260px, .85fr); gap: 22px; }
+      .hero-art { transform: scale(.95); transform-origin: center; }
+      .board-layout { grid-template-columns: minmax(0, 1.5fr) minmax(265px, 1fr); gap: 18px; }
+      .task-grid { gap: 14px; }
+      .task-note { padding-right: 12px; padding-left: 12px; }
+      .schedule-sheet { padding: 15px; }
+      .deck-stack { width: 100%; }
+      .course-card[data-offset="-2"] { --offset-x: -315px; }
+      .course-card[data-offset="2"] { --offset-x: 315px; }
+    }
+
+    @media (max-width: 680px) {
+      html { scroll-snap-type: y proximity; }
+      .preview-tools { top: 68px; right: 8px; left: 8px; justify-content: center; max-width: none; gap: 4px; padding: 5px; transform: none; }
+      .preview-tools strong { padding: 0 3px; font-size: 9px; }
+      .preview-tools button { min-height: 26px; padding: 4px 6px; font-size: 9px; }
+      .tool-divider { margin: 0 1px; }
+      .scene { min-height: 100vh; min-height: 100svh; padding: 143px 16px 34px; }
+      .site-nav { padding: 10px 16px; }
+      .logo { width: 132px; }
+      .send-link { margin-left: auto; padding: 8px 10px; font-size: 10px; }
+      .nav-links { display: none !important; }
+      .hero-layout { grid-template-columns: 1fr; gap: 4px; }
+      .hero-copy { padding: 26px 19px; }
+      .hero h1 { font-size: clamp(34px, 10vw, 43px); }
+      .hero-copy p { font-size: 13px; }
+      .hero-art { width: min(100%, 380px); height: 385px; transform: none; }
+      .hero-sheet { width: 300px; height: 235px; }
+      .hero-sheet.back { top: 82px; left: 17px; width: 278px; height: 220px; }
+      .hero-sheet.mid { top: 58px; left: 57px; width: 260px; height: 232px; }
+      .hero-sheet.front { top: 69px; left: 26px; }
+      .tape-art { top: 40px; left: 150px; width: 116px; }
+      .pencil-art { top: 294px; right: -2px; width: 250px; }
+      .paperclip-art { top: 4px; right: 34px; width: 106px; }
+      .board-scene .scene-inner, .deck-scene .scene-inner { padding: 12px 0; }
+      .section-heading, .deck-heading { align-items: flex-start; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+      .section-heading h2, .deck-heading h2 { font-size: 31px; }
+      .section-heading p, .deck-heading p { font-size: 11px; }
+      .mobile-board-tabs { display: flex; margin-bottom: 14px; }
+      .mobile-board-tabs button { flex: 1; min-height: 39px; border: 1px solid #e6dcc7; background: #fbf6e9; color: #2b2a24; font-size: 12px; font-weight: 800; }
+      .mobile-board-tabs button:first-child { border-radius: 9px 0 0 9px; }
+      .mobile-board-tabs button:last-child { border-radius: 0 9px 9px 0; }
+      .mobile-board-tabs button[aria-selected="true"] { border-color: #d9a441; background: #d9a441; color: #2b2a24; }
+      .board-layout { grid-template-columns: 1fr; gap: 16px; }
+      .board-layout[data-mobile-view="tasks"] .schedule-column { display: none; }
+      .board-layout[data-mobile-view="schedule"] .task-column { display: none; }
+      .column-heading h3 { font-size: 19px; }
+      .task-heading-actions { gap: 12px; }
+      .task-grid { grid-template-columns: 1fr; gap: 13px; }
+      .task-note { min-height: 143px; padding: 28px 15px 15px; }
+      .task-note h4 { font-size: 14px; }
+      .task-note p { font-size: 11px; }
+      .schedule-sheet { min-height: 380px; padding: 15px; transform: none; }
+      .schedule-header { flex-direction: column; }
+      .schedule-header h3 { font-size: 21px; }
+      .schedule-list { gap: 7px; }
+      .schedule-item { grid-template-columns: 54px 1fr auto; }
+      .week-day { grid-template-columns: 66px minmax(0, 1fr); gap: 9px; padding: 9px; }
+      .week-day h4 { font-size: 13px; }
+      .week-day h4 small { font-size: 11px; }
+      .week-class { display: grid; gap: 2px; }
+      .week-class strong { font-size: 12px; }
+      .week-class span { font-size: 11px; }
+      .deck-scene .scene-inner { padding: 20px 0; }
+      .deck-stack { height: 330px; }
+      .course-card { width: min(300px, calc(100% - 50px)); min-height: 255px; padding: 23px 20px 27px; }
+      .course-card .card-content { min-height: 208px; }
+      .course-card[data-offset="-1"] { --offset-x: -148px; }
+      .course-card[data-offset="1"] { --offset-x: 148px; }
+      .course-card[data-offset="-2"] { --offset-x: -235px; }
+      .course-card[data-offset="2"] { --offset-x: 235px; }
+      .course-card h3 { font-size: 29px; }
+      .course-card[data-course-id="imk"] h3 { font-size: 26px; }
+      .deck-controls { width: min(100%, 300px); margin-top: -1px; }
+      .deck-position { font-size: 14px; }
+      .course-meta { font-size: 9px; }
+      .deck-empty { min-height: 242px; }
+      .empty-state { min-height: 157px; }
+      .demo-overlay { padding: 16px; }
+      .overlay-panel {
+        width: min(100%, 540px);
+        max-height: 82svh;
+        min-height: 0;
+        padding: 56px 20px 24px;
+      }
+      .overlay-panel h2 { font-size: 27px; }
+      .overlay-panel p { font-size: 14px; }
+      .overlay-close { top: 10px; right: 10px; }
+      .folder-panel, .submit-panel { width: min(100%, 540px); }
+      .deck-layout { min-height: 0; }
+      .course-side { position: static; }
+    }
+
+    @media (min-width: 681px) and (max-width: 1100px) {
+      .hero-layout { grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 720px; margin: 0 auto; }
+      .hero-art { width: min(100%, 520px); height: 360px; transform: none; }
+      .board-layout { grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 680px; margin: 0 auto; }
+      .mobile-board-tabs { display: flex; margin-bottom: 14px; }
+      .board-layout[data-mobile-view="tasks"] .schedule-column { display: none; }
+      .board-layout[data-mobile-view="schedule"] .task-column { display: none; }
+      .deck-layout { min-height: 0; }
+      .course-side { position: static; }
+      .course-card[data-offset="-1"] { --offset-x: -190px; }
+      .course-card[data-offset="1"] { --offset-x: 190px; }
+      .course-card[data-offset="-2"] { --offset-x: -300px; }
+      .course-card[data-offset="2"] { --offset-x: 300px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-copy, .task-note, .schedule-sheet, .course-card, .search, .overlay-panel, .demo-overlay, .send-link { transition: none; }
+      .hero-copy:hover, .task-note:hover, .task-note:focus-visible, .schedule-sheet:hover, .schedule-sheet:focus-within, .course-card[data-offset="0"]:hover, .course-card[data-offset="0"]:focus-visible, .search:hover, .search:focus-within { transform: none; }
+      .overlay-panel { transform: none; opacity: 0; }
+      .demo-overlay.is-open .overlay-panel { opacity: 1; }
+    }
+  </style>
+</head>
+<body data-state="sample" data-role="visitor" data-section="home">
+  <aside class="preview-tools" aria-label="Kontrol mockup">
+    <strong>Pratinjau</strong>
+    <button type="button" data-state-button="sample" aria-pressed="true">Data contoh</button>
+    <button type="button" data-state-button="empty" aria-pressed="false">Kosong</button>
+    <span class="tool-divider" aria-hidden="true"></span>
+    <button type="button" data-role-button="visitor" aria-pressed="true">Pengunjung</button>
+    <button type="button" data-role-button="admin" aria-pressed="false">Admin</button>
+  </aside>
+
+  <nav class="site-nav" aria-label="Navigasi utama">
+    <a class="logo-link" href="#home" aria-label="Tumpukan Materi — beranda"><img class="logo" src="logo/logo.svg" alt="Tumpukan Materi"></a>
+    <div class="nav-links" aria-label="Pilih section">
+      <a href="#home" aria-current="page">Beranda</a>
+      <a href="#board">Papan kelas</a>
+      <a href="#deck">Materi</a>
+    </div>
+    <button class="send-link" type="button" data-open-submit>Kirim materi</button>
+  </nav>
+  <main>
+    <section class="scene hero-scene hero" id="home" aria-labelledby="hero-title">
+      <div class="scene-inner">
+        <div class="hero-layout">
+          <div class="hero-copy" data-reveal>
+            <h1 class="serif" id="hero-title">Materi kelas, rapi di satu tempat.</h1>
+            <p>Temukan bahan kuliah, cek tenggat tugas, dan lihat jadwal minggu ini tanpa perlu bertanya ke grup kelas.</p>
+            <div class="hero-actions">
+              <a class="button" href="#board">Lihat papan tugas</a>
+              <a class="button secondary" href="#deck">Cari materi</a>
+            </div>
+          </div>
+          <div class="hero-art" data-reveal aria-label="Ilustrasi kertas dan alat tulis di atas meja">
+            <span class="hero-sheet back"></span>
+            <span class="hero-sheet mid"></span>
+            <div class="hero-sheet front">
+              <div class="hero-note" aria-label="Ringkasan materi">
+                <span class="hero-note-title sample-only">Materi minggu ini</span>
+                <span class="hero-note-row sample-only"><span>Struktur Data</span><small>8 materi</small></span>
+                <span class="hero-note-row sample-only"><span>Basis Data</span><small>12 materi</small></span>
+                <span class="hero-note-row sample-only"><span>Etika Profesi</span><small>4 materi</small></span>
+                <div class="hero-note-empty empty-only">
+                  <strong>Belum ada materi</strong>
+                  <p>Materi akan muncul di sini setelah ditambahkan.</p>
+                </div>
+              </div>
+            </div>
+            <img class="prop tape-art" src="assets/tape-mustard.webp" alt="" aria-hidden="true">
+            <img class="prop paperclip-art" src="assets/paperclip-silver.webp" alt="" aria-hidden="true">
+            <img class="prop pencil-art" src="assets/pencil.webp" alt="" aria-hidden="true">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene board-scene" id="board" aria-labelledby="board-title">
+      <div class="scene-inner">
+        <div class="section-heading" data-reveal>
+          <div><h2 id="board-title">Papan kelas</h2><p>Tugas dan jadwal minggu ini, tersusun di satu tempat.</p></div>
+          <a class="button light" href="#deck-search">Lanjut ke materi ↓</a>
+        </div>
+
+        <div class="mobile-board-tabs tabs" role="tablist" aria-label="Pilih isi papan kelas">
+          <button type="button" role="tab" data-mobile-tab="tasks" aria-selected="true">Tugas</button>
+          <button type="button" role="tab" data-mobile-tab="schedule" aria-selected="false">Jadwal</button>
+        </div>
+
+        <div class="board-layout" data-mobile-view="tasks">
+          <section class="task-column" aria-label="Daftar tugas">
+            <div class="column-heading">
+              <h3>Catatan tugas</h3>
+              <div class="task-heading-actions"><span class="count sample-only">4 tenggat</span><button class="mini-admin" type="button">+ Tambah tugas</button></div>
+            </div>
+            <div class="task-grid sample-only">
+              <button type="button" class="task-note" data-reveal data-task-id="structure" data-course="Struktur Data" data-course-code="SD-201" data-course-index="0">
+                <img class="paperclip-icon" src="assets/paperclip-silver.webp" alt="" aria-hidden="true">
+                <h4>Rangkuman struktur data</h4>
+                <p>Struktur Data · Kumpulkan di kelas</p>
+                <span class="deadline due">Hari ini</span>
+              </button>
+              <button type="button" class="task-note mustard" data-reveal data-task-id="normalisasi" data-course="Basis Data" data-course-code="BD-204" data-course-index="1">
+                <img class="pin-icon" src="assets/pushpin-green.webp" alt="" aria-hidden="true">
+                <h4>Latihan normalisasi</h4>
+                <p>Basis Data · Unggah ke LMS</p>
+                <span class="deadline">2 hari lagi</span>
+              </button>
+              <button type="button" class="task-note sage" data-reveal data-task-id="routing" data-course="Jaringan Komputer" data-course-code="JK-203" data-course-index="2">
+                <img class="paperclip-icon paperclip-gold" src="assets/paperclip-gold.webp" alt="" aria-hidden="true">
+                <h4>Baca materi routing</h4>
+                <p>Jaringan Komputer · Diskusi di kelas</p>
+                <span class="deadline">5 hari lagi</span>
+              </button>
+              <button type="button" class="task-note blue" data-reveal data-task-id="antarmuka" data-course="Interaksi Manusia Komputer" data-course-code="IMK-205" data-course-index="3">
+                <img class="pin-icon" src="assets/pushpin-red.webp" alt="" aria-hidden="true">
+                <h4>Rancangan antarmuka</h4>
+                <p>Interaksi Manusia Komputer · Presentasi</p>
+                <span class="deadline">1 minggu lagi</span>
+              </button>
+            </div>
+            <div class="empty-state empty-only">
+              <img class="empty-pin" src="assets/pushpin-green.webp" alt="" aria-hidden="true">
+              <strong>Belum ada tugas.</strong>
+              <p>Papan kelas masih kosong. Kalau ada tugas baru, catat di sini supaya semua bisa bersiap.</p>
+              <button class="mini-admin" type="button">+ Tambah tugas</button>
+            </div>
+          </section>
+
+          <section class="schedule-column" aria-label="Jadwal kuliah">
+            <div class="schedule-sheet" data-reveal data-schedule-view="today">
+              <div class="schedule-header">
+                <div><h3>Jadwal kuliah</h3><p>Zona waktu WIB · Asia/Jakarta</p></div>
+                <button class="mini-admin" type="button">+ Tambah jadwal</button>
+              </div>
+              <div class="tabs" role="tablist" aria-label="Pilih jadwal">
+                <button type="button" role="tab" data-schedule-tab="today" aria-selected="true">Hari ini</button>
+                <button type="button" role="tab" data-schedule-tab="week" aria-selected="false">Minggu ini</button>
+              </div>
+              <div class="schedule-list sample-only" data-schedule-panel="today">
+                <div class="schedule-item"><span class="schedule-time">09.00</span><div><strong>Struktur Data</strong><small>Ruang 204 · 09.00–10.40</small></div><span class="course-tag">SD-201</span></div>
+                <div class="schedule-item"><span class="schedule-time">13.00</span><div><strong>Basis Data</strong><small>Lab 2 · 13.00–14.40</small></div><span class="course-tag mustard">BD-204</span></div>
+                <div class="schedule-item"><span class="schedule-time">15.00</span><div><strong>Etika Profesi</strong><small>Ruang 301 · 15.00–16.40</small></div><span class="course-tag terra">EP-202</span></div>
+              </div>
+              <div class="week-agenda sample-only" data-schedule-panel="week">
+                <article class="week-day"><h4>Senin<small>02 Nov</small></h4><div class="week-classes"><div class="week-class"><strong>Struktur Data</strong><span>09.00–10.40 · R. 204</span></div><div class="week-class"><strong>Basis Data</strong><span>13.00–14.40 · Lab 2</span></div></div></article>
+                <article class="week-day"><h4>Selasa<small>03 Nov</small></h4><div class="week-classes"><div class="week-class"><strong>Jaringan Komputer</strong><span>09.00–10.40 · R. 105</span></div></div></article>
+                <article class="week-day"><h4>Rabu<small>04 Nov</small></h4><div class="week-classes"><div class="week-class"><strong>Etika Profesi</strong><span>13.00–14.40 · R. 301</span></div></div></article>
+                <article class="week-day"><h4>Kamis<small>05 Nov</small></h4><div class="week-classes"><div class="week-class"><strong>Basis Data</strong><span>09.00–10.40 · Lab 2</span></div><div class="week-class"><strong>Jaringan Komputer</strong><span>13.00–14.40 · R. 105</span></div></div></article>
+                <article class="week-day"><h4>Jumat<small>06 Nov</small></h4><div class="week-classes"><div class="week-class"><strong>Struktur Data</strong><span>10.00–11.40 · R. 204</span></div></div></article>
+              </div>
+              <div class="schedule-empty empty-only">
+                <strong>Jadwal belum diisi.</strong>
+                <p>Jam kuliah akan muncul di lembar ini setelah ditambahkan.</p>
+                <button class="mini-admin" type="button">+ Tambah jadwal</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene deck-scene" id="deck" aria-labelledby="deck-title">
+      <div class="scene-inner">
+        <div class="deck-layout">
+          <section class="course-side" id="deck-search" aria-label="Deck mata kuliah dan pencarian">
+            <div class="deck-heading" data-reveal>
+              <h2 id="deck-title">Cari bahan kuliah</h2>
+              <p>Geser tumpukan atau cari judul materi dari semua mata kuliah.</p>
+            </div>
+            <label class="search sample-only" data-reveal>
+              <span class="search-icon" aria-hidden="true"></span>
+              <input type="search" placeholder="Cari mata kuliah atau judul materi…" aria-label="Cari mata kuliah atau judul materi">
+            </label>
+            <label class="search empty-only">
+              <span class="search-icon" aria-hidden="true"></span>
+              <input type="search" value="Kalkulus lanjutan" aria-label="Cari mata kuliah atau judul materi">
+            </label>
+            <div class="search-empty empty-only">
+              <p>Tidak ada hasil untuk <strong>“Kalkulus lanjutan”</strong>.</p>
+              <a href="https://wa.me/qr/R7PIDTBT7PT2P1" target="_blank" rel="noopener noreferrer">Minta materi lewat WhatsApp ↗</a>
+            </div>
+            <div class="deck-stack sample-only" data-reveal aria-label="Kartu mata kuliah">
+              <button type="button" class="course-card sage" data-course-id="sd" data-course-name="Struktur Data" data-course-code="SD-201">
+                <img class="binder-clip" src="assets/binder-clip-green.webp" alt="" aria-hidden="true">
+                <span class="card-content"><span class="course-code">SD-201</span><h3>Struktur Data</h3><span class="course-meta"><span>8 materi</span><span>Diperbarui hari ini</span></span></span>
+              </button>
+              <button type="button" class="course-card mustard" data-course-id="bd" data-course-name="Basis Data" data-course-code="BD-204">
+                <img class="binder-clip" src="assets/binder-clip-yellow.webp" alt="" aria-hidden="true">
+                <span class="card-content"><span class="course-code">BD-204</span><h3>Basis Data</h3><span class="course-meta"><span>12 materi</span><span>Diperbarui 2 hari lalu</span></span></span>
+              </button>
+              <button type="button" class="course-card blue" data-course-id="jk" data-course-name="Jaringan Komputer" data-course-code="JK-203">
+                <img class="binder-clip" src="assets/binder-clip-green.webp" alt="" aria-hidden="true">
+                <span class="card-content"><span class="course-code">JK-203</span><h3>Jaringan Komputer</h3><span class="course-meta"><span>9 materi</span><span>Diperbarui 4 hari lalu</span></span></span>
+              </button>
+              <button type="button" class="course-card terra" data-course-id="imk" data-course-name="Interaksi Manusia Komputer" data-course-code="IMK-205">
+                <img class="binder-clip" src="assets/binder-clip-pink.webp" alt="" aria-hidden="true">
+                <span class="card-content"><span class="course-code">IMK-205</span><h3>Interaksi Manusia Komputer</h3><span class="course-meta"><span>6 materi</span><span>Diperbarui 1 minggu lalu</span></span></span>
+              </button>
+              <button type="button" class="course-card mustard" data-course-id="ep" data-course-name="Etika Profesi" data-course-code="EP-202">
+                <img class="binder-clip" src="assets/binder-clip-yellow.webp" alt="" aria-hidden="true">
+                <span class="card-content"><span class="course-code">EP-202</span><h3>Etika Profesi</h3><span class="course-meta"><span>4 materi</span><span>Diperbarui 2 minggu lalu</span></span></span>
+              </button>
+              <button type="button" class="course-card blue" data-course-id="md" data-course-name="Matematika Diskrit" data-course-code="MD-202">
+                <img class="binder-clip" src="assets/binder-clip-green.webp" alt="" aria-hidden="true">
+                <span class="card-content"><span class="course-code">MD-202</span><h3>Matematika Diskrit</h3><span class="course-meta"><span>7 materi</span><span>Diperbarui 3 minggu lalu</span></span></span>
+              </button>
+            </div>
+            <div class="deck-empty empty-only">
+              <strong>Belum ada mata kuliah.</strong>
+              <p>Folder mata kuliah yang tersedia akan muncul di tumpukan ini.</p>
+              <button class="mini-admin" type="button">+ Tambah mata kuliah</button>
+            </div>
+            <div class="deck-controls sample-only" data-reveal aria-label="Navigasi mata kuliah">
+              <button type="button" class="deck-arrow" data-deck-step="-1" aria-label="Mata kuliah sebelumnya">←</button>
+              <span class="deck-position" aria-live="polite">2 / 6</span>
+              <button type="button" class="deck-arrow" data-deck-step="1" aria-label="Mata kuliah berikutnya">→</button>
+            </div>
+            <p class="swipe-hint sample-only">← Geser / drag · gunakan tombol panah untuk menjelajah →</p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="demo-overlay" data-overlay="task" aria-hidden="true">
+    <section class="overlay-panel task-panel" role="dialog" aria-modal="true" aria-labelledby="task-detail-title" tabindex="-1">
+      <button type="button" class="close-button overlay-close" data-overlay-close aria-label="Tutup detail tugas">×</button>
+      <div class="task-detail-content">
+        <h2 id="task-detail-title"></h2>
+        <button type="button" class="task-detail-course" data-course-link></button>
+        <div class="task-detail-meta">
+          <p data-task-deadline></p>
+          <span class="deadline" data-task-remaining></span>
+        </div>
+        <h3 class="detail-label">Deskripsi tugas</h3>
+        <p class="task-detail-description" data-task-description></p>
+        <h3 class="detail-label">Cara pengumpulan</h3>
+        <p data-task-submission></p>
+        <div class="task-detail-footer"><span data-task-updated></span></div>
+        <div class="admin-task-actions">
+          <button type="button" class="button secondary">Ubah</button>
+          <button type="button" class="button danger">Hapus</button>
+        </div>
+      </div>
+      <div class="task-detail-empty">
+        <h2>Belum ada tugas.</h2>
+        <p>Papan tugas sedang kosong.</p>
+      </div>
+    </section>
+  </div>
+  <div class="demo-overlay" data-overlay="folder" aria-hidden="true">
+    <section class="overlay-panel folder-panel" role="dialog" aria-modal="true" aria-labelledby="folder-title" tabindex="-1">
+      <button type="button" class="close-button overlay-close" data-overlay-close aria-label="Tutup folder">×</button>
+      <header class="folder-panel-header">
+        <div><span class="course-code" data-folder-code></span><h2 id="folder-title" data-folder-title></h2><p data-folder-count></p></div>
+      </header>
+      <div class="sample-materials" data-folder-materials></div>
+      <div class="folder-empty empty-only">
+        <strong>Belum ada materi di sini.</strong>
+        <p>Kirim materi untuk membantu teman sekelas menemukan bahan belajar.</p>
+        <button class="mini-admin" type="button">+ Tambah materi</button>
+      </div>
+    </section>
+  </div>
+  <div class="demo-overlay" data-overlay="submit" aria-hidden="true">
+    <section class="overlay-panel submit-panel" id="submit-material" role="dialog" aria-modal="true" aria-labelledby="submit-title" tabindex="-1">
+      <button type="button" class="close-button overlay-close" data-overlay-close aria-label="Tutup formulir kirim materi">×</button>
+      <h2 id="submit-title">Kirim materi</h2>
+      <p class="submit-intro">Pilih mata kuliah dan lampirkan bahan belajar yang bisa dibagikan dengan teman sekelas.</p>
+      <form class="submit-form">
+        <label class="form-field">Mata kuliah
+          <select name="course" required>
+            <option value="">Pilih mata kuliah</option>
+            <option>Struktur Data</option>
+            <option>Basis Data</option>
+            <option>Jaringan Komputer</option>
+            <option>Interaksi Manusia Komputer</option>
+            <option>Etika Profesi</option>
+            <option>Matematika Diskrit</option>
+          </select>
+        </label>
+        <label class="form-field">Judul materi
+          <input name="title" type="text" required>
+        </label>
+        <label class="form-field">Nama pengirim (opsional)
+          <input name="sender" type="text">
+        </label>
+        <label class="form-field">File materi
+          <input name="file" type="file" accept=".pdf,.docx,.pptx,.xlsx,.jpg,.jpeg,.png,.webp,.zip" required>
+          <small>PDF, DOCX, PPTX, XLSX, JPG, PNG, WebP, atau ZIP · maks. 20 MB</small>
+        </label>
+        <button class="button" type="submit">Kirim untuk ditinjau</button>
+        <p class="submit-status" role="status" aria-live="polite">Pratinjau visual; berkas belum dikirim.</p>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    const body = document.body;
+    const courseCards = [...document.querySelectorAll(".course-card")];
+    const taskNotes = [...document.querySelectorAll(".task-note")];
+    const overlays = [...document.querySelectorAll("[data-overlay]")];
+    const deckPosition = document.querySelector(".deck-position");
+    const taskPanel = document.querySelector(".task-panel");
+    let activeOverlay = null;
+    let overlayOpener = null;
+    let deckIndex = 1;
+    let pointerStart = null;
+    let draggedCard = null;
+
+    const taskDetails = {
+      structure: {
+        days: 0,
+        submission: "Kumpulkan ringkasan cetak di kelas sebelum perkuliahan dimulai.",
+        description: "Buat ringkasan tentang struktur data linear dan non-linear. Sertakan definisi, karakteristik utama, dan satu contoh penggunaan untuk setiap struktur."
+      },
+      normalisasi: {
+        days: 2,
+        submission: "Unggah satu berkas PDF melalui LMS kelas.",
+        description: "Kerjakan latihan normalisasi dari bentuk tidak normal hingga bentuk normal ketiga. Sertakan tabel awal, proses pemisahan tabel, dan alasan setiap keputusan."
+      },
+      routing: {
+        days: 5,
+        submission: "Siapkan catatan untuk diskusi kelompok di kelas.",
+        description: "Baca materi routing dan catat perbedaan routing statis dengan routing dinamis. Bawa satu pertanyaan untuk didiskusikan bersama kelompok."
+      },
+      antarmuka: {
+        days: 7,
+        submission: "Presentasikan rancangan dan unggah file pendukung ke LMS.",
+        description: `Rancang antarmuka untuk satu alur utama aplikasi layanan kampus. Tugas ini menguji kemampuan menghubungkan kebutuhan pengguna dengan keputusan visual dan struktur interaksi, bukan sekadar membuat layar yang terlihat menarik.
+
+Mulailah dengan menjelaskan siapa pengguna utama, apa tujuan yang ingin ia capai, dan kendala yang mungkin ditemui. Tuliskan sedikitnya tiga kebutuhan pengguna dalam bahasa yang jelas. Hindari kebutuhan yang hanya menyebut fitur; jelaskan hasil yang ingin dicapai pengguna.
+
+Buat alur tugas dari awal sampai selesai. Tunjukkan keadaan awal, tindakan pengguna, umpan balik sistem, serta keadaan berhasil dan gagal. Beri perhatian khusus pada validasi, pesan kesalahan, dan cara pengguna kembali setelah salah memilih. Setiap langkah harus memiliki alasan yang dapat ditelusuri ke kebutuhan pengguna.
+
+Susun wireframe untuk seluruh layar yang diperlukan dalam alur tersebut. Beri anotasi singkat pada elemen yang membutuhkan perhatian, termasuk urutan fokus keyboard, label kontrol, dan perubahan tampilan pada layar kecil. Pastikan ukuran teks, jarak, dan kontras tetap nyaman dibaca pada lebar ponsel.
+
+Setelah wireframe, buat prototipe visual dengan satu sistem warna dan tipografi yang konsisten. Sertakan komponen berulang seperti tombol, bidang input, status, dan navigasi. Jika menggunakan data contoh, pastikan bentuknya realistis dan tidak menampilkan informasi pribadi.
+
+Uji prototipe kepada dua teman sekelas. Minta mereka menyelesaikan alur tanpa dibimbing, catat titik yang membingungkan, lalu revisi rancangan berdasarkan temuan. Lampirkan ringkasan pengujian: tugas yang dicoba, kendala yang muncul, dan perubahan yang dilakukan. Jangan menuliskan nama lengkap peserta.
+
+Berkas akhir terdiri dari ringkasan kebutuhan, diagram alur, wireframe, prototipe, dan catatan pengujian. Jelaskan alasan untuk keputusan desain utama dan sebutkan bagian yang masih perlu diuji lebih lanjut.`
+      }
+    };
+
+    const sampleMaterials = {
+      sd: ["Struktur data linear", "Stack dan queue", "Tree dan traversal"],
+      bd: ["Konsep basis data", "Normalisasi tabel", "SQL dasar"],
+      jk: ["Model jaringan", "Routing dan subnetting", "Keamanan jaringan"],
+      imk: ["Prinsip desain interaksi", "Wireframe dan prototipe", "Evaluasi usability"],
+      ep: ["Etika profesi teknologi", "Hak cipta digital", "Studi kasus profesi"],
+      md: ["Logika proposisi", "Himpunan dan relasi", "Graf dan pohon"]
+    };
+
+    function renderDeck(focusCard = false) {
+      courseCards.forEach((card, index) => {
+        const total = courseCards.length;
+        let offset = (index - deckIndex + total) % total;
+        if (offset > total / 2) offset -= total;
+        const visibleOffset = Math.abs(offset) <= 2 ? String(offset) : "hidden";
+        const isCurrent = offset === 0;
+        card.dataset.offset = visibleOffset;
+        card.style.setProperty("--drag-x", "0px");
+        card.tabIndex = isCurrent ? 0 : -1;
+        card.setAttribute("aria-hidden", String(!isCurrent));
+      });
+      deckPosition.textContent = `${deckIndex + 1} / ${courseCards.length}`;
+      if (focusCard) courseCards[deckIndex].focus();
+    }
+
+    function setDeckIndex(nextIndex, focusCard = false) {
+      deckIndex = (nextIndex % courseCards.length + courseCards.length) % courseCards.length;
+      renderDeck(focusCard);
+    }
+
+    function wibDateParts(date) {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Jakarta",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(date);
+      return Object.fromEntries(parts.filter((part) => part.type !== "literal").map((part) => [part.type, Number(part.value)]));
+    }
+
+    function makeDeadline(days) {
+      const today = wibDateParts(new Date());
+      const utcDay = Date.UTC(today.year, today.month - 1, today.day + days);
+      return new Date(utcDay + (23 - 7) * 60 * 60 * 1000 + 59 * 60 * 1000);
+    }
+
+    function deadlineLabel(deadline) {
+      return new Intl.DateTimeFormat("id-ID", {
+        timeZone: "Asia/Jakarta",
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(deadline) + " WIB";
+    }
+
+    function remainingLabel(deadline) {
+      const today = wibDateParts(new Date());
+      const due = wibDateParts(deadline);
+      const days = Math.round((Date.UTC(due.year, due.month - 1, due.day) - Date.UTC(today.year, today.month - 1, today.day)) / 86400000);
+      if (days < 0) return "Lewat";
+      if (days === 0) return "Hari ini";
+      if (days === 1) return "Besok";
+      return `${days} hari lagi`;
+    }
+
+    function fillTaskDetails(note) {
+      const detail = taskDetails[note.dataset.taskId];
+      const deadline = makeDeadline(detail.days);
+      const remaining = remainingLabel(deadline);
+      document.querySelector("#task-detail-title").textContent = note.querySelector("h4").textContent;
+      const courseLink = document.querySelector("[data-course-link]");
+      courseLink.textContent = `${note.dataset.courseCode} · ${note.dataset.course}`;
+      courseLink.dataset.courseId = courseCards[Number(note.dataset.courseIndex)].dataset.courseId;
+      document.querySelector("[data-task-deadline]").textContent = `Batas pengumpulan: ${deadlineLabel(deadline)}`;
+      document.querySelector("[data-task-remaining]").textContent = remaining;
+      document.querySelector("[data-task-remaining]").classList.toggle("due", remaining === "Hari ini" || remaining === "Lewat");
+      document.querySelector("[data-task-description]").textContent = detail.description;
+      document.querySelector("[data-task-submission]").textContent = detail.submission;
+      document.querySelector("[data-task-updated]").textContent = `Diperbarui ${new Intl.DateTimeFormat("id-ID", {
+        timeZone: "Asia/Jakarta",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }).format(new Date())}`;
+      taskPanel.dataset.empty = String(body.dataset.state === "empty");
+    }
+
+    function fillFolder(courseId) {
+      const card = courseCards.find((item) => item.dataset.courseId === courseId);
+      if (!card) return false;
+      document.querySelector("[data-folder-code]").textContent = card.dataset.courseCode;
+      document.querySelector("[data-folder-title]").textContent = card.dataset.courseName;
+      const meta = [...card.querySelectorAll(".course-meta span")].map((item) => item.textContent);
+      document.querySelector("[data-folder-count]").textContent = `${meta[0]} · ${meta[1]}`;
+      const list = document.querySelector("[data-folder-materials]");
+      list.replaceChildren();
+      (sampleMaterials[courseId] || []).forEach((title) => {
+        const row = document.createElement("div");
+        row.className = "material-row";
+        const info = document.createElement("span");
+        info.textContent = title;
+        const detail = document.createElement("small");
+        detail.textContent = "PDF · Materi kuliah";
+        info.append(detail);
+        const badge = document.createElement("span");
+        badge.className = "file-badge";
+        badge.textContent = "PDF";
+        row.append(info, badge);
+        list.append(row);
+      });
+      return true;
+    }
+
+    function overlayRoute() {
+      const match = location.hash.match(/^#(course|task|submit)\/([a-z0-9-]+)$/);
+      if (!match) return null;
+      const type = match[1] === "course" ? "folder" : match[1];
+      return { type, id: match[2] };
+    }
+
+    function openOverlay(type, id, opener, fromHistory = false) {
+      if (type === "folder") {
+        const course = courseCards.find((card) => card.dataset.courseId === id);
+        if (!course) return;
+        deckIndex = courseCards.indexOf(course);
+        renderDeck();
+        if (!fillFolder(id)) return;
+      } else if (type === "task") {
+        const note = taskNotes.find((item) => item.dataset.taskId === id);
+        if (!note) return;
+        fillTaskDetails(note);
+      } else {
+        const status = document.querySelector(".submit-status");
+        status.textContent = "Pratinjau visual; berkas belum dikirim.";
+        status.dataset.submitted = "false";
+      }
+
+      if (activeOverlay) {
+        activeOverlay.classList.remove("is-open");
+        activeOverlay.setAttribute("aria-hidden", "true");
+      }
+      const overlay = document.querySelector(`[data-overlay="${type}"]`);
+      const panel = overlay.querySelector(".overlay-panel");
+      overlayOpener = opener || overlayOpener;
+      activeOverlay = overlay;
+      overlay.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      body.classList.add("modal-open");
+      document.querySelector("main").inert = true;
+      document.querySelector(".site-nav").inert = true;
+      if (type === "task" && opener) {
+        const source = opener.getBoundingClientRect();
+        const target = panel.getBoundingClientRect();
+        panel.style.transformOrigin = `${source.left + source.width / 2 - target.left}px ${source.top + source.height / 2 - target.top}px`;
+      } else {
+        panel.style.transformOrigin = "center";
+      }
+      overlay.querySelector("[data-overlay-close]").focus();
+      if (!fromHistory) {
+        const route = type === "folder" ? "course" : type;
+        history.pushState({ mockupOverlay: true, type, id }, "", `#${route}/${id}`);
+      }
+    }
+
+    function closeOverlayUi(restoreFocus = true) {
+      if (!activeOverlay) return;
+      const previousOpener = overlayOpener;
+      activeOverlay.classList.remove("is-open");
+      activeOverlay.setAttribute("aria-hidden", "true");
+      activeOverlay = null;
+      overlayOpener = null;
+      body.classList.remove("modal-open");
+      document.querySelector("main").inert = false;
+      document.querySelector(".site-nav").inert = false;
+      if (restoreFocus && previousOpener && previousOpener.isConnected) previousOpener.focus();
+    }
+
+    function dismissOverlay() {
+      if (!activeOverlay) return;
+      const route = overlayRoute();
+      const ownsHistoryEntry = history.state?.mockupOverlay && route;
+      closeOverlayUi();
+      if (ownsHistoryEntry) {
+        history.back();
+      } else {
+        history.replaceState(history.state, "", `${location.pathname}${location.search}#deck`);
+      }
+    }
+
+    function setState(value) {
+      body.dataset.state = value;
+      document.querySelectorAll("[data-state-button]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.stateButton === value));
+      });
+      if (activeOverlay === document.querySelector('[data-overlay="task"]')) {
+        taskPanel.dataset.empty = String(value === "empty");
+      }
+    }
+
+    function setRole(value) {
+      body.dataset.role = value;
+      document.querySelectorAll("[data-role-button]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.roleButton === value));
+      });
+    }
+
+    function updateActiveSection(id) {
+      body.dataset.section = id;
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        if (link.hash === `#${id}`) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
+      });
+    }
+
+    function handleHistoryChange() {
+      const route = overlayRoute();
+      if (!route) {
+        closeOverlayUi();
+        return;
+      }
+      const opener = route.type === "folder"
+        ? courseCards.find((card) => card.dataset.courseId === route.id)
+        : route.type === "task"
+          ? taskNotes.find((note) => note.dataset.taskId === route.id)
+          : document.querySelector("[data-open-submit]");
+      openOverlay(route.type, route.id, opener, true);
+    }
+
+    renderDeck();
+    document.querySelectorAll("[data-state-button]").forEach((button) => {
+      button.addEventListener("click", () => setState(button.dataset.stateButton));
+    });
+    document.querySelectorAll("[data-role-button]").forEach((button) => {
+      button.addEventListener("click", () => setRole(button.dataset.roleButton));
+    });
+
+    document.querySelectorAll("[data-mobile-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelector(".board-layout").dataset.mobileView = button.dataset.mobileTab;
+        document.querySelectorAll("[data-mobile-tab]").forEach((item) => {
+          item.setAttribute("aria-selected", String(item === button));
+        });
+      });
+    });
+    document.querySelectorAll("[data-schedule-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const scheduleSheet = button.closest(".schedule-sheet");
+        scheduleSheet.dataset.scheduleView = button.dataset.scheduleTab;
+        scheduleSheet.querySelectorAll("[data-schedule-tab]").forEach((item) => {
+          item.setAttribute("aria-selected", String(item === button));
+        });
+      });
+    });
+    document.querySelectorAll("[data-deck-step]").forEach((button) => {
+      button.addEventListener("click", () => setDeckIndex(deckIndex + Number(button.dataset.deckStep)));
+    });
+    document.querySelector(".deck-stack").addEventListener("pointerdown", (event) => {
+      const card = event.target.closest('.course-card[data-offset="0"]');
+      if (!card || event.button !== 0 || !event.isPrimary) return;
+      pointerStart = { card, x: event.clientX, y: event.clientY };
+      card.setPointerCapture(event.pointerId);
+    });
+    document.querySelector(".deck-stack").addEventListener("pointermove", (event) => {
+      if (!pointerStart || pointerStart.card !== event.target.closest(".course-card")) return;
+      const distance = event.clientX - pointerStart.x;
+      pointerStart.card.style.setProperty("--drag-x", `${distance}px`);
+    });
+    document.querySelector(".deck-stack").addEventListener("pointerup", (event) => {
+      if (!pointerStart) return;
+      const deltaX = event.clientX - pointerStart.x;
+      const deltaY = event.clientY - pointerStart.y;
+      const card = pointerStart.card;
+      pointerStart = null;
+      card.style.setProperty("--drag-x", "0px");
+      if (Math.abs(deltaX) > 5 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        draggedCard = card;
+        if (Math.abs(deltaX) >= 48) setDeckIndex(deckIndex + (deltaX < 0 ? 1 : -1));
+      }
+    });
+    document.querySelector(".deck-stack").addEventListener("pointercancel", () => {
+      if (pointerStart) pointerStart.card.style.setProperty("--drag-x", "0px");
+      pointerStart = null;
+    });
+    document.querySelector(".deck-stack").addEventListener("click", (event) => {
+      const card = event.target.closest(".course-card");
+      if (!card) return;
+      if (draggedCard === card) {
+        draggedCard = null;
+        event.preventDefault();
+        return;
+      }
+      if (card.dataset.offset === "0") openOverlay("folder", card.dataset.courseId, card);
+    });
+    taskNotes.forEach((note) => {
+      note.addEventListener("click", () => {
+        setDeckIndex(Number(note.dataset.courseIndex));
+        openOverlay("task", note.dataset.taskId, note);
+      });
+    });
+    document.querySelector("[data-course-link]").addEventListener("click", (event) => {
+      const courseCard = courseCards.find((card) => card.dataset.courseId === event.currentTarget.dataset.courseId);
+      if (!courseCard) return;
+      closeOverlayUi(false);
+      openOverlay("folder", courseCard.dataset.courseId, courseCard);
+    });
+    document.querySelector("[data-open-submit]").addEventListener("click", (event) => {
+      openOverlay("submit", "material", event.currentTarget);
+    });
+    document.querySelector(".submit-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const status = document.querySelector(".submit-status");
+      status.textContent = "Tidak ada berkas yang dikirim; formulir ini hanya pratinjau.";
+      status.dataset.submitted = "true";
+    });
+    overlays.forEach((overlay) => {
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) dismissOverlay();
+      });
+      overlay.querySelector("[data-overlay-close]").addEventListener("click", dismissOverlay);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (activeOverlay) {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          dismissOverlay();
+          return;
+        }
+        if (event.key === "Tab") {
+          const focusable = [...activeOverlay.querySelectorAll('a[href], button:not(:disabled), input:not(:disabled), [tabindex]:not([tabindex="-1"])')]
+            .filter((element) => element.getClientRects().length);
+          if (!focusable.length) {
+            event.preventDefault();
+            activeOverlay.querySelector(".overlay-panel").focus();
+            return;
+          }
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        }
+        return;
+      }
+      if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        setDeckIndex(deckIndex + (event.key === "ArrowRight" ? 1 : -1), true);
+      }
+    });
+    window.addEventListener("popstate", handleHistoryChange);
+
+    const sections = [...document.querySelectorAll("main > .scene")];
+    if ("IntersectionObserver" in window) {
+      const sectionObserver = new IntersectionObserver((entries) => {
+        const current = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (current) updateActiveSection(current.target.id);
+      }, { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.1, 0.5, 1] });
+      sections.forEach((section) => sectionObserver.observe(section));
+    }
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      body.classList.add("has-motion");
+      const revealElements = [...document.querySelectorAll("[data-reveal]")];
+      if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.filter((entry) => entry.isIntersecting).forEach((entry) => {
+            entry.target.classList.add("is-revealed");
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.12 });
+        revealElements.forEach((element) => revealObserver.observe(element));
+      } else {
+        revealElements.forEach((element) => element.classList.add("is-revealed"));
+      }
+    }
+
+    const initialRoute = overlayRoute();
+    if (initialRoute) {
+      const opener = initialRoute.type === "folder"
+        ? courseCards.find((card) => card.dataset.courseId === initialRoute.id)
+        : initialRoute.type === "task"
+          ? taskNotes.find((note) => note.dataset.taskId === initialRoute.id)
+          : document.querySelector("[data-open-submit]");
+      openOverlay(initialRoute.type, initialRoute.id, opener, true);
+    }
+  </script>
+</body>
+</html>

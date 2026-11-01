@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup Admin v2 — Tumpukan Materi</title>
+  <style>
+    @font-face {
+      font-family: "DM Sans Variable";
+      src: url("../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 1000;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Fraunces Variable";
+      src: url("../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --cream: #f3ebd8;
+      --paper: #fbf6e9;
+      --ink: #2b2a24;
+      --muted: #514d42;
+      --forest: #3f5b3a;
+      --leaf: #6e8b4e;
+      --wood: #8a6a43;
+      --line: #ded5c2;
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      font-family: "DM Sans Variable", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; margin: 0; }
+    body { min-width: 320px; background-color: var(--cream); }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid #d9a441;
+      outline-offset: 3px;
+    }
+
+    .desk {
+      min-height: 100svh;
+      background-color: #586d4c;
+      background-image: var(--noise), linear-gradient(#e2ead41b 1px, transparent 1px), linear-gradient(90deg, #e2ead41b 1px, transparent 1px), linear-gradient(#e2ead40c 1px, transparent 1px), linear-gradient(90deg, #e2ead40c 1px, transparent 1px);
+      background-size: 160px 160px, 30px 30px, 30px 30px, 150px 150px, 150px 150px;
+    }
+    .topbar {
+      position: sticky;
+      z-index: 4;
+      top: 0;
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      gap: 20px;
+      padding: 9px max(20px, calc((100% - 1220px) / 2));
+      background: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), var(--noise);
+      box-shadow: 0 1px 2px rgb(40 28 12 / .24), 0 8px 18px rgb(40 28 12 / .16);
+    }
+    .brand { display: inline-flex; align-items: center; padding: 7px 12px 7px 0; }
+    .brand img { display: block; width: 160px; height: auto; }
+    .topbar-label { color: var(--muted); font-size: 15px; }
+    .topbar-actions { display: flex; align-items: center; gap: 11px; margin-left: auto; }
+    .mode { color: var(--forest); font-size: 14px; font-weight: 750; }
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border: 0;
+      border-radius: 5px;
+      background: var(--forest);
+      color: #fffdf6;
+      font-size: 15px;
+      font-weight: 750;
+      text-decoration: none;
+    }
+    .button:hover { background: #334c30; }
+    .button.secondary { background: #e8dfcb; color: var(--ink); }
+    .button.text { min-height: 40px; padding: 8px 10px; background: transparent; color: var(--forest); }
+    .button.danger { background: #edd2c9; color: #842f22; }
+
+    .workspace {
+      display: grid;
+      width: min(1220px, 100%);
+      min-height: calc(100svh - 72px);
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 38px;
+      margin: auto;
+      padding: 34px 24px 58px;
+    }
+    .sidebar { display: flex; flex-direction: column; gap: 5px; }
+    .nav-item {
+      display: flex;
+      min-height: 46px;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border: 0;
+      background: transparent;
+      color: #fffdf4;
+      font-size: 15px;
+      font-weight: 650;
+      text-align: left;
+    }
+    .nav-item.active { background: #f3ebd8; color: var(--forest); }
+    .sidebar-link { margin-top: auto; color: #fffdf4; font-size: 14px; font-weight: 700; text-decoration: none; }
+    .canvas { min-width: 0; }
+    .page-title { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 29px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2 { font-family: "Fraunces Variable", Georgia, serif; }
+    h1 { margin-bottom: 7px; color: #fffdf4; font-size: 34px; line-height: 1.05; letter-spacing: -.025em; }
+    .page-title p { margin: 0; color: #f4eedf; font-size: 15px; line-height: 1.5; }
+    .board-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(210px, .7fr); gap: 20px; align-items: start; }
+    .board-sheet {
+      position: relative;
+      min-height: 190px;
+      padding: 23px;
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .5), transparent 45%), var(--noise);
+      box-shadow: 0 1px 2px rgb(40 28 12 / .3), 0 8px 17px rgb(40 28 12 / .2);
+    }
+    .board-sheet h2 { margin: 0 0 16px; font-size: 21px; }
+    .board-sheet p { color: var(--muted); font-size: 15px; line-height: 1.55; }
+    .board-sheet .button { margin-top: 2px; }
+    .paperclip { position: absolute; top: -18px; right: 24px; width: 82px; height: 38px; transform: rotate(12deg); }
+    .overview-list { display: grid; gap: 11px; margin-top: 25px; }
+    .overview-row { display: flex; align-items: center; gap: 13px; padding: 12px 15px; background: #e5dfce; color: var(--ink); font-size: 14px; font-weight: 700; }
+    .overview-row span { margin-left: auto; color: var(--forest); font-variant-numeric: tabular-nums; }
+
+    .veil {
+      position: fixed;
+      z-index: 6;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgb(29 30 23 / .58);
+    }
+    .veil[hidden] { display: none; }
+    .form-sheet {
+      position: relative;
+      width: min(740px, 100%);
+      max-height: min(860px, calc(100svh - 48px));
+      overflow: auto;
+      padding: 36px 46px 0;
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .6), transparent 42%), linear-gradient(0deg, rgb(120 90 40 / .08), transparent 35%), var(--noise);
+      background-size: auto, auto, 160px 160px;
+      box-shadow: 0 2px 3px rgb(40 28 12 / .33), 0 12px 18px rgb(40 28 12 / .28), 0 30px 48px rgb(40 28 12 / .35);
+    }
+    .form-sheet::after {
+      position: absolute;
+      top: 0;
+      left: 44px;
+      width: 116px;
+      height: 34px;
+      background: url("../../src/assets/props/tape-sage.webp") center / contain no-repeat;
+      content: "";
+      pointer-events: none;
+      transform: rotate(-3deg) translateY(-13px);
+    }
+    .clip { position: absolute; top: 9px; right: 31px; width: 65px; height: 48px; }
+    .sheet-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin: 0 42px 25px 0; }
+    .sheet-top h2 { margin: 0 0 7px; font-size: 33px; line-height: 1.05; }
+    .sheet-top p { max-width: 460px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+    .close {
+      position: absolute;
+      z-index: 2;
+      top: 20px;
+      right: 21px;
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: #e9e1d0;
+      color: var(--ink);
+      font-size: 24px;
+    }
+    .form { display: grid; gap: 20px; padding-bottom: 23px; }
+    .field { display: grid; min-width: 0; gap: 9px; }
+    .field label { color: var(--ink); font-size: 15px; font-weight: 700; }
+    .optional { color: var(--muted); font-size: 14px; font-weight: 500; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      min-height: 49px;
+      padding: 11px 13px;
+      border: 1px solid #b9ad97;
+      border-radius: 5px;
+      background: #fffdf7;
+      color: var(--ink);
+      font-size: 15px;
+    }
+    .field textarea { min-height: 100px; resize: vertical; line-height: 1.55; }
+    .details {
+      padding-top: 17px;
+      border-top: 1px solid var(--line);
+    }
+    .details summary {
+      display: flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--forest);
+      font-size: 15px;
+      font-weight: 750;
+      cursor: pointer;
+      list-style: none;
+    }
+    .details summary::-webkit-details-marker { display: none; }
+    .details summary::after { content: "+"; color: var(--wood); font-size: 22px; font-weight: 500; }
+    .details[open] summary::after { content: "−"; }
+    .details-fields { display: grid; gap: 20px; padding: 11px 0 4px; }
+    .two-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .actions {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin: 0 -46px;
+      padding: 15px 46px;
+      background: var(--paper);
+      box-shadow: 0 -7px 14px rgb(40 28 12 / .08);
+    }
+
+    .login-wrap { display: none; min-height: calc(100svh - 72px); place-items: center; padding: 46px 20px; }
+    .login-sheet {
+      position: relative;
+      width: min(500px, 100%);
+      padding: 39px 42px 32px;
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .58), transparent 42%), var(--noise);
+      box-shadow: 0 2px 3px rgb(40 28 12 / .33), 0 12px 18px rgb(40 28 12 / .28), 0 30px 48px rgb(40 28 12 / .35);
+    }
+    .login-sheet::before { position: absolute; top: -21px; left: 42px; width: 74px; height: 43px; background: url("../../src/assets/props/binder-clip-green.webp") center / contain no-repeat; content: ""; }
+    .login-brand { display: block; margin-bottom: 31px; }
+    .login-brand img { display: block; width: 190px; height: auto; }
+    .login-sheet h2 { margin: 0 0 9px; font-size: 35px; line-height: 1.1; }
+    .login-sheet > p { margin-bottom: 28px; color: var(--muted); font-size: 15px; line-height: 1.6; }
+    .login-form { display: grid; gap: 21px; }
+    .login-form .button { width: 100%; min-height: 49px; margin-top: 4px; }
+    .login-return { display: block; margin-top: 24px; color: var(--forest); font-size: 14px; font-weight: 700; text-align: center; text-decoration: none; }
+    body.login-view .desk { display: none; }
+    body.login-view .login-wrap { display: grid; }
+
+    @media (max-width: 760px) {
+      .topbar { min-height: 60px; padding: 8px 15px; }
+      .brand img { width: 143px; }
+      .topbar-label, .mode { display: none; }
+      .topbar-actions { gap: 2px; }
+      .workspace { min-height: calc(100svh - 60px); grid-template-columns: 1fr; gap: 18px; padding: 16px 15px 38px; }
+      .sidebar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+      .nav-item { min-height: 43px; justify-content: center; gap: 5px; padding: 6px 4px; font-size: 14px; }
+      .nav-item:nth-child(4), .nav-item:nth-child(5) { grid-column: span 1; }
+      .sidebar-link { grid-column: 1 / -1; margin: 4px 0 0; }
+      .page-title { align-items: flex-start; margin-bottom: 21px; }
+      h1 { font-size: 31px; }
+      .page-title .button { min-height: 42px; padding: 8px 11px; font-size: 14px; }
+      .board-columns { grid-template-columns: 1fr; gap: 14px; }
+      .board-sheet { min-height: 140px; padding: 20px; }
+      .board-sheet h2 { font-size: 20px; }
+      .overview-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 17px; }
+      .overview-row { padding: 11px; font-size: 13px; }
+      .veil { align-items: stretch; padding: 0; }
+      .form-sheet {
+        display: flex;
+        width: 100%;
+        max-height: 100svh;
+        min-height: 100svh;
+        flex-direction: column;
+        padding: max(24px, env(safe-area-inset-top)) 21px 0;
+        overflow: hidden;
+        background-color: var(--paper);
+      }
+      .form-sheet::after { left: 22px; width: 90px; height: 27px; transform: rotate(-3deg) translateY(-11px); }
+      .clip { top: 14px; right: 16px; width: 54px; height: 40px; }
+      .sheet-top { margin: 21px 49px 20px 0; }
+      .sheet-top h2 { font-size: 29px; }
+      .sheet-top p { font-size: 14px; }
+      .close { top: max(15px, env(safe-area-inset-top)); right: 14px; width: 42px; height: 42px; }
+      .form { min-height: 0; flex: 1; gap: 18px; padding-bottom: 14px; overflow-y: auto; overscroll-behavior: contain; }
+      .field { gap: 8px; }
+      .field label { font-size: 15px; }
+      .field input, .field select, .field textarea { min-height: 48px; }
+      .details { padding-top: 12px; }
+      .details summary { min-height: 52px; }
+      .details-fields { gap: 18px; }
+      .two-fields { grid-template-columns: 1fr; gap: 17px; }
+      .actions {
+        flex: 0 0 auto;
+        margin: 0 -21px;
+        padding: 12px 21px max(14px, env(safe-area-inset-bottom));
+      }
+      .actions .button { min-height: 48px; flex: 1; }
+      .login-wrap { min-height: calc(100svh - 60px); padding: 26px 15px; }
+      .login-sheet { padding: 36px 25px 27px; }
+      .login-sheet::before { left: 25px; }
+      .login-brand img { width: 170px; }
+      .login-sheet h2 { font-size: 31px; }
+      .login-form { gap: 19px; }
+    }
+    @media (max-width: 380px) {
+      .page-title { flex-direction: column; gap: 13px; }
+      .overview-list { grid-template-columns: 1fr; }
+      .sheet-top { margin-right: 42px; }
+      .sheet-top h2 { max-width: 11ch; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="desk">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Kembali ke beranda"><img src="../../src/assets/logo/logo.svg" alt="Tumpukan Materi"></a>
+      <span class="topbar-label">Panel admin</span>
+      <div class="topbar-actions"><span class="mode">Mode admin simulasi</span><button class="button text" type="button" onclick="showLogin()">Keluar</button></div>
+    </header>
+
+    <main class="workspace">
+      <nav class="sidebar" aria-label="Menu admin">
+        <button class="nav-item active" type="button">Ringkasan</button>
+        <button class="nav-item" type="button">Kiriman masuk</button>
+        <button class="nav-item" type="button">Materi</button>
+        <button class="nav-item" type="button">Mata kuliah</button>
+        <button class="nav-item" type="button">Mading</button>
+        <button class="nav-item" type="button">Jadwal</button>
+        <a class="sidebar-link" href="#">← Lihat halaman publik</a>
+      </nav>
+
+      <section class="canvas" aria-labelledby="admin-title">
+        <div class="page-title">
+          <div><h1 id="admin-title">Mading kelas</h1><p>Kelola tugas dan tenggat kelas.</p></div>
+          <button class="button" type="button" onclick="openTaskForm()">Tambah tugas</button>
+        </div>
+        <div class="board-columns">
+          <section class="board-sheet">
+            <img class="paperclip" src="../../src/assets/props/paperclip-gold.webp" alt="">
+            <h2>Daftar tugas</h2>
+            <p>Belum ada tugas. Tambahkan catatan pertama untuk kelas.</p>
+            <button class="button" type="button" onclick="openTaskForm()">Tambah tugas</button>
+          </section>
+          <section class="board-sheet">
+            <h2>Form lebih lega</h2>
+            <p>Informasi utama tampil lebih dulu. Detail opsional dibuka hanya saat diperlukan.</p>
+          </section>
+        </div>
+        <div class="overview-list">
+          <div class="overview-row">Mata kuliah <span>8</span></div>
+          <div class="overview-row">Jadwal <span>8</span></div>
+          <div class="overview-row">Tugas <span>0</span></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="veil" id="task-veil">
+    <section class="form-sheet" role="dialog" aria-modal="true" aria-labelledby="task-form-title">
+      <img class="clip" src="../../src/assets/props/binder-clip-green.webp" alt="">
+      <button class="close" type="button" aria-label="Tutup form" onclick="closeTaskForm()">×</button>
+      <header class="sheet-top">
+        <div>
+          <h2 id="task-form-title">Tambah tugas</h2>
+          <p>Catat informasi utama dulu. Detail tambahan bisa dibuka bila diperlukan.</p>
+        </div>
+      </header>
+      <form class="form" onsubmit="return false">
+        <div class="field">
+          <label for="title">Judul tugas</label>
+          <input id="title" type="text" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="course">Mata kuliah <span class="optional">opsional</span></label>
+          <select id="course"><option>Pilih mata kuliah</option></select>
+        </div>
+        <details class="details">
+          <summary>Deadline dan detail pengumpulan <span class="optional">opsional</span></summary>
+          <div class="details-fields">
+            <div class="two-fields">
+              <div class="field"><label for="date">Tanggal deadline</label><input id="date" type="date"></div>
+              <div class="field"><label for="time">Jam deadline · WIB</label><input id="time" type="time"></div>
+            </div>
+            <div class="field"><label for="method">Cara pengumpulan</label><input id="method" type="text"></div>
+            <div class="field"><label for="description">Keterangan</label><textarea id="description" rows="3"></textarea></div>
+          </div>
+        </details>
+      </form>
+      <footer class="actions">
+        <button class="button secondary" type="button" onclick="closeTaskForm()">Batal</button>
+        <button class="button" type="button" onclick="closeTaskForm()">Simpan tugas</button>
+      </footer>
+    </section>
+  </div>
+
+  <main class="login-wrap">
+    <section class="login-sheet" aria-labelledby="login-title">
+      <a class="login-brand" href="#" aria-label="Tumpukan Materi"><img src="../../src/assets/logo/logo.svg" alt="Tumpukan Materi"></a>
+      <h2 id="login-title">Masuk admin</h2>
+      <p>Kelola materi, tugas, mata kuliah, dan jadwal kelas.</p>
+      <form class="login-form" onsubmit="return false">
+        <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username"></div>
+        <div class="field"><label for="password">Kata sandi</label><input id="password" type="password" autocomplete="current-password"></div>
+        <button class="button" type="button" onclick="showWorkspace()">Masuk</button>
+      </form>
+      <a class="login-return" href="#">Kembali ke halaman publik</a>
+    </section>
+  </main>
+  <script>
+    function openTaskForm() {
+      document.getElementById("task-veil").hidden = false;
+    }
+    function closeTaskForm() {
+      document.getElementById("task-veil").hidden = true;
+    }
+    function showLogin() {
+      closeTaskForm();
+      document.body.classList.add("login-view");
+    }
+    function showWorkspace() {
+      document.body.classList.remove("login-view");
+      openTaskForm();
+    }
+  </script>
+</body>
+</html>

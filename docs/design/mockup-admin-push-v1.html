@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup Notifikasi Browser — Tumpukan Materi</title>
+  <style>
+    @font-face {
+      font-family: "DM Sans Variable";
+      src: url("../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 1000;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Fraunces Variable";
+      src: url("../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --cream: #f3ebd8;
+      --paper: #fbf6e9;
+      --forest: #3f5b3a;
+      --wood: #8a6a43;
+      --ink: #2b2a24;
+      --muted: #514d42;
+      --line: #c8b99c;
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      font-family: "DM Sans Variable", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #f2efe7;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    button, a { font: inherit; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #d9a441; outline-offset: 3px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: "Fraunces Variable", Georgia, serif; }
+    .topbar {
+      position: sticky;
+      z-index: 2;
+      top: 0;
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      gap: 18px;
+      padding: 10px max(22px, calc((100% - 1320px) / 2));
+      border-bottom: 1px solid #ddd7ca;
+      background-color: var(--paper);
+      background-image: var(--noise);
+      background-size: 160px 160px;
+    }
+    .brand { display: inline-flex; align-items: center; padding: 4px 0; color: var(--ink); text-decoration: none; }
+    .brand img { display: block; width: 160px; height: auto; }
+    .mode-label { color: var(--muted); font-size: 14px; }
+    .home-link { min-height: 38px; margin-left: auto; padding: 7px 10px; border: 0; background: transparent; color: var(--ink); font-size: 14px; font-weight: 700; cursor: pointer; }
+    .layout { display: grid; width: min(1320px, 100%); min-height: calc(100vh - 72px); grid-template-columns: 230px minmax(0, 1fr); gap: 34px; margin: auto; padding: 28px 22px 54px; }
+    .sidebar { display: grid; align-content: start; gap: 4px; }
+    .mobile-menu-button { display: none; }
+    .sidebar a { display: flex; min-height: 45px; align-items: center; padding: 9px 11px; color: #39372f; font-size: 14px; font-weight: 650; text-decoration: none; }
+    .sidebar a:hover, .sidebar a[aria-current="page"] { background: #e4e0d5; color: var(--forest); }
+    .sidebar a[aria-current="page"] { font-weight: 800; }
+    .sidebar .public-link { margin-top: 20px; color: var(--forest); }
+    main { min-width: 0; }
+    .page-heading { margin: 0 0 27px; }
+    .page-heading h1 { margin: 0 0 7px; font-size: 30px; line-height: 1.1; }
+    .page-heading p { max-width: 620px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+    .settings-list { display: grid; gap: 0; }
+    .setting-row { display: grid; grid-template-columns: minmax(200px, .7fr) minmax(0, 1.3fr); gap: 25px; padding: 25px 0; border-top: 1px solid #ddd7ca; }
+    .setting-copy h2 { margin: 0 0 7px; font-family: inherit; font-size: 16px; font-weight: 750; }
+    .setting-copy p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .setting-content { min-width: 0; }
+    .device-status { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; font-size: 14px; font-weight: 700; }
+    .status-dot { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%; background: #8b806d; }
+    .device-status[data-state="active"] .status-dot { background: #3f5b3a; }
+    .device-status[data-state="blocked"] .status-dot { background: #842f22; }
+    .primary, .secondary {
+      min-height: 42px;
+      padding: 9px 14px;
+      border: 0;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .primary { background: var(--forest); color: #fffdf6; }
+    .primary:hover { background: #31492e; }
+    .secondary { background: #e8dfcb; color: var(--ink); }
+    .secondary:hover { background: #ded3bb; }
+    .help { margin: 12px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .blocked-note { display: none; margin: 12px 0 0; padding: 11px 12px; background: #eddcd4; color: #642b20; font-size: 14px; line-height: 1.5; }
+    [data-state="blocked"] .blocked-note { display: block; }
+    [data-state="blocked"] .primary { display: none; }
+    .active-actions { display: none; }
+    [data-state="active"] .active-actions { display: block; }
+    [data-state="active"] .primary { display: none; }
+    .device-note { display: none; }
+    [data-state="active"] .device-note { display: block; }
+    .preview {
+      max-width: 520px;
+      padding: 17px 18px;
+      border: 1px solid #e2ddd2;
+      background-color: #fffdf7;
+      background-image: var(--noise);
+      background-size: 160px 160px;
+    }
+    .preview-title { margin: 0 0 10px; font-size: 13px; font-weight: 750; }
+    .preview-message { margin: 0 0 5px; font-size: 14px; font-weight: 750; }
+    .preview-body { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .mockup-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .mockup-controls button { min-height: 34px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 4px; background: transparent; color: var(--ink); font-size: 12px; cursor: pointer; }
+    .mockup-controls button[aria-pressed="true"] { border-color: var(--forest); color: var(--forest); font-weight: 750; }
+    .preview-label { margin: 0 0 8px; color: var(--muted); font-size: 14px; }
+    [hidden] { display: none !important; }
+    @media (max-width: 760px) {
+      .topbar { min-height: 62px; gap: 10px; padding: 8px 16px; }
+      .brand img { width: 142px; }
+      .mode-label { display: none; }
+      .layout { min-height: calc(100vh - 62px); grid-template-columns: 1fr; gap: 22px; padding: 18px 16px 38px; }
+      .mobile-menu-button { display: flex; min-height: 44px; align-items: center; padding: 8px 11px; border: 0; background: #e4e0d5; color: var(--ink); font-size: 14px; font-weight: 700; text-align: left; }
+      .sidebar { display: none; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+      .sidebar[data-open="true"] { display: grid; }
+      .sidebar a { min-height: 44px; justify-content: center; padding: 7px 5px; text-align: center; }
+      .sidebar .public-link { grid-column: 1 / -1; margin-top: 5px; }
+      .page-heading { margin-bottom: 20px; }
+      .page-heading h1 { font-size: 26px; }
+      .page-heading p { font-size: 14px; }
+      .setting-row { grid-template-columns: 1fr; gap: 14px; padding: 20px 0; }
+      .setting-copy p { max-width: 540px; }
+      .primary, .secondary { min-height: 44px; }
+    }
+    @media (max-width: 460px) {
+      .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Tumpukan Materi, beranda">
+      <img src="../../src/assets/logo/logo.svg" alt="Tumpukan Materi">
+    </a>
+    <span class="mode-label">Mode admin</span>
+    <button class="home-link" type="button">Keluar</button>
+  </header>
+  <div class="layout">
+    <button class="mobile-menu-button" type="button" aria-expanded="false" aria-controls="admin-menu">Menu admin</button>
+    <nav class="sidebar" id="admin-menu" aria-label="Menu admin">
+      <a href="#admin">Ringkasan</a>
+      <a href="#admin/inbox">Kiriman masuk</a>
+      <a href="#admin/materials">Materi</a>
+      <a href="#admin/courses">Mata kuliah</a>
+      <a href="#admin/tasks">Mading</a>
+      <a href="#admin/schedules">Jadwal</a>
+      <a href="#admin/notifications" aria-current="page">Notifikasi</a>
+      <a class="public-link" href="#home">Lihat halaman publik</a>
+    </nav>
+    <main>
+      <header class="page-heading">
+        <h1>Notifikasi browser</h1>
+        <p>Terima pemberitahuan saat ada kiriman materi baru, meski panel admin sedang tidak dibuka.</p>
+      </header>
+      <p class="preview-label">Contoh tampilan status:</p>
+      <div class="mockup-controls" role="group" aria-label="Pratinjau keadaan notifikasi">
+        <button type="button" data-preview-state="inactive" aria-pressed="true">Belum aktif</button>
+        <button type="button" data-preview-state="active" aria-pressed="false">Aktif</button>
+        <button type="button" data-preview-state="blocked" aria-pressed="false">Izin ditolak</button>
+      </div>
+      <div class="settings-list">
+        <section class="setting-row" aria-labelledby="device-title">
+          <div class="setting-copy">
+            <h2 id="device-title">Browser ini</h2>
+            <p>Aktifkan push pada perangkat ini. Perangkat lain perlu diaktifkan masing-masing.</p>
+          </div>
+          <div class="setting-content" id="device-state" data-state="inactive">
+            <div class="device-status" data-state="inactive">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-status-text>Belum diaktifkan</span>
+            </div>
+            <button type="button" class="primary" data-action="enable">Aktifkan notifikasi</button>
+            <div class="active-actions">
+              <button type="button" class="secondary" data-action="disable">Nonaktifkan di browser ini</button>
+              <p class="help device-note">Notifikasi kiriman baru akan dikirim ke browser ini.</p>
+            </div>
+            <p class="blocked-note">Izin notifikasi diblokir. Ubah izin situs di pengaturan browser, lalu aktifkan kembali.</p>
+            <p class="help">Browser akan meminta izin setelah tombol ditekan. Pengaturan notifikasi browser ini hanya berlaku di perangkat ini.</p>
+          </div>
+        </section>
+        <section class="setting-row" aria-labelledby="preview-title">
+          <div class="setting-copy">
+            <h2 id="preview-title">Contoh pemberitahuan</h2>
+            <p>Push hanya berisi ringkasan. Buka panel admin untuk melihat kiriman dan meninjau filenya.</p>
+          </div>
+          <div class="setting-content">
+            <div class="preview" aria-label="Contoh tampilan notifikasi">
+              <p class="preview-title">Tumpukan Materi</p>
+              <p class="preview-message">Ada kiriman materi baru</p>
+              <p class="preview-body">Judul materi · Mata kuliah<br>Buka Kiriman masuk untuk meninjau.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script>
+    const statePanel = document.getElementById("device-state");
+    const status = statePanel.querySelector(".device-status");
+    const statusText = status.querySelector("[data-status-text]");
+    const previewButtons = [...document.querySelectorAll("[data-preview-state]")];
+
+    function setPreviewState(nextState) {
+      const labels = { inactive: "Belum diaktifkan", active: "Aktif di browser ini", blocked: "Izin diblokir" };
+      statePanel.dataset.state = nextState;
+      status.dataset.state = nextState;
+      statusText.textContent = labels[nextState];
+      previewButtons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.previewState === nextState));
+      });
+    }
+
+    previewButtons.forEach((button) => button.addEventListener("click", () => setPreviewState(button.dataset.previewState)));
+    statePanel.querySelector('[data-action="enable"]').addEventListener("click", () => setPreviewState("active"));
+    statePanel.querySelector('[data-action="disable"]').addEventListener("click", () => setPreviewState("inactive"));
+    const mobileMenuButton = document.querySelector(".mobile-menu-button");
+    const adminMenu = document.getElementById("admin-menu");
+    mobileMenuButton.addEventListener("click", () => {
+      const isOpen = mobileMenuButton.getAttribute("aria-expanded") === "true";
+      mobileMenuButton.setAttribute("aria-expanded", String(!isOpen));
+      adminMenu.dataset.open = String(!isOpen);
+    });
+    adminMenu.addEventListener("click", (event) => {
+      if (event.target instanceof HTMLAnchorElement && window.matchMedia("(max-width: 760px)").matches) {
+        mobileMenuButton.setAttribute("aria-expanded", "false");
+        adminMenu.dataset.open = "false";
+      }
+    });
+  </script>
+</body>
+</html>

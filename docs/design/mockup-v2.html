@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup v2 — Tumpukan Materi</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #f3ebd8;
+      --paper: #fbf6e9;
+      --forest: #3f5b3a;
+      --leaf: #6e8b4e;
+      --wood: #8a6a43;
+      --ink: #2b2a24;
+      --muted: #514d42;
+      --line: #c9bda5;
+      --mustard: #d9a441;
+      --terracotta: #c4674a;
+      --dusty-blue: #7a9bb5;
+      --sage: #a9bfa0;
+      --shadow: 3px 4px 0 #30291f30;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #e5dccb;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 28px 18px 56px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, .serif { font-family: Georgia, "Times New Roman", serif; }
+    h1 { margin-bottom: 8px; font-size: clamp(30px, 5vw, 46px); }
+    .intro, .note { max-width: 1120px; margin-right: auto; margin-left: auto; }
+    .intro { margin-bottom: 22px; }
+    .intro p, .note { color: #514d42; line-height: 1.6; }
+    .previews { display: grid; grid-template-columns: minmax(0, 1fr) 360px; align-items: start; justify-content: center; gap: 24px; max-width: 1420px; margin: auto; }
+    .preview { overflow: hidden; border: 1px solid #b7a98f; border-radius: 20px; background: var(--cream); box-shadow: 4px 5px 0 #30291f28; }
+    .desktop { min-width: 0; }
+    .mobile { width: 360px; }
+    .preview-label { padding: 12px 16px; border-bottom: 1px solid #c9bda5; background: #e9dfcc; color: #494438; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .screen { overflow: hidden; background: var(--cream); }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 30px; border-bottom: 1px solid #ded3bc; }
+    .logo { display: block; width: 174px; height: auto; }
+    .nav-links { display: flex; align-items: center; gap: 20px; color: var(--forest); font-size: 12px; font-weight: 750; }
+    .nav-links .send { padding: 10px 13px; border: 1px solid var(--forest); border-radius: 9px; }
+    .hero { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 18px; min-height: 286px; padding: 32px 52px; overflow: hidden; background: var(--cream); }
+    .hero-copy { position: relative; z-index: 1; }
+    .eyebrow { margin-bottom: 12px; color: var(--forest); font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    .hero h2 { max-width: 530px; margin-bottom: 12px; font-size: clamp(31px, 3.4vw, 48px); line-height: 1.03; }
+    .hero p { max-width: 445px; margin-bottom: 19px; color: #514d42; font-size: 14px; line-height: 1.6; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 10px 16px; border: 1px solid #263d24; border-radius: 10px; background: var(--forest); box-shadow: 2px 3px 0 #2b2a2438; color: #fffdf6; font-size: 13px; font-weight: 750; }
+    .hero-art { position: relative; width: 100%; max-width: 400px; height: 224px; justify-self: center; }
+    .sheet { position: absolute; width: 230px; height: 164px; border: 1px solid #9a8b70; border-radius: 7px 12px 8px 8px; background-color: var(--paper); background-image: linear-gradient(#d8ccb466 1px, transparent 1px), linear-gradient(90deg, #d8ccb466 1px, transparent 1px); background-size: 18px 18px; box-shadow: 3px 4px 0 #30291f36; }
+    .sheet::before { position: absolute; top: 26px; bottom: 12px; left: 17px; width: 1px; background: #c4674a60; content: ""; }
+    .sheet.one { top: 42px; left: 73px; transform: rotate(9deg); background-color: #e4d7b8; }
+    .sheet.two { top: 26px; left: 88px; transform: rotate(-8deg); background-color: #dce5d2; }
+    .sheet.three { top: 34px; left: 73px; padding: 34px 20px 12px 38px; transform: rotate(2deg); }
+    .sheet.three strong { display: block; color: var(--forest); font-family: Georgia, serif; font-size: 21px; line-height: 1.1; }
+    .sheet.three small { display: block; margin-top: 8px; color: #514d42; font-size: 10px; }
+    .tape { position: absolute; z-index: 2; top: 18px; left: 171px; width: 66px; height: 18px; border: 1px solid #806f50; background: #d9a441; opacity: .9; transform: rotate(-5deg); }
+    .motion-note { position: absolute; right: 3px; bottom: 7px; color: #514d42; font-size: 10px; font-style: italic; transform: rotate(-2deg); }
+    .section-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 14px; }
+    .section-title h2 { margin: 0; font-size: 26px; }
+    .section-title span { color: #514d42; font-size: 11px; }
+    .board-section { padding: 28px 34px 34px; background: #e3dbc6; }
+    .board-frame { padding: 10px; border: 7px solid var(--wood); border-radius: 17px; background: #6c805f; box-shadow: 4px 5px 0 #30291f38; }
+    .cutting-mat { min-height: 202px; padding: 20px; border: 1px solid #c4cfb340; border-radius: 7px; background-color: #3f5b3a; background-image: linear-gradient(#dce7d51a 1px, transparent 1px), linear-gradient(90deg, #dce7d51a 1px, transparent 1px), linear-gradient(#dce7d50b 1px, transparent 1px), linear-gradient(90deg, #dce7d50b 1px, transparent 1px); background-size: 24px 24px, 24px 24px, 6px 6px, 6px 6px; }
+    .notes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; align-items: center; }
+    .task-note { position: relative; min-height: 156px; padding: 30px 15px 20px; border: 1px solid #655b493e; border-radius: 6px 9px 5px 7px; background-color: var(--paper); background-image: linear-gradient(#7a684b19 1px, transparent 1px), linear-gradient(90deg, #7a684b19 1px, transparent 1px); background-size: 14px 14px; box-shadow: 3px 4px 0 #161c163d; }
+    .task-note.mustard { background-color: #e9cf8c; }
+    .task-note.sage { background-color: #c7d4be; }
+    .task-note.blue { background-color: #b6cbd9; }
+    .task-note:nth-child(1) { transform: rotate(-1.7deg); }
+    .task-note:nth-child(2) { transform: rotate(1.3deg); }
+    .task-note:nth-child(3) { transform: rotate(-.8deg); }
+    .task-note h3 { margin-bottom: 7px; font-size: 14px; line-height: 1.25; }
+    .task-note p { margin-bottom: 10px; color: #37352e; font-size: 10px; line-height: 1.4; }
+    .paperclip { position: absolute; top: -8px; left: 17px; width: 13px; height: 25px; border: 2px solid #786449; border-radius: 8px; background: transparent; box-shadow: inset 1px 0 #fff8df; transform: rotate(-5deg); }
+    .paperclip::after { position: absolute; top: 4px; left: 2px; width: 6px; height: 14px; border: 1px solid #786449; border-radius: 5px; content: ""; }
+    .deadline { display: inline-flex; min-height: 23px; align-items: center; padding: 3px 8px; border: 1px solid #746044; border-radius: 99px; background: #fbf6e9; color: #2b2a24; font-size: 10px; font-weight: 800; }
+    .deadline.urgent { border-color: #763c29; color: #622e20; }
+    .deck-section { padding: 30px 34px 36px; background: var(--cream); }
+    .search { display: flex; align-items: center; gap: 11px; width: min(100%, 530px); min-height: 44px; margin: 15px 0 8px; padding: 10px 14px; border: 1px solid #8d826c; border-radius: 11px; background: var(--paper); color: #514d42; font-size: 12px; box-shadow: 2px 3px 0 #30291f1c; }
+    .search-icon { width: 13px; height: 13px; border: 2px solid var(--forest); border-radius: 50%; }
+    .search-icon::after { display: block; width: 6px; height: 2px; margin: 9px 0 0 8px; background: var(--forest); content: ""; transform: rotate(45deg); }
+    .deck { position: relative; height: 270px; margin-top: 12px; }
+    .course { position: absolute; top: 20px; left: 14px; width: min(68%, 410px); height: 222px; padding: 26px 26px 21px; overflow: visible; border: 1px solid #77674d; border-radius: 10px 12px 8px 8px; background-color: #d5dfc9; background-image: linear-gradient(#71654c19 1px, transparent 1px), linear-gradient(90deg, #71654c19 1px, transparent 1px); background-size: 16px 16px; box-shadow: 4px 5px 0 #30291f46; transform: rotate(-1.1deg); }
+    .course::before { position: absolute; z-index: 1; top: -10px; left: 42px; width: 42px; height: 22px; border: 1px solid #5b5144; border-radius: 5px 5px 12px 12px; background: #d2d0c2; content: ""; box-shadow: 1px 2px 0 #30291f40; }
+    .course::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 9px; border-top: 1px dashed #75684e; background: inherit; clip-path: polygon(0 0, 6% 45%, 12% 9%, 18% 63%, 24% 14%, 30% 55%, 36% 10%, 42% 60%, 48% 12%, 54% 54%, 60% 8%, 66% 56%, 72% 15%, 78% 59%, 84% 10%, 90% 52%, 96% 12%, 100% 35%, 100% 100%, 0 100%); content: ""; }
+    .course.mustard { background-color: #e6ca82; transform: rotate(1.4deg) scale(.93); }
+    .course.blue { background-color: #b6cbd9; transform: rotate(-1.7deg) scale(.88); }
+    .course.back-one { left: 34%; filter: saturate(.78); }
+    .course.back-two { left: 48%; filter: saturate(.62); }
+    .course-code { display: inline-block; padding: 5px 8px; border: 1px solid #5b654d; border-radius: 5px; background: #fbf6e9; color: #273924; font-size: 10px; font-weight: 850; letter-spacing: .1em; }
+    .course h3 { max-width: 280px; margin: 39px 0 10px; font-family: Georgia, serif; font-size: 29px; line-height: 1.02; }
+    .course-meta { display: flex; gap: 14px; color: #2b2a24; font-size: 10px; font-weight: 650; }
+    .swipe-hint { margin: 0; color: #514d42; font-size: 11px; text-align: center; }
+    .week-section { padding: 28px 34px 34px; background: #e5dccb; }
+    .week-board { overflow: hidden; border: 1px solid #89795f; border-radius: 14px; background: var(--paper); box-shadow: 3px 4px 0 #30291f32; }
+    .week-head, .week-row { display: grid; grid-template-columns: 82px repeat(5, minmax(0, 1fr)); }
+    .week-head { background: #e8dfcd; }
+    .week-head > div { padding: 11px 8px; border-left: 1px solid #d5cbb8; text-align: center; }
+    .week-head strong, .week-head small { display: block; }
+    .week-head strong { font-family: Georgia, serif; font-size: 13px; }
+    .week-head small { margin-top: 3px; color: #514d42; font-size: 9px; }
+    .week-row > div { min-height: 72px; padding: 8px; border-top: 1px solid #d8cebb; border-left: 1px solid #d8cebb; }
+    .time { color: #514d42; font-size: 10px; font-weight: 700; }
+    .class-block { padding: 8px 7px; border: 1px solid #4f6445; border-radius: 8px; background: #d5dfc9; color: #202b1e; font-size: 9px; font-weight: 800; line-height: 1.35; box-shadow: 1px 2px 0 #30291f25; }
+    .class-block.mustard { border-color: #80621f; background: #e6ca82; color: #33250c; }
+    .class-block.blue { border-color: #465e70; background: #b6cbd9; color: #1c2a34; }
+    .class-block.terra { border-color: #723b2a; background: #e0ad98; color: #3e1e14; }
+    .mobile-schedule { display: none; }
+    .mobile-folder { display: none; }
+    .folder-section { padding: 28px 34px 36px; background: #e9dfcc; }
+    .folder-caption { margin-bottom: 14px; color: #514d42; font-size: 12px; line-height: 1.5; }
+    .folder-stage { position: relative; display: grid; min-height: 450px; place-items: center; overflow: hidden; border: 1px solid #b9aa91; border-radius: 15px; background: var(--cream); }
+    .folder-stage::before { position: absolute; inset: 0; background: #2b2a243d; content: ""; }
+    .folder-panel { position: relative; width: min(680px, calc(100% - 40px)); min-height: 350px; padding: 25px; border: 1px solid #77674d; border-radius: 16px; background-color: var(--paper); background-image: linear-gradient(#71654c13 1px, transparent 1px), linear-gradient(90deg, #71654c13 1px, transparent 1px); background-size: 20px 20px; box-shadow: 4px 5px 0 #30291f50; }
+    .folder-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding-bottom: 17px; border-bottom: 1px solid #c9bda5; }
+    .folder-top h3 { margin: 7px 0 0; font-family: Georgia, serif; font-size: 29px; }
+    .folder-top p { margin: 5px 0 0; color: #514d42; font-size: 11px; }
+    .close { display: grid; width: 35px; height: 35px; place-items: center; border: 1px solid #6c604c; border-radius: 50%; background: #f3ebd8; color: #2b2a24; font-size: 21px; }
+    .material { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 2px; border-bottom: 1px dashed #a99c83; font-size: 12px; }
+    .material small { display: block; margin-top: 5px; color: #514d42; font-size: 10px; }
+    .file-type { flex: 0 0 auto; padding: 6px 8px; border: 1px solid #586c4c; border-radius: 6px; background: #e2e8d8; color: #293d25; font-size: 10px; font-weight: 800; }
+    .mobile .topbar { padding: 14px 15px; }
+    .mobile .logo { width: 142px; }
+    .mobile .nav-links { gap: 8px; font-size: 10px; }
+    .mobile .nav-links .wide-link { display: none; }
+    .mobile .nav-links .send { padding: 8px; }
+    .mobile .hero { display: block; min-height: 0; padding: 24px 18px 20px; }
+    .mobile .hero h2 { max-width: 330px; font-size: 31px; }
+    .mobile .hero p { max-width: 330px; font-size: 12px; }
+    .mobile .hero-art { width: 260px; height: 165px; margin: 9px auto 0; transform: scale(.88); transform-origin: top center; }
+    .mobile .sheet { width: 200px; height: 143px; }
+    .mobile .sheet.one { left: 27px; }
+    .mobile .sheet.two { left: 40px; }
+    .mobile .sheet.three { left: 27px; }
+    .mobile .tape { left: 122px; }
+    .mobile .motion-note { right: -5px; bottom: 0; max-width: 112px; }
+    .mobile .board-section { padding: 21px 14px 24px; }
+    .mobile .section-title h2 { font-size: 21px; }
+    .mobile .section-title span { max-width: 110px; text-align: right; }
+    .mobile .board-frame { padding: 6px; border-width: 5px; }
+    .mobile .cutting-mat { padding: 14px 10px; }
+    .mobile .notes { grid-template-columns: 1fr; gap: 12px; }
+    .mobile .task-note { min-height: 106px; padding: 24px 12px 12px; }
+    .mobile .task-note h3 { margin-bottom: 5px; font-size: 13px; }
+    .mobile .task-note p { margin-bottom: 6px; font-size: 10px; }
+    .mobile .paperclip { left: 15px; }
+    .mobile .deck-section { padding: 22px 14px 24px; }
+    .mobile .section-title { align-items: flex-start; }
+    .mobile .section-title h2 { font-size: 21px; }
+    .mobile .search { margin-top: 12px; }
+    .mobile .deck { height: 239px; margin-top: 4px; }
+    .mobile .course { top: 22px; left: 4px; width: 78%; height: 194px; padding: 21px 17px; }
+    .mobile .course.back-one { left: 26%; }
+    .mobile .course.back-two { left: 42%; }
+    .mobile .course h3 { margin-top: 32px; font-size: 23px; }
+    .mobile .course-meta { flex-wrap: wrap; gap: 5px 10px; font-size: 9px; }
+    .mobile .swipe-hint { font-size: 10px; }
+    .mobile .mobile-schedule { display: block; padding: 20px 14px 23px; background: #e5dccb; }
+    .mobile .mobile-schedule .section-title { margin-bottom: 10px; }
+    .mobile .today-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; padding: 10px; border: 1px solid #89795f; border-radius: 9px; background: var(--paper); box-shadow: 2px 2px 0 #30291f20; }
+    .mobile .today-row strong, .mobile .today-row small { display: block; }
+    .mobile .today-row strong { font-size: 11px; }
+    .mobile .today-row small { margin-top: 3px; color: #514d42; font-size: 9px; }
+    .mobile .today-row .class-block { max-width: 90px; padding: 6px; text-align: center; }
+    .mobile .week-section, .mobile .folder-section { padding: 20px 14px; }
+    .mobile .week-board { display: none; }
+    .mobile .week-mobile { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .mobile .week-day { padding: 9px; border: 1px solid #89795f; border-radius: 9px; background: var(--paper); }
+    .mobile .week-day strong { display: block; margin-bottom: 7px; font-family: Georgia, serif; font-size: 12px; }
+    .mobile .week-day .class-block { margin-top: 5px; }
+    .mobile .folder-stage { min-height: 410px; }
+    .mobile .folder-panel { width: calc(100% - 20px); min-height: 360px; padding: 17px; border-radius: 0; }
+    .mobile .folder-top h3 { font-size: 23px; }
+    .mobile .material { font-size: 10px; }
+    .mobile .material small { font-size: 9px; }
+    .week-mobile { display: none; }
+    .note { margin-top: 22px; font-size: 12px; }
+    @media (max-width: 960px) {
+      body { padding: 22px 10px 42px; }
+      .previews { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+      .desktop { width: min(100%, 740px); }
+      .desktop .notes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .desktop { display: none; }
+      .previews { display: block; }
+      .mobile { display: block; width: min(360px, 100%); margin: 0 auto; }
+      .mobile-folder { display: block; padding: 18px 0; background: #e9dfcc; }
+      .week-head, .week-row { grid-template-columns: 54px repeat(5, minmax(0, 1fr)); }
+      .week-head > div { padding: 8px 3px; }
+      .week-head strong { font-size: 10px; }
+      .week-head small { font-size: 8px; }
+      .week-row > div { min-height: 66px; padding: 5px 3px; }
+      .class-block { padding: 6px 4px; font-size: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="intro">
+    <h1>Mockup v2 — Tumpukan Materi</h1>
+    <p>Revisi scrapbook meja belajar: lapisan kertas lebih nyata, papan tugas beralas cutting mat, deck buku catatan bertumpuk, dan jadwal mingguan yang mudah dipindai. Semua tekstur dibuat dari CSS; logo memakai aset resmi dari folder desain.</p>
+  </header>
+
+  <main>
+    <div class="previews">
+      <section class="preview desktop" aria-label="Mockup beranda desktop">
+        <div class="preview-label">Beranda · desktop</div>
+        <div class="screen">
+          <nav class="topbar">
+            <img class="logo" src="logo/logo.svg" alt="Tumpukan Materi">
+            <div class="nav-links"><span class="wide-link">Jadwal minggu ini</span><span class="wide-link">Minta materi</span><span class="send">Kirim materi</span></div>
+          </nav>
+          <section class="hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Ruang belajar satu kelas</p>
+              <h2 class="serif">Materi kuliah, tersusun dan mudah ditemukan.</h2>
+              <p>Catatan kelas, materi dosen, dan tugas minggu ini berkumpul di satu tempat. Cari bahanmu, lalu lanjut belajar.</p>
+              <span class="button">Jelajahi materi</span>
+            </div>
+            <div class="hero-art" aria-label="Ilustrasi tumpukan kertas bertekstur">
+              <span class="sheet one"></span><span class="sheet two"></span>
+              <span class="sheet three"><strong>Catat.<br>Susun.<br>Belajar.</strong><small>ruang kelas kita</small></span>
+              <span class="tape"></span>
+              <span class="motion-note">Kertas bergeser pelan mengikuti kursor / scroll</span>
+            </div>
+          </section>
+
+          <section class="board-section">
+            <div class="section-title"><h2>Yang perlu dikerjakan</h2><span>4 tugas · tenggat terdekat dulu</span></div>
+            <div class="board-frame">
+              <div class="cutting-mat">
+                <div class="notes">
+                  <article class="task-note">
+                    <span class="paperclip" aria-hidden="true"></span>
+                    <h3>Rangkuman struktur data</h3>
+                    <p>Struktur Data · Kumpulkan di kelas</p>
+                    <span class="deadline urgent">Hari ini</span>
+                  </article>
+                  <article class="task-note mustard">
+                    <span class="paperclip" aria-hidden="true"></span>
+                    <h3>Latihan normalisasi</h3>
+                    <p>Basis Data · Unggah ke LMS</p>
+                    <span class="deadline">2 hari lagi</span>
+                  </article>
+                  <article class="task-note sage">
+                    <span class="paperclip" aria-hidden="true"></span>
+                    <h3>Baca materi routing</h3>
+                    <p>Jaringan Komputer · Diskusi kelas</p>
+                    <span class="deadline">5 hari lagi</span>
+                  </article>
+                  <article class="task-note blue">
+                    <span class="paperclip" aria-hidden="true"></span>
+                    <h3>Rancangan antarmuka</h3>
+                    <p>Interaksi Manusia Komputer · Presentasi</p>
+                    <span class="deadline">1 minggu lagi</span>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="deck-section">
+            <div class="section-title"><h2>Folder mata kuliah</h2><span>Geser kartu untuk menjelajah</span></div>
+            <div class="search"><span class="search-icon" aria-hidden="true"></span>Cari mata kuliah atau judul materi…</div>
+            <div class="deck" aria-label="Tumpukan kartu mata kuliah">
+              <article class="course blue back-two"><span class="course-code">JK-203</span><h3>Jaringan Komputer</h3><div class="course-meta"><span>9 materi</span><span>Diperbarui 4 hari lalu</span></div></article>
+              <article class="course mustard back-one"><span class="course-code">BD-204</span><h3>Basis Data</h3><div class="course-meta"><span>12 materi</span><span>Diperbarui 2 hari lalu</span></div></article>
+              <article class="course"><span class="course-code">SD-201</span><h3>Struktur Data</h3><div class="course-meta"><span>8 materi</span><span>Diperbarui hari ini</span></div></article>
+            </div>
+            <p class="swipe-hint">← Geser / drag · tombol panah juga bisa →</p>
+          </section>
+
+          <section class="week-section">
+            <div class="section-title"><h2>Jadwal minggu ini</h2><span>Waktu WIB</span></div>
+            <div class="week-board">
+              <div class="week-head"><div></div><div><strong>Senin</strong><small>03 Nov</small></div><div><strong>Selasa</strong><small>04 Nov</small></div><div><strong>Rabu</strong><small>05 Nov</small></div><div><strong>Kamis</strong><small>06 Nov</small></div><div><strong>Jumat</strong><small>07 Nov</small></div></div>
+              <div class="week-row"><div class="time">09.00</div><div><div class="class-block">Struktur Data<br>R. 204</div></div><div><div class="class-block blue">Jaringan<br>R. 105</div></div><div></div><div><div class="class-block mustard">Basis Data<br>Lab 2</div></div><div><div class="class-block terra">Etika Profesi<br>R. 301</div></div></div>
+              <div class="week-row"><div class="time">13.00</div><div><div class="class-block mustard">Basis Data<br>Lab 2</div></div><div></div><div><div class="class-block terra">Etika Profesi<br>R. 301</div></div><div><div class="class-block blue">Jaringan<br>R. 105</div></div><div></div></div>
+              <div class="week-row"><div class="time">15.00</div><div></div><div><div class="class-block terra">Etika Profesi<br>R. 301</div></div><div><div class="class-block">Struktur Data<br>R. 204</div></div><div></div><div><div class="class-block mustard">Basis Data<br>Lab 2</div></div></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="preview mobile" aria-label="Mockup beranda mobile 360 piksel">
+        <div class="preview-label">Beranda · mobile 360 px</div>
+        <div class="screen">
+          <nav class="topbar">
+            <img class="logo" src="logo/logo.svg" alt="Tumpukan Materi">
+            <div class="nav-links"><span class="wide-link">Jadwal</span><span class="send">Kirim</span></div>
+          </nav>
+          <section class="hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Ruang belajar satu kelas</p>
+              <h2 class="serif">Materi kuliah, tersusun dan mudah ditemukan.</h2>
+              <p>Catatan kelas, materi dosen, dan tugas minggu ini berkumpul di satu tempat.</p>
+              <span class="button">Jelajahi materi</span>
+            </div>
+            <div class="hero-art" aria-hidden="true"><span class="sheet one"></span><span class="sheet two"></span><span class="sheet three"><strong>Catat.<br>Susun.<br>Belajar.</strong><small>ruang kelas kita</small></span><span class="tape"></span><span class="motion-note">Kertas bergeser pelan mengikuti scroll</span></div>
+          </section>
+          <section class="board-section">
+            <div class="section-title"><h2>Yang perlu dikerjakan</h2><span>4 tugas · tenggat terdekat</span></div>
+            <div class="board-frame"><div class="cutting-mat"><div class="notes">
+              <article class="task-note"><span class="paperclip" aria-hidden="true"></span><h3>Rangkuman struktur data</h3><p>Struktur Data · Kumpulkan di kelas</p><span class="deadline urgent">Hari ini</span></article>
+              <article class="task-note mustard"><span class="paperclip" aria-hidden="true"></span><h3>Latihan normalisasi</h3><p>Basis Data · Unggah ke LMS</p><span class="deadline">2 hari lagi</span></article>
+              <article class="task-note sage"><span class="paperclip" aria-hidden="true"></span><h3>Baca materi routing</h3><p>Jaringan Komputer · Diskusi kelas</p><span class="deadline">5 hari lagi</span></article>
+              <article class="task-note blue"><span class="paperclip" aria-hidden="true"></span><h3>Rancangan antarmuka</h3><p>Interaksi Manusia Komputer · Presentasi</p><span class="deadline">1 minggu lagi</span></article>
+            </div></div></div>
+          </section>
+          <section class="deck-section">
+            <div class="section-title"><h2>Folder mata kuliah</h2></div>
+            <div class="search"><span class="search-icon" aria-hidden="true"></span>Cari matkul atau materi…</div>
+            <div class="deck">
+              <article class="course blue back-two"><span class="course-code">JK-203</span><h3>Jaringan Komputer</h3><div class="course-meta"><span>9 materi</span><span>4 hari lalu</span></div></article>
+              <article class="course mustard back-one"><span class="course-code">BD-204</span><h3>Basis Data</h3><div class="course-meta"><span>12 materi</span><span>2 hari lalu</span></div></article>
+              <article class="course"><span class="course-code">SD-201</span><h3>Struktur Data</h3><div class="course-meta"><span>8 materi</span><span>Hari ini</span></div></article>
+            </div>
+            <p class="swipe-hint">Geser kartu untuk menjelajah</p>
+          </section>
+          <section class="mobile-schedule">
+            <div class="section-title"><h2>Jadwal hari ini</h2><span>Senin · 03 Nov</span></div>
+            <div class="today-row"><div><strong>Struktur Data</strong><small>09.00–10.40 · Ruang 204</small></div><span class="class-block">SD-201</span></div>
+            <div class="today-row"><div><strong>Basis Data</strong><small>13.00–14.40 · Lab 2</small></div><span class="class-block mustard">BD-204</span></div>
+          </section>
+          <section class="week-section">
+            <div class="section-title"><h2>Jadwal minggu ini</h2><span>WIB</span></div>
+            <div class="week-mobile">
+              <div class="week-day"><strong>Senin · 03</strong><div class="class-block">Struktur Data · 09.00</div><div class="class-block mustard">Basis Data · 13.00</div></div>
+              <div class="week-day"><strong>Selasa · 04</strong><div class="class-block blue">Jaringan · 09.00</div><div class="class-block terra">Etika · 15.00</div></div>
+              <div class="week-day"><strong>Rabu · 05</strong><div class="class-block terra">Etika · 13.00</div><div class="class-block">Struktur Data · 15.00</div></div>
+              <div class="week-day"><strong>Kamis · 06</strong><div class="class-block mustard">Basis Data · 09.00</div><div class="class-block blue">Jaringan · 13.00</div></div>
+              <div class="week-day"><strong>Jumat · 07</strong><div class="class-block terra">Etika · 09.00</div><div class="class-block mustard">Basis Data · 15.00</div></div>
+            </div>
+          </section>
+          <section class="mobile-folder">
+            <div class="preview-label">Folder terbuka · mobile</div>
+            <div class="folder-stage">
+              <div class="folder-panel">
+                <div class="folder-top"><div><span class="course-code">SD-201</span><h3>Struktur Data</h3><p>8 materi tersedia</p></div><button class="close" type="button" aria-label="Tutup folder">×</button></div>
+                <div class="search"><span class="search-icon" aria-hidden="true"></span>Cari materi di Struktur Data…</div>
+                <div class="material"><div>Modul 01 — Pengantar<small>PDF · 2,4 MB</small></div><span class="file-type">PDF</span></div>
+                <div class="material"><div>Catatan pertemuan 3<small>PDF · 860 KB</small></div><span class="file-type">PDF</span></div>
+                <div class="material"><div>Latihan linked list<small>DOCX · 320 KB</small></div><span class="file-type">Unduh</span></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <section class="preview desktop folder-section" aria-label="Keadaan folder desktop terbuka">
+      <div class="preview-label">Keadaan folder terbuka · kartu membesar</div>
+      <div class="screen">
+        <div class="folder-section">
+          <p class="folder-caption">Kartu depan membesar menjadi panel folder di atas latar redup. Sampel ini memperlihatkan kondisi desktop; di layar kecil panel mengisi viewport.</p>
+          <div class="folder-stage">
+            <div class="folder-panel">
+              <div class="folder-top"><div><span class="course-code">SD-201</span><h3>Struktur Data</h3><p>8 materi tersedia</p></div><button class="close" type="button" aria-label="Tutup folder">×</button></div>
+              <div class="search"><span class="search-icon" aria-hidden="true"></span>Cari materi di Struktur Data…</div>
+              <div class="material"><div>Modul 01 — Pengantar<small>PDF · 2,4 MB · diperbarui hari ini</small></div><span class="file-type">PDF · Buka</span></div>
+              <div class="material"><div>Catatan pertemuan 3<small>PDF · 860 KB · 12 halaman</small></div><span class="file-type">PDF · Buka</span></div>
+              <div class="material"><div>Latihan linked list<small>DOCX · 320 KB</small></div><span class="file-type">Unduh</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="note"><strong>Catatan desain:</strong> warna kertas memakai tinta gelap; dusty blue, sage, mustard, dan terracotta dipakai sebagai latar blok dengan teks gelap. Badge tenggat memakai latar kertas dan tinta gelap agar tetap terbaca. Grid, paperclip, binder clip, tepi sobek, serta tekstur dibuat ringan dengan CSS; logo resmi dipakai apa adanya di atas latar terang. Gerakan kertas pada hero adalah anotasi desain, belum diimplementasikan.</p>
+  </main>
+</body>
+</html>

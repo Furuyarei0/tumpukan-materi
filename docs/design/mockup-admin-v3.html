@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup Admin v3 — Form yang senada dengan Tumpukan Materi</title>
+  <style>
+    @font-face {
+      font-family: "DM Sans Variable";
+      src: url("../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 1000;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Fraunces Variable";
+      src: url("../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --cream: #f3ebd8;
+      --paper: #fbf6e9;
+      --forest: #3f5b3a;
+      --leaf: #6e8b4e;
+      --wood: #8a6a43;
+      --ink: #2b2a24;
+      --muted: #514d42;
+      --mustard: #d9a441;
+      --line: #c8b99c;
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      --wood-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 80'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.01 .6' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)' opacity='.22'/%3E%3C/svg%3E");
+      --elev-1: 0 1px 1px rgb(40 28 12 / .28), 0 3px 6px -1px rgb(40 28 12 / .22), 0 8px 16px -6px rgb(40 28 12 / .18);
+      --elev-2: 0 1px 2px rgb(40 28 12 / .30), 0 6px 10px -2px rgb(40 28 12 / .24), 0 16px 28px -10px rgb(40 28 12 / .28);
+      --elev-3: 0 2px 3px rgb(40 28 12 / .32), 0 12px 18px -4px rgb(40 28 12 / .26), 0 28px 44px -14px rgb(40 28 12 / .34);
+      font-family: "DM Sans Variable", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid var(--mustard);
+      outline-offset: 3px;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: "Fraunces Variable", Georgia, serif; }
+
+    .nav {
+      position: sticky;
+      z-index: 2;
+      top: 0;
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 9px max(20px, calc((100% - 1200px) / 2));
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), var(--noise);
+      background-size: auto, 160px 160px;
+      box-shadow: var(--elev-1);
+    }
+    .logo { display: block; width: clamp(138px, 13vw, 164px); height: auto; }
+    .nav-label { color: var(--muted); font-size: 15px; }
+    .nav-action { min-height: 42px; padding: 9px 14px; border: 0; border-radius: 5px; background: var(--forest); color: #fffdf6; font-size: 14px; font-weight: 750; }
+    .page { min-height: 100vh; }
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 490px;
+      align-items: center;
+      padding: 54px 28px;
+      background-color: #b78a5b;
+      background-image:
+        repeating-linear-gradient(0deg, #55391c19 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(90deg, transparent 0 184px, #68472634 185px 187px, transparent 188px 374px),
+        var(--wood-grain),
+        linear-gradient(135deg, #c59a6b, #b48452 50%, #c49a6d);
+      background-size: auto, auto, 180px 80px, auto;
+    }
+    .hero-inner { display: grid; width: min(1120px, 100%); grid-template-columns: 1.05fr .95fr; align-items: center; gap: 44px; margin: auto; }
+    .hero-paper {
+      padding: clamp(25px, 4vw, 43px);
+      border: 1px solid rgb(255 255 255 / .76);
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .55), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .1), transparent 35%), var(--noise), linear-gradient(#806e4b18 1px, transparent 1px), linear-gradient(90deg, #806e4b18 1px, transparent 1px);
+      background-size: auto, auto, 160px 160px, 18px 18px, 18px 18px;
+      box-shadow: var(--elev-2);
+      transform: rotate(-1deg);
+    }
+    .hero-paper h1 { max-width: 12ch; margin-bottom: 12px; font-size: clamp(38px, 4vw, 53px); line-height: 1; letter-spacing: -.03em; }
+    .hero-paper p { max-width: 440px; margin-bottom: 21px; color: #39372f; font-size: 15px; line-height: 1.6; }
+    .hero-links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 15px;
+      border: 0;
+      border-radius: 5px;
+      background: var(--forest);
+      color: #fffdf6;
+      font-size: 14px;
+      font-weight: 750;
+      text-decoration: none;
+    }
+    .button.secondary { background: #e8dfcb; color: var(--ink); }
+    .paper-stack { position: relative; width: min(360px, 90%); height: 330px; justify-self: center; }
+    .stack-sheet { position: absolute; inset: 18px 16px; background-color: var(--paper); background-image: var(--noise), linear-gradient(#806e4b18 1px, transparent 1px), linear-gradient(90deg, #806e4b18 1px, transparent 1px); background-size: 160px 160px, 18px 18px, 18px 18px; box-shadow: var(--elev-2); }
+    .stack-sheet.one { transform: rotate(6deg) translate(12px, -2px); }
+    .stack-sheet.two { transform: rotate(-5deg) translate(-9px, 5px); }
+    .stack-sheet.three { display: grid; align-content: center; gap: 16px; padding: 29px; transform: rotate(1deg); }
+    .stack-sheet.three strong { color: var(--forest); font-family: "Fraunces Variable", Georgia, serif; font-size: 23px; }
+    .stack-row { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 700; }
+    .stack-row span:last-child { color: var(--muted); font-size: 13px; font-weight: 550; }
+
+    .board {
+      position: relative;
+      min-height: 420px;
+      padding: 54px 28px 64px;
+      background-color: var(--forest);
+      background-image: var(--noise), linear-gradient(#dce7d536 1px, transparent 1px), linear-gradient(90deg, #dce7d536 1px, transparent 1px), linear-gradient(#dce7d516 1px, transparent 1px), linear-gradient(90deg, #dce7d516 1px, transparent 1px);
+      background-size: 160px 160px, 22px 22px, 22px 22px, 110px 110px, 110px 110px;
+    }
+    .board::before { position: absolute; top: -17px; right: 0; left: 0; height: 22px; background: var(--paper); content: ""; clip-path: polygon(0 0, 100% 0, 100% 45%, 92% 70%, 84% 42%, 76% 75%, 67% 46%, 58% 72%, 49% 42%, 39% 72%, 30% 43%, 20% 75%, 10% 45%, 0 70%); transform: rotate(180deg); }
+    .board-inner { width: min(1120px, 100%); margin: auto; }
+    .board-heading { margin-bottom: 23px; color: #fffdf6; }
+    .board-heading h2 { margin-bottom: 8px; font-size: 33px; }
+    .board-heading p { margin: 0; color: #f5efdf; font-size: 15px; }
+    .board-papers { display: grid; grid-template-columns: 1fr 1fr; gap: 19px; }
+    .task-paper, .schedule-paper {
+      min-height: 195px;
+      padding: 23px;
+      border: 1px solid rgb(255 255 255 / .65);
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .5), transparent 40%), var(--noise), linear-gradient(#806e4b16 1px, transparent 1px), linear-gradient(90deg, #806e4b16 1px, transparent 1px);
+      background-size: auto, 160px 160px, 18px 18px, 18px 18px;
+      box-shadow: var(--elev-2);
+    }
+    .task-paper { transform: rotate(-.6deg); }
+    .schedule-paper { transform: rotate(.5deg); }
+    .task-paper h3, .schedule-paper h3 { margin-bottom: 10px; font-size: 20px; }
+    .task-paper p, .schedule-paper p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .board-admin-link { color: var(--forest); font-size: 14px; font-weight: 750; }
+    .deck { min-height: 360px; padding: 48px 28px 72px; background-color: var(--cream); background-image: var(--noise), linear-gradient(#806e4b12 1px, transparent 1px), linear-gradient(90deg, #806e4b12 1px, transparent 1px); background-size: 160px 160px, 20px 20px, 20px 20px; }
+    .deck-inner { width: min(1120px, 100%); margin: auto; }
+    .deck h2 { margin: 0; font-size: 31px; }
+
+    .scrim {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgb(25 24 19 / .78);
+    }
+    .scrim[hidden] { display: none; }
+    .form-sheet {
+      position: relative;
+      width: min(680px, 100%);
+      max-height: min(820px, calc(100svh - 48px));
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      border: 1px solid rgb(255 255 255 / .82);
+      border-radius: 12px;
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .58), transparent 40%), linear-gradient(0deg, rgb(120 90 40 / .1), transparent 35%), var(--noise);
+      background-size: auto, auto, 160px 160px;
+      box-shadow: var(--elev-3);
+      color: var(--ink);
+      overscroll-behavior: contain;
+    }
+    .form-content { padding: 32px 38px 21px; }
+    .form-heading { max-width: 530px; margin: 0 50px 24px 0; }
+    .form-heading h2 { margin: 0 0 8px; font-size: 32px; line-height: 1.05; }
+    .form-heading p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+    .close {
+      position: absolute;
+      z-index: 2;
+      top: 15px;
+      right: 15px;
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 22px;
+    }
+    .form { display: grid; gap: 18px; }
+    .field { display: grid; min-width: 0; gap: 8px; }
+    .field label { color: var(--ink); font-size: 15px; font-weight: 700; }
+    .optional { color: var(--muted); font-size: 14px; font-weight: 500; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      min-height: 47px;
+      padding: 10px 12px;
+      border: 1px solid #aa9b80;
+      border-radius: 4px;
+      background: #fffdf7;
+      color: var(--ink);
+      font-size: 15px;
+    }
+    .field textarea { min-height: 95px; resize: vertical; line-height: 1.5; }
+    .details {
+      padding-top: 12px;
+      border-top: 1px solid rgb(138 106 67 / .4);
+    }
+    .details summary {
+      display: flex;
+      min-height: 45px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--forest);
+      font-size: 15px;
+      font-weight: 750;
+      cursor: pointer;
+      list-style: none;
+    }
+    .details summary::-webkit-details-marker { display: none; }
+    .details summary::after { content: "+"; color: var(--wood); font-size: 22px; font-weight: 500; }
+    .details[open] summary::after { content: "−"; }
+    .details-body { display: grid; gap: 17px; padding-top: 12px; }
+    .actions {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 38px;
+      border-top: 1px solid rgb(138 106 67 / .38);
+      background: var(--paper);
+      box-shadow: 0 -7px 14px rgb(40 28 12 / .07);
+    }
+
+    .login {
+      position: fixed;
+      z-index: 12;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgb(25 24 19 / .78);
+    }
+    .login[hidden] { display: none; }
+    .login-sheet {
+      width: min(470px, 100%);
+      padding: 36px 39px 30px;
+      border: 1px solid rgb(255 255 255 / .82);
+      border-radius: 12px;
+      background-color: var(--paper);
+      background-image: linear-gradient(135deg, rgb(255 255 255 / .58), transparent 40%), var(--noise);
+      background-size: auto, 160px 160px;
+      box-shadow: var(--elev-3);
+    }
+    .login-logo { display: block; margin-bottom: 26px; }
+    .login-logo img { display: block; width: 175px; height: auto; }
+    .login-sheet h2 { margin: 0 0 8px; font-size: 32px; }
+    .login-sheet > p { margin-bottom: 22px; color: var(--muted); font-size: 15px; line-height: 1.55; }
+    .login-form { display: grid; gap: 17px; }
+    .login-form .button { width: 100%; margin-top: 3px; }
+    .login-back { display: block; margin-top: 18px; color: var(--forest); font-size: 14px; font-weight: 700; text-align: center; text-decoration: none; }
+
+    @media (max-width: 700px) {
+      .nav { min-height: 62px; padding: 8px 15px; }
+      .logo { width: 143px; }
+      .nav-label { display: none; }
+      .hero { min-height: 520px; padding: 36px 18px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 26px; }
+      .hero-paper { padding: 24px; }
+      .hero-paper h1 { max-width: 12ch; font-size: clamp(34px, 9vw, 44px); }
+      .hero-paper p { font-size: 15px; }
+      .paper-stack { width: min(300px, 86%); height: 215px; }
+      .stack-sheet { inset: 5px 15px; }
+      .stack-sheet.three { gap: 10px; padding: 22px; }
+      .stack-sheet.three strong { font-size: 20px; }
+      .board { min-height: 390px; padding: 42px 18px 48px; }
+      .board-heading h2 { font-size: 29px; }
+      .board-papers { grid-template-columns: 1fr; gap: 13px; }
+      .task-paper, .schedule-paper { min-height: 140px; padding: 19px; }
+      .deck { min-height: 280px; padding: 38px 18px 54px; }
+      .scrim {
+        align-items: end;
+        padding: 0;
+      }
+      .form-sheet {
+        width: 100%;
+        max-height: 84svh;
+        border: 1px solid rgb(255 255 255 / .82);
+        border-bottom: 0;
+        border-radius: 15px 15px 0 0;
+      }
+      .form-content { overflow-y: auto; padding: 25px 22px 17px; overscroll-behavior: contain; }
+      .form-heading { margin: 17px 45px 19px 0; }
+      .form-heading h2 { font-size: 29px; }
+      .form-heading p { font-size: 14px; }
+      .close { top: 14px; right: 13px; width: 40px; height: 40px; }
+      .form { gap: 16px; }
+      .field { gap: 7px; }
+      .field label { font-size: 15px; }
+      .field input, .field select, .field textarea { min-height: 46px; }
+      .details { padding-top: 8px; }
+      .details summary { min-height: 46px; font-size: 14px; }
+      .details-body { gap: 16px; }
+      .actions {
+        flex: 0 0 auto;
+        justify-content: stretch;
+        gap: 9px;
+        padding: 12px 18px max(13px, env(safe-area-inset-bottom));
+      }
+      .actions .button { min-height: 46px; flex: 1; padding: 9px 11px; }
+      .login { align-items: center; padding: 15px; }
+      .login-sheet { width: min(470px, 100%); padding: 27px 23px 23px; }
+      .login-logo { margin-bottom: 21px; }
+      .login-logo img { width: 160px; }
+      .login-sheet h2 { font-size: 29px; }
+      .login-sheet > p { margin-bottom: 18px; font-size: 14px; }
+      .login-form { gap: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="nav">
+      <a href="#" aria-label="Kembali ke beranda"><img class="logo" src="../../src/assets/logo/logo.svg" alt="Tumpukan Materi"></a>
+      <span class="nav-label">Ruang materi kelas</span>
+      <button class="nav-action" type="button" onclick="showLogin()">Keluar</button>
+    </header>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-paper">
+          <h1>Tumpukan Materi</h1>
+          <p>Materi kuliah, tugas, dan jadwal kelas tersusun di satu tempat.</p>
+          <div class="hero-links">
+            <a class="button" href="#board">Lihat papan tugas</a>
+            <a class="button secondary" href="#deck">Cari materi</a>
+          </div>
+        </div>
+        <div class="paper-stack" aria-hidden="true">
+          <div class="stack-sheet one"></div>
+          <div class="stack-sheet two"></div>
+          <div class="stack-sheet three">
+            <strong>Ringkasan kelas</strong>
+            <span class="stack-row"><span>Mata kuliah</span><span>8</span></span>
+            <span class="stack-row"><span>Tugas</span><span>Belum ada</span></span>
+            <span class="stack-row"><span>Jadwal</span><span>8 kelas</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="board" id="board">
+      <div class="board-inner">
+        <header class="board-heading"><h2>Papan kelas</h2><p>Tugas dan jadwal minggu ini, tersusun di satu tempat.</p></header>
+        <div class="board-papers">
+          <article class="task-paper"><h3>Tugas dan tenggat</h3><p>Belum ada tugas. Kalau ada tugas baru, catatannya akan muncul di sini.</p><a class="board-admin-link" href="#" onclick="openTaskForm();return false">+ Tambah tugas</a></article>
+          <article class="schedule-paper"><h3>Jadwal kuliah</h3><p>Jadwal mingguan dan perubahan tanggal khusus tampil di lembar ini.</p><span class="board-admin-link">Ubah jadwal · Perubahan tanggal</span></article>
+        </div>
+      </div>
+    </section>
+    <section class="deck" id="deck"><div class="deck-inner"><h2>Pilih mata kuliah</h2></div></section>
+  </main>
+
+  <div class="scrim" id="task-form">
+    <section class="form-sheet" role="dialog" aria-modal="true" aria-labelledby="task-title">
+      <button type="button" class="close" aria-label="Tutup form" onclick="closeTaskForm()">×</button>
+      <div class="form-content">
+        <header class="form-heading">
+          <h2 id="task-title">Tambah tugas</h2>
+          <p>Catat tugas kelas. Deadline dan rincian pengumpulan bisa ditambahkan di bagian opsional.</p>
+        </header>
+        <form class="form" onsubmit="return false">
+          <div class="field">
+            <label for="task-name">Judul tugas</label>
+            <input id="task-name" type="text" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="task-course">Mata kuliah <span class="optional">(opsional)</span></label>
+            <select id="task-course"><option>Pilih mata kuliah</option></select>
+          </div>
+          <details class="details">
+            <summary>Deadline dan cara pengumpulan <span class="optional">· opsional</span></summary>
+            <div class="details-body">
+              <div class="field"><label for="task-deadline">Deadline · tanggal dan jam WIB</label><input id="task-deadline" type="datetime-local"></div>
+              <div class="field"><label for="task-method">Cara pengumpulan</label><input id="task-method" type="text"></div>
+              <div class="field"><label for="task-description">Keterangan</label><textarea id="task-description" rows="3"></textarea></div>
+            </div>
+          </details>
+        </form>
+      </div>
+      <footer class="actions">
+        <button class="button secondary" type="button" onclick="closeTaskForm()">Batal</button>
+        <button class="button" type="button" onclick="closeTaskForm()">Simpan tugas</button>
+      </footer>
+    </section>
+  </div>
+
+  <div class="login" id="login" hidden>
+    <section class="login-sheet" role="dialog" aria-modal="true" aria-labelledby="login-title">
+      <button type="button" class="close" aria-label="Tutup login" onclick="closeLogin()">×</button>
+      <a class="login-logo" href="#" aria-label="Tumpukan Materi"><img src="../../src/assets/logo/logo.svg" alt="Tumpukan Materi"></a>
+      <h2 id="login-title">Masuk admin</h2>
+      <p>Kelola materi, tugas, mata kuliah, dan jadwal kelas.</p>
+      <form class="login-form" onsubmit="return false">
+        <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username"></div>
+        <div class="field"><label for="password">Kata sandi</label><input id="password" type="password" autocomplete="current-password"></div>
+        <button class="button" type="button" onclick="closeLogin()">Masuk</button>
+      </form>
+      <a class="login-back" href="#">Kembali ke beranda</a>
+    </section>
+  </div>
+  <script>
+    function openTaskForm() { document.getElementById("task-form").hidden = false; }
+    function closeTaskForm() { document.getElementById("task-form").hidden = true; }
+    function showLogin() {
+      closeTaskForm();
+      document.getElementById("login").hidden = false;
+    }
+    function closeLogin() { document.getElementById("login").hidden = true; }
+  </script>
+</body>
+</html>

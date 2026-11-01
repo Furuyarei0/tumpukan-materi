@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Konsep desain — Tumpukan Materi</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #f3ebd8;
+      --paper: #fbf6e9;
+      --forest: #3f5b3a;
+      --leaf: #6e8b4e;
+      --wood: #8a6a43;
+      --ink: #2b2a24;
+      --muted: #716e61;
+      --line: #ded4bf;
+      --shadow: 0 16px 38px #392d1c18;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #e8dfcd;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 32px 20px 60px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, .display { font-family: Georgia, "Times New Roman", serif; }
+    h1 { margin-bottom: 8px; font-size: clamp(30px, 5vw, 46px); }
+    .intro { max-width: 1000px; margin: 0 auto 28px; }
+    .intro p { color: #5f5a4d; line-height: 1.6; }
+    .previews { display: flex; align-items: flex-start; justify-content: center; gap: 28px; flex-wrap: wrap; }
+    .preview { overflow: hidden; background: var(--cream); border: 1px solid #d5cbb8; border-radius: 22px; box-shadow: var(--shadow); }
+    .desktop { width: min(100%, 1000px); min-height: 970px; }
+    .mobile { width: 360px; min-height: 760px; }
+    .preview-label { padding: 13px 18px; background: #e9dfcc; color: #625a4b; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .screen { padding: 20px 32px 32px; }
+    .mobile .screen { padding: 16px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 750; }
+    .brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 12px; background: var(--forest); color: var(--paper); }
+    .brand-mark svg { width: 20px; height: 20px; }
+    .top-link { color: var(--forest); font-size: 13px; font-weight: 700; }
+    .hero { display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 24px; min-height: 210px; padding: 26px 32px; border: 1px solid #d8c9ae; border-radius: 26px; background: #e9dfc9; }
+    .wood-sign { display: inline-block; margin-bottom: 13px; padding: 8px 13px; border: 1px solid #795b37; border-radius: 8px; background: var(--wood); color: #fff8e9; font-family: Georgia, serif; font-size: 13px; transform: rotate(-1deg); }
+    .hero h2 { max-width: 460px; margin-bottom: 10px; font-size: clamp(26px, 3.5vw, 42px); line-height: 1.06; }
+    .hero p { margin-bottom: 16px; color: #5e5a4d; font-size: 14px; line-height: 1.5; }
+    .button { display: inline-block; padding: 11px 16px; border: 0; border-radius: 12px; background: var(--forest); color: var(--paper); font-size: 13px; font-weight: 700; }
+    .paper-stack { position: relative; width: 190px; height: 135px; justify-self: center; transform: rotate(4deg); }
+    .paper-stack span { position: absolute; inset: 18px 22px; border: 1px solid #c9b998; border-radius: 16px; background: #fbf6e9; box-shadow: 0 8px 16px #47371f20; }
+    .paper-stack span:nth-child(1) { transform: translate(-13px, 12px) rotate(-12deg); background: #d7dfc7; }
+    .paper-stack span:nth-child(2) { transform: translate(3px, 5px) rotate(-5deg); background: #f1dfbd; }
+    .paper-stack span:nth-child(3) { display: grid; place-items: center; color: var(--forest); font-family: Georgia, serif; font-size: 42px; font-weight: 700; }
+    .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 26px 0 12px; }
+    .section-heading h3 { margin: 0; font-family: Georgia, serif; font-size: 21px; }
+    .section-heading a { color: var(--forest); font-size: 12px; font-weight: 700; }
+    .dashboard { display: grid; grid-template-columns: 1.45fr .8fr; gap: 14px; }
+    .panel, .task, .schedule { border: 1px solid var(--line); border-radius: 20px; background: var(--paper); box-shadow: 0 6px 16px #392d1c0c; }
+    .panel { padding: 16px; }
+    .panel-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 13px; font-weight: 750; }
+    .task { display: grid; grid-template-columns: 1fr auto; gap: 5px 12px; margin-top: 8px; padding: 12px; border-radius: 14px; box-shadow: none; }
+    .task strong { font-size: 13px; }
+    .task small { color: var(--muted); font-size: 11px; }
+    .chip { align-self: center; padding: 6px 8px; border-radius: 99px; background: #eee3c9; color: #715326; font-size: 10px; font-weight: 750; white-space: nowrap; }
+    .chip.today { background: #f2dfd3; color: #8a4329; }
+    .schedule { padding: 16px; }
+    .schedule h3 { margin-bottom: 13px; font-family: Georgia, serif; font-size: 17px; }
+    .schedule-item { margin-bottom: 11px; padding-left: 11px; border-left: 2px solid var(--leaf); }
+    .schedule-item strong, .schedule-item small { display: block; }
+    .schedule-item strong { font-size: 12px; }
+    .schedule-item small { margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .search { display: flex; align-items: center; gap: 10px; padding: 13px 15px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); color: #777262; font-size: 13px; }
+    .deck-area { position: relative; height: 250px; margin-top: 8px; padding-left: 18px; }
+    .course-card { position: absolute; top: 8px; left: 18px; width: 74%; height: 216px; padding: 20px; overflow: hidden; border: 1px solid #d2c4a8; border-radius: 22px; background: #dbe1cc; box-shadow: var(--shadow); }
+    .course-card.back { top: 22px; left: 27%; width: 69%; background: #ead9b9; transform: scale(.94); transform-origin: top left; }
+    .course-card.third { top: 35px; left: 36%; width: 64%; background: #dfcfc0; transform: scale(.88); transform-origin: top left; }
+    .course-code { color: var(--forest); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+    .course-card h3 { max-width: 230px; margin: 46px 0 8px; font-family: Georgia, serif; font-size: 26px; line-height: 1.05; }
+    .course-card p { margin: 0; color: #5d5c4d; font-size: 11px; }
+    .plant-art { position: absolute; top: 26px; right: 25px; width: 38px; height: 28px; opacity: .75; }
+    .plant-art::before, .plant-art::after { position: absolute; width: 17px; height: 10px; border: 2px solid var(--leaf); border-radius: 100% 0 100% 0; content: ""; }
+    .plant-art::before { top: 2px; left: 2px; transform: rotate(-24deg); }
+    .plant-art::after { right: 1px; bottom: 1px; transform: rotate(156deg); }
+    .hint { margin: 0; color: var(--muted); font-size: 11px; text-align: center; }
+    .mobile .hero { display: block; min-height: 0; padding: 20px; }
+    .mobile .hero h2 { font-size: 29px; }
+    .mobile .hero p { font-size: 13px; }
+    .mobile .paper-stack { width: 130px; height: 96px; margin: 16px auto 0; }
+    .mobile .paper-stack span { inset: 12px 15px; }
+    .mobile .paper-stack span:nth-child(3) { font-size: 30px; }
+    .mobile .dashboard { grid-template-columns: 1fr; }
+    .mobile .panel { padding: 12px; }
+    .mobile .task { padding: 10px; }
+    .mobile .schedule { display: none; }
+    .mobile .section-heading { margin-top: 20px; }
+    .mobile .section-heading h3 { font-size: 19px; }
+    .mobile .deck-area { height: 210px; padding-left: 0; }
+    .mobile .course-card { left: 0; width: 82%; height: 190px; }
+    .mobile .course-card.back { left: 17%; width: 80%; }
+    .mobile .course-card.third { left: 27%; width: 72%; }
+    .mobile .course-card h3 { margin-top: 37px; font-size: 23px; }
+    .folder-demo { max-width: 1000px; margin: 30px auto 0; padding: 24px; border: 1px solid #d5cbb8; border-radius: 22px; background: #ded4c2; }
+    .folder-demo h2 { margin-bottom: 6px; font-size: 28px; }
+    .folder-demo > p { color: #625a4b; font-size: 13px; }
+    .folder-panel { max-width: 660px; min-height: 310px; margin: 18px auto 0; padding: 25px; border: 1px solid var(--line); border-radius: 26px; background: var(--paper); box-shadow: var(--shadow); }
+    .folder-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .folder-top h3 { margin: 0; font-family: Georgia, serif; font-size: 26px; }
+    .close { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%; background: #f4eddd; color: var(--ink); font-size: 20px; }
+    .material-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 0; border-top: 1px solid #e8deca; font-size: 13px; }
+    .material-row small { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+    .pdf { color: var(--forest); font-size: 11px; font-weight: 750; }
+    .note { max-width: 1000px; margin: 18px auto 0; color: #625a4b; font-size: 12px; line-height: 1.6; }
+    @media (max-width: 720px) {
+      body { padding: 22px 12px 40px; }
+      .desktop { min-height: auto; }
+      .desktop .screen { padding: 14px; }
+      .desktop .hero { grid-template-columns: 1fr; }
+      .desktop .dashboard { grid-template-columns: 1fr; }
+      .desktop .schedule { display: none; }
+      .desktop .paper-stack { display: none; }
+      .desktop .course-card { width: 84%; }
+      .desktop .course-card.back { left: 18%; width: 80%; }
+      .desktop .course-card.third { left: 28%; width: 70%; }
+      .folder-demo { padding: 16px; }
+      .folder-panel { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="intro">
+    <h1>Konsep desain: Tumpukan Materi</h1>
+    <p>Usulan arah visual mobile-first: suasana hangat seperti meja belajar, palet krem dan hijau hutan, papan tugas sederhana, serta deck kartu mata kuliah. Ini mockup statis untuk persetujuan sebelum implementasi.</p>
+  </header>
+
+  <main>
+    <div class="previews">
+      <section class="preview desktop" aria-label="Mockup beranda desktop">
+        <div class="preview-label">Beranda · desktop</div>
+        <div class="screen">
+          <nav class="topbar">
+            <div class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 4.5C11 4.5 5 7.7 5 13.2a5.3 5.3 0 0 0 5.4 5.3c5.5 0 8.6-6 9.1-14Z"/><path d="M4 20c2.8-4.1 6.2-6.7 11-9"/></svg></span> Tumpukan Materi</div>
+            <span class="top-link">Jadwal minggu ini　·　Kirim materi</span>
+          </nav>
+          <section class="hero">
+            <div>
+              <span class="wood-sign">TUMPUKAN MATERI</span>
+              <h2 class="display">Semua bahan kuliah, satu tempat.</h2>
+              <p>Catatan kelas, materi dosen, dan tugas minggu ini. Cari yang kamu butuhkan, lalu lanjut belajar.</p>
+              <span class="button">Lihat materi ↓</span>
+            </div>
+            <div class="paper-stack" aria-hidden="true"><span></span><span></span><span>TM</span></div>
+          </section>
+
+          <div class="section-heading"><h3>Yang perlu dikerjakan</h3><a>Lihat semua</a></div>
+          <section class="dashboard">
+            <div class="panel">
+              <div class="panel-title"><span>Papan kelas</span><span class="top-link">3 tugas</span></div>
+              <div class="task"><div><strong>Rangkuman struktur data</strong><br><small>Struktur Data · Kumpulkan di kelas</small></div><span class="chip today">Hari ini</span></div>
+              <div class="task"><div><strong>Latihan basis data</strong><br><small>Basis Data · Unggah ke LMS</small></div><span class="chip">2 hari lagi</span></div>
+              <div class="task"><div><strong>Baca materi minggu 5</strong><br><small>Jaringan Komputer · Diskusi kelas</small></div><span class="chip">5 hari lagi</span></div>
+            </div>
+            <aside class="schedule">
+              <h3>Jadwal hari ini</h3>
+              <div class="schedule-item"><strong>Struktur Data</strong><small>09.00–10.40 · Ruang 204</small></div>
+              <div class="schedule-item"><strong>Basis Data</strong><small>13.00–14.40 · Lab 2</small></div>
+              <span class="top-link">Lihat jadwal minggu ini →</span>
+            </aside>
+          </section>
+
+          <div class="section-heading"><h3>Folder mata kuliah</h3><span class="top-link">Geser untuk menjelajah</span></div>
+          <div class="search"><span aria-hidden="true">⌕</span> Cari mata kuliah atau judul materi…</div>
+          <div class="deck-area" aria-label="Tumpukan kartu mata kuliah">
+            <div class="course-card third"></div>
+            <div class="course-card back"><span class="course-code">BD-204</span><span class="plant-art" aria-hidden="true"></span><h3>Basis Data</h3><p>12 materi　·　Diperbarui 2 hari lalu</p></div>
+            <div class="course-card"><span class="course-code">SD-201</span><span class="plant-art" aria-hidden="true"></span><h3>Struktur Data</h3><p>8 materi　·　Diperbarui hari ini</p></div>
+          </div>
+          <p class="hint">← Geser kartu atau gunakan tombol panah → · Pilih kartu untuk membuka folder</p>
+        </div>
+      </section>
+
+      <section class="preview mobile" aria-label="Mockup beranda mobile">
+        <div class="preview-label">Beranda · mobile 360 px</div>
+        <div class="screen">
+          <nav class="topbar">          <div class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 4.5C11 4.5 5 7.7 5 13.2a5.3 5.3 0 0 0 5.4 5.3c5.5 0 8.6-6 9.1-14Z"/><path d="M4 20c2.8-4.1 6.2-6.7 11-9"/></svg></span> Tumpukan Materi</div><span class="top-link">Kirim</span></nav>
+          <section class="hero">
+            <span class="wood-sign">TUMPUKAN MATERI</span>
+            <h2 class="display">Semua bahan kuliah, satu tempat.</h2>
+            <p>Materi kelas dan tugas minggu ini, tersusun rapi.</p>
+            <span class="button">Lihat materi ↓</span>
+            <div class="paper-stack" aria-hidden="true"><span></span><span></span><span>TM</span></div>
+          </section>
+          <div class="section-heading"><h3>Yang perlu dikerjakan</h3><a>Lihat semua</a></div>
+          <section class="dashboard">
+            <div class="panel">
+              <div class="panel-title"><span>Papan kelas</span><span class="top-link">3 tugas</span></div>
+              <div class="task"><div><strong>Rangkuman struktur data</strong><br><small>Struktur Data · Kumpulkan di kelas</small></div><span class="chip today">Hari ini</span></div>
+              <div class="task"><div><strong>Latihan basis data</strong><br><small>Basis Data · Unggah ke LMS</small></div><span class="chip">2 hari lagi</span></div>
+            </div>
+          </section>
+          <div class="section-heading"><h3>Mata kuliah</h3></div>
+          <div class="search"><span aria-hidden="true">⌕</span> Cari matkul atau materi…</div>
+          <div class="deck-area">
+            <div class="course-card third"></div>
+            <div class="course-card back"><span class="course-code">BD-204</span><span class="plant-art" aria-hidden="true"></span><h3>Basis Data</h3><p>12 materi　·　2 hari lalu</p></div>
+            <div class="course-card"><span class="course-code">SD-201</span><span class="plant-art" aria-hidden="true"></span><h3>Struktur Data</h3><p>8 materi　·　Diperbarui hari ini</p></div>
+          </div>
+          <p class="hint">Geser kartu untuk menjelajah</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="folder-demo">
+      <h2>Keadaan folder terbuka</h2>
+      <p>Panel desktop berukuran besar di tengah; di mobile panel menjadi layar penuh. Transisi kartu ke panel memakai shared-element motion, dengan tombol tutup yang jelas.</p>
+      <div class="folder-panel">
+        <div class="folder-top"><h3>Struktur Data</h3><button class="close" type="button" aria-label="Tutup folder">×</button></div>
+        <div class="search"><span aria-hidden="true">⌕</span> Cari materi di Struktur Data…</div>
+        <div class="material-row"><div>Modul 01 — Pengantar<small>PDF · 2,4 MB · 12 halaman</small></div><span class="pdf">Lihat PDF</span></div>
+        <div class="material-row"><div>Catatan pertemuan 3<small>PDF · 860 KB</small></div><span class="pdf">Lihat PDF</span></div>
+        <div class="material-row"><div>Latihan linked list<small>DOCX · 320 KB</small></div><span class="pdf">Unduh</span></div>
+      </div>
+    </section>
+
+    <p class="note"><strong>Arah visual:</strong> warna krem (#F3EBD8), kertas (#FBF6E9), hijau hutan (#3F5B3A), hijau daun (#6E8B4E), kayu (#8A6A43), dan tinta (#2B2A24). Judul memakai Georgia sebagai serif sistem; teks memakai sans-serif sistem. Ilustrasi kertas dibuat orisinal, tanpa aset pihak ketiga. Mockup belum mencakup halaman admin dan formulir kirim materi.</p>
+  </main>
+</body>
+</html>
