@@ -48,15 +48,13 @@ export function CourseDeck({ courses, isLoading, error, onOpenCourse, onOpenSear
     let depth = index - activeIndex;
     if (depth > count / 2) depth -= count;
     if (depth < -count / 2) depth += count;
-    const visibleDepth = Math.max(-2, Math.min(2, depth));
     return {
-      depth: visibleDepth,
-      offset: visibleDepth * (viewportWidth < 640 ? 74 : 136),
-      scale: 1 - Math.abs(visibleDepth) * 0.075,
-      rotate: visibleDepth === 0 ? 0 : visibleDepth * (visibleDepth > 0 ? 2 : -2),
+      depth,
+      offset: depth * (viewportWidth < 640 ? 74 : 136),
+      scale: 1 - Math.abs(depth) * 0.075,
+      rotate: depth === 0 ? 0 : depth * (depth > 0 ? 2 : -2),
     };
   }
-
   return (
     <section className="site-section deck-scene" id="deck" aria-labelledby="deck-title">
       <div className="section-inner deck-inner">
