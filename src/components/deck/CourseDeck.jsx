@@ -55,7 +55,6 @@ export function CourseDeck({ courses, isLoading, error, onOpenCourse, onOpenSear
       rotate: depth === 0 ? 0 : depth * (depth > 0 ? 2 : -2),
     };
   }
-
   return (
     <section className="site-section deck-scene" id="deck" aria-labelledby="deck-title">
       <div className="section-inner deck-inner">
